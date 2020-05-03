@@ -1,4 +1,5 @@
 import React from 'react';
+import Space from './Spase'
 import './App.css'
 
 function App() {
@@ -6,7 +7,8 @@ function App() {
     <div className="App">
       <div className="Editor">
       </div>
-      <div className="Scene">
+      <div className="Space">
+        <Space />
       </div>
     </div>
   );

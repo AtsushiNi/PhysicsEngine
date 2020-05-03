@@ -10,6 +10,9 @@
   background-color: #333333;
 }
 
-.Scene {
+.Space {
   height: 100vh;
+  width: 70%;
+  float: left;
+  background-color: #000
 }
