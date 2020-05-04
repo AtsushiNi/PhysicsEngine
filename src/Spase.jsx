@@ -1,13 +1,19 @@
 import React from 'react'
-import { Canvas } from 'react-three-fiber'
+import { Canvas, useFrame } from 'react-three-fiber'
 import Box from './Box'
 
 function Space(props) {
+  const boxes = props.boxes.map((box) => {
+    return (
+      <Box position={box.position} />
+    )
+  })
+
   return(
     <Canvas>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
-      <Box position={[0, 0, 0]} />
+      {boxes}
     </Canvas>
   )
 }
