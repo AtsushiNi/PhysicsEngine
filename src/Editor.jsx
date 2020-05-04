@@ -39,19 +39,32 @@ export default function Editor(props) {
     setValue(newValue)
   }
 
-  const handleChangeSlider = (id, i) => (event, newValue) => {
+  const handleSliderCommit = (id, i) => (event, newValue) => {
     props.updateLotation(id, i, newValue)
   }
 
-  const handleChangeInput = (id, i) => (event) => {
+  const handleInputChange = (id, i) => (event) => {
     const newValue = event.target.value
-    if (isFinite(newValue) && newValue != '' )
+    if (isFinite(newValue) && newValue !== '' )
     props.updateLotation(id, i, Number(newValue))
   }
 
   const TabPanel = (props) => {
-    const { box, value, index } = props
-    const initialLotation = box.initialLotation
+    const { boxConfig, value, index } = props
+    const initialLotation = boxConfig.initialLotation
+    const [lotationX, setLotationX] = useState(initialLotation[0])
+    const [lotationY, setLotationY] = useState(initialLotation[1])
+    const [lotationZ, setLotationZ] = useState(initialLotation[2])
+    const handleSliderChanged = (i) => (event, newValue) => {
+      switch (i) {
+        case 0:
+          setLotationX(newValue)
+        case 1:
+          setLotationY(newValue)
+        case 2:
+          setLotationZ(newValue)
+      }
+    }
 
     return (
       <div
@@ -66,10 +79,10 @@ export default function Editor(props) {
                   {label}
                 </Grid>
                 <Grid item xs>
-                  <Slider name={String(i)} aria-labelledby="aaaaa" value={initialLotation[i]} onChange={handleChangeSlider(index, i)}/>
+                  <Slider value={lotationX} onChangeCommitted={handleSliderCommit(index, i)} onChange={handleSliderChanged(i)}/>
                 </Grid>
                 <Grid item>
-                  <Input className={classes.input} value={initialLotation[i]} handleChange={handleChangeInput(index, i)}/>
+                  <Input className={classes.input} value={initialLotation[i]} onChange={handleInputChange(index, i)}/>
                 </Grid>
               </Grid>
             )
@@ -95,9 +108,9 @@ export default function Editor(props) {
           aria-label="tabs"
           className={classes.tab}
         >
-          {props.boxes.map((_, i) => <Tab label={`box ${i}`} />)}
+          {props.boxConfigs.map((_, i) => <Tab label={`box ${i}`} />)}
         </Tabs>
-        {props.boxes.map((box, i) => <TabPanel box={box} value={value} index={i} />)}
+        {props.boxConfigs.map((boxConfig, i) => <TabPanel boxConfig={boxConfig} value={value} index={i} />)}
       </ThemeProvider>
     </div>
   )

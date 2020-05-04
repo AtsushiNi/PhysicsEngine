@@ -3,6 +3,7 @@ import Space from './Spase'
 import Editor from './Editor'
 import './App.css'
 import Box from './models/Box.js'
+import BoxConfig from './models/BoxConfig.js'
 
 class App extends React.Component {
   constructor(props) {
@@ -10,14 +11,17 @@ class App extends React.Component {
     this.state = {
       boxes: [
         new Box(1,1,1,0,0,0),
+      ],
+      boxConfigs: [
+        new BoxConfig(1,1,1,0,0,0,0,0,0)
       ]
     }
   }
 
   componentDidMount() {
     this.intervalId = setInterval(() => {
-      var boxes = this.state.boxes
-      boxes[0].position[0] += 0.03
+      var boxes = this.state.boxes.slice()
+      boxes[0].lotation[0] += 0.03
       this.setState({
         boxes: boxes
       })
@@ -29,10 +33,10 @@ class App extends React.Component {
   }
 
   shouldComponentUpdate(nextProp, nextState) {
-    const nextBoxes = nextState.boxes
-    const prevBoxes = this.state.boxes
+    const nextBoxConfigs = nextState.boxConfigs
+    const prevBoxConfigs = this.state.boxConfigs
 
-    if (prevBoxes.length !== nextBoxes.length) {
+    if (prevBoxConfigs !== nextBoxConfigs) {
       return true
     }
 
@@ -42,17 +46,24 @@ class App extends React.Component {
   addBox = () => {
     var newBox = new Box(0, 1, 1, 0, 0, 0)
     var boxes = this.state.boxes.slice()
+    var newBoxConfig = new BoxConfig(1, 1, 1, 0, 1, 1, 0, 0, 0)
+    var boxConfigs = this.state.boxConfigs.slice()
     boxes.push(newBox)
+    boxConfigs.push(newBoxConfig)
     this.setState({
-      boxes: boxes
+      boxes: boxes,
+      boxConfigs: boxConfigs,
     })
   }
 
   updateLotation = (index, i, value) => {
-    var boxes = this.state.boxes
-    boxes[index].initialLotation[i] = value
+    var boxes = this.state.boxes.slice()
+    var boxConfigs = this.state.boxConfigs.slice()
+    boxConfigs[index].initialLotation[i] = value
+    boxes[index].lotation[i] = value
     this.setState({
-      boxes: boxes
+      boxes: boxes,
+      boxConfigs: boxConfigs
     })
   }
 
@@ -60,7 +71,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <div className="Editor">
-          <Editor addBox={this.addBox} boxes={this.state.boxes} updateLotation={this.updateLotation}/>
+          <Editor addBox={this.addBox} boxConfigs={this.state.boxConfigs} updateLotation={this.updateLotation}/>
         </div>
         <div className="Space">
           <Space boxes={this.state.boxes}/>

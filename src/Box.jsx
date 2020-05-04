@@ -6,7 +6,7 @@ function Box(props) {
 
   useFrame(() => {
     // mesh.current.rotation.x = mesh.current.rotation.y += 0.01
-    mesh.current.rotation.x = props.position[0]
+    mesh.current.rotation.x = props.lotation[0]
   })
 
   return (
