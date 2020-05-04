@@ -14,22 +14,9 @@ class App extends React.Component {
     }
   }
 
-  render() {
-    return (
-      <div className="App">
-        <div className="Editor">
-          <Editor addBox={this.addBox} boxes={this.state.boxes}/>
-        </div>
-        <div className="Space">
-          <Space boxes={this.state.boxes}/>
-        </div>
-      </div>
-    );
-  }
-
   componentDidMount() {
     this.intervalId = setInterval(() => {
-      var boxes = this.state.boxes.slice()
+      var boxes = this.state.boxes
       boxes[0].position[0] += 0.03
       this.setState({
         boxes: boxes
@@ -42,7 +29,10 @@ class App extends React.Component {
   }
 
   shouldComponentUpdate(nextProp, nextState) {
-    if (this.state.boxes.length !== nextState.boxes.length) {
+    const nextBoxes = nextState.boxes
+    const prevBoxes = this.state.boxes
+
+    if (prevBoxes.length !== nextBoxes.length) {
       return true
     }
 
@@ -56,6 +46,27 @@ class App extends React.Component {
     this.setState({
       boxes: boxes
     })
+  }
+
+  updateLotation = (index, i, value) => {
+    var boxes = this.state.boxes
+    boxes[index].initialLotation[i] = value
+    this.setState({
+      boxes: boxes
+    })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <div className="Editor">
+          <Editor addBox={this.addBox} boxes={this.state.boxes} updateLotation={this.updateLotation}/>
+        </div>
+        <div className="Space">
+          <Space boxes={this.state.boxes}/>
+        </div>
+      </div>
+    );
   }
 }
 
