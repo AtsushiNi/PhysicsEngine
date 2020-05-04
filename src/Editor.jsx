@@ -57,6 +57,7 @@ export default function Editor(props) {
     const [lotationY, setLotationY] = useState(initialLotation[1] * 180 / Math.PI)
     const [lotationZ, setLotationZ] = useState(initialLotation[2] * 180 / Math.PI)
     const lotations = [lotationX, lotationY, lotationZ]
+
     const handleSliderChanged = (i) => (event, newValue) => {
       switch (i) {
         case 0:
@@ -84,7 +85,7 @@ export default function Editor(props) {
                   {label}
                 </Grid>
                 <Grid item xs>
-                  <Slider min={0} max={360} value={lotations[i]} onChangeCommitted={handleSliderCommit(index, i)} onChange={handleSliderChanged(i)}/>
+                  <Slider min={0} max={90} value={lotations[i]} onChangeCommitted={handleSliderCommit(index, i)} onChange={handleSliderChanged(i)}/>
                 </Grid>
                 <Grid item>
                   <Input className={classes.input} value={lotations[i]} onChange={handleInputChange(index, i)}/>
