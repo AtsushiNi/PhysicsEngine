@@ -55,14 +55,18 @@ export default function Editor(props) {
     const [lotationX, setLotationX] = useState(initialLotation[0])
     const [lotationY, setLotationY] = useState(initialLotation[1])
     const [lotationZ, setLotationZ] = useState(initialLotation[2])
+    const lotations = [lotationX, lotationY, lotationZ]
     const handleSliderChanged = (i) => (event, newValue) => {
       switch (i) {
         case 0:
           setLotationX(newValue)
+          break
         case 1:
           setLotationY(newValue)
+          break
         case 2:
           setLotationZ(newValue)
+          break
       }
     }
 
@@ -79,10 +83,10 @@ export default function Editor(props) {
                   {label}
                 </Grid>
                 <Grid item xs>
-                  <Slider value={lotationX} onChangeCommitted={handleSliderCommit(index, i)} onChange={handleSliderChanged(i)}/>
+                  <Slider value={lotations[i]} onChangeCommitted={handleSliderCommit(index, i)} onChange={handleSliderChanged(i)}/>
                 </Grid>
                 <Grid item>
-                  <Input className={classes.input} value={initialLotation[i]} onChange={handleInputChange(index, i)}/>
+                  <Input className={classes.input} value={lotations[i]} onChange={handleInputChange(index, i)}/>
                 </Grid>
               </Grid>
             )
