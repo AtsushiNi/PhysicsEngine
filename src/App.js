@@ -14,7 +14,8 @@ class App extends React.Component {
       ],
       boxConfigs: [
         new BoxConfig(1,1,1,0,0,0,0,0,0)
-      ]
+      ],
+      shouldRender: false
     }
   }
 
@@ -28,19 +29,22 @@ class App extends React.Component {
     }, 20)
   }
 
-  componentWillUnmount() {
-    clearInterval(this.intervalId)
-  }
-
   shouldComponentUpdate(nextProp, nextState) {
-    const nextBoxConfigs = nextState.boxConfigs
-    const prevBoxConfigs = this.state.boxConfigs
-
-    if (prevBoxConfigs !== nextBoxConfigs) {
+    if (nextState.shouldRender) {
       return true
     }
 
     return false
+  }
+
+  componentDidUpdate() {
+    this.setState({
+      shouldRender: false
+    })
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId)
   }
 
   addBox = () => {
@@ -53,6 +57,7 @@ class App extends React.Component {
     this.setState({
       boxes: boxes,
       boxConfigs: boxConfigs,
+      shouldRender: true
     })
   }
 
@@ -63,7 +68,8 @@ class App extends React.Component {
     boxes[index].lotation[i] = value
     this.setState({
       boxes: boxes,
-      boxConfigs: boxConfigs
+      boxConfigs: boxConfigs,
+      shouldRender: true
     })
   }
 
