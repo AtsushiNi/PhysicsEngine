@@ -22,7 +22,7 @@ class App extends React.Component {
   componentDidMount() {
     this.intervalId = setInterval(() => {
       var boxes = this.state.boxes.slice()
-      boxes[0].lotation[0] += 0.03
+      // boxes[0].lotation[0] += 0.03
       this.setState({
         boxes: boxes
       })

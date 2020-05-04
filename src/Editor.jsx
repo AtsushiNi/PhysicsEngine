@@ -40,21 +40,22 @@ export default function Editor(props) {
   }
 
   const handleSliderCommit = (id, i) => (event, newValue) => {
-    props.updateLotation(id, i, newValue)
+    props.updateLotation(id, i, newValue * Math.PI / 180.0)
   }
 
   const handleInputChange = (id, i) => (event) => {
+    console.log(event.type)
     const newValue = event.target.value
     if (isFinite(newValue) && newValue !== '' )
-    props.updateLotation(id, i, Number(newValue))
+    props.updateLotation(id, i, Number(newValue) * Math.PI / 180.0)
   }
 
   const TabPanel = (props) => {
     const { boxConfig, value, index } = props
     const initialLotation = boxConfig.initialLotation
-    const [lotationX, setLotationX] = useState(initialLotation[0])
-    const [lotationY, setLotationY] = useState(initialLotation[1])
-    const [lotationZ, setLotationZ] = useState(initialLotation[2])
+    const [lotationX, setLotationX] = useState(initialLotation[0] * 180 / Math.PI)
+    const [lotationY, setLotationY] = useState(initialLotation[1] * 180 / Math.PI)
+    const [lotationZ, setLotationZ] = useState(initialLotation[2] * 180 / Math.PI)
     const lotations = [lotationX, lotationY, lotationZ]
     const handleSliderChanged = (i) => (event, newValue) => {
       switch (i) {
@@ -83,7 +84,7 @@ export default function Editor(props) {
                   {label}
                 </Grid>
                 <Grid item xs>
-                  <Slider value={lotations[i]} onChangeCommitted={handleSliderCommit(index, i)} onChange={handleSliderChanged(i)}/>
+                  <Slider min={0} max={360} value={lotations[i]} onChangeCommitted={handleSliderCommit(index, i)} onChange={handleSliderChanged(i)}/>
                 </Grid>
                 <Grid item>
                   <Input className={classes.input} value={lotations[i]} onChange={handleInputChange(index, i)}/>
