@@ -31,8 +31,14 @@ class Calculation {
     })
   }
 
-  static resetValues = (boxes) => {
-    boxes.forEach((box) => {
+  static resetValues = (boxes, boxConfigs) => {
+    boxes.forEach((box, i) => {
+      box.position[0] = boxConfigs[i].initialPosition[0]
+      box.position[1] = boxConfigs[i].initialPosition[1]
+      box.position[2] = boxConfigs[i].initialPosition[2]
+      box.lotation[0] = boxConfigs[i].initialLotation[0]
+      box.lotation[1] = boxConfigs[i].initialLotation[1]
+      box.lotation[2] = boxConfigs[i].initialLotation[2]
       box.velocity[0] = 0
       box.velocity[1] = 0
       box.velocity[2] = 0

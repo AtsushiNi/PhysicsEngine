@@ -15,7 +15,7 @@ class App extends React.Component {
         new Box(1,1,1,0,0,0),
       ],
       boxConfigs: [
-        new BoxConfig(1,1,1,0,0,0,0,0,0)
+        new BoxConfig(1,1,1,1,1,1,0,0,0)
       ],
       g: [0, -0.005, 0]
     }
@@ -77,7 +77,7 @@ class App extends React.Component {
 
   resetAnimation = (event) => {
     var boxes = this.state.boxes.slice()
-    Calculation.resetValues(boxes)
+    Calculation.resetValues(boxes, this.state.boxConfigs)
     this.setState({
       boxes: boxes
     })
