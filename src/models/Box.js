@@ -6,8 +6,16 @@ export default class Box {
     lotationX = 0,
     lotationY = 0,
     lotationZ = 0,
+    velocityX = 0,
+    velocityY = 0,
+    velocityZ = 0,
+    lotVelocityX = 0,
+    lotVelocityY = 0,
+    lotVelocityZ = 0
   ) {
     this.position = [positionX, positionY, positionZ]
     this.lotation = [lotationX, lotationY, lotationZ]
+    this.velocity = [velocityX, velocityY, velocityZ]
+    this.lotVelocity = [lotVelocityX, lotVelocityY, lotVelocityZ]
   }
 }

@@ -5,6 +5,7 @@ import Controller from './Controller'
 import './App.css'
 import Box from './models/Box.js'
 import BoxConfig from './models/BoxConfig.js'
+import Calculation from './services/Calculation.js'
 
 class App extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class App extends React.Component {
       boxConfigs: [
         new BoxConfig(1,1,1,0,0,0,0,0,0)
       ],
+      g: [0, -0.005, 0]
     }
   }
 
@@ -73,9 +75,18 @@ class App extends React.Component {
     clearInterval(this.intervalId)
   }
 
+  resetAnimation = (event) => {
+    var boxes = this.state.boxes.slice()
+    Calculation.resetValues(boxes)
+    this.setState({
+      boxes: boxes
+    })
+  }
+
   animate = () => {
     var boxes = this.state.boxes.slice()
-    boxes[0].lotation[0] += 0.03
+    const { boxConfigs, g } = this.state
+    Calculation.updateValues(boxes, boxConfigs, g)
     this.setState({
       boxes: boxes
     })
@@ -99,7 +110,8 @@ class App extends React.Component {
             <Controller
               className="controller"
               handleClickStart={this.startAnimation}
-              handleClickStop={this.stopAnimation}/>
+              handleClickStop={this.stopAnimation}
+              handleClickReset={this.resetAnimation}/>
           </div>
         </div>
       </div>
