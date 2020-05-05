@@ -1,6 +1,7 @@
 import React from 'react';
 import Space from './Spase'
 import Editor from './Editor'
+import Controller from './Controller'
 import './App.css'
 import Box from './models/Box.js'
 import BoxConfig from './models/BoxConfig.js'
@@ -16,17 +17,6 @@ class App extends React.Component {
         new BoxConfig(1,1,1,0,0,0,0,0,0)
       ],
     }
-  }
-
-  componentDidMount() {
-    this.intervalId = setInterval(() => {
-      var boxes = this.state.boxes.slice()
-      boxes[0].lotation[0] += 0.03
-      this.setState({
-        boxes: boxes
-      })
-    }, 20)
-    clearInterval(this.intervalId)
   }
 
   shouldComponentUpdate(nextProp, nextState) {
@@ -75,6 +65,22 @@ class App extends React.Component {
     })
   }
 
+  startAnimation = (event) => {
+    this.intervalId = setInterval(this.animate, 20)
+  }
+
+  stopAnimation = (event) => {
+    clearInterval(this.intervalId)
+  }
+
+  animate = () => {
+    var boxes = this.state.boxes.slice()
+    boxes[0].lotation[0] += 0.03
+    this.setState({
+      boxes: boxes
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -85,8 +91,16 @@ class App extends React.Component {
             updateLotation={this.updateLotation}
             updatePosition={this.updatePosition} />
         </div>
-        <div className="Space">
-          <Space boxes={this.state.boxes}/>
+        <div className="RightBlock">
+          <div className="Space">
+            <Space boxes={this.state.boxes}/>
+          </div>
+          <div className="Controller" >
+            <Controller
+              className="controller"
+              handleClickStart={this.startAnimation}
+              handleClickStop={this.stopAnimation}/>
+          </div>
         </div>
       </div>
     );
