@@ -11,10 +11,7 @@ export default function Controller(props) {
     container: {
       height: '10%'
     },
-    startIcon: {
-      backgroundColor: blue[500]
-    },
-    stopIcon: {
+    button: {
       backgroundColor: blue[500]
     }
   }))
@@ -26,7 +23,7 @@ export default function Controller(props) {
       <Grid item>
         <Button
           endIcon={<PlayArrowRoundedIcon />}
-          className={classes.startIcon}
+          className={classes.button}
           onClick={props.handleClickStart}
         >
           Play
@@ -35,10 +32,18 @@ export default function Controller(props) {
       <Grid item>
         <Button
           endIcon={<StopRoundedIcon />}
-          className={classes.stopIcon}
+          className={classes.button}
           onClick={props.handleClickStop}
         >
           Stop
+        </Button>
+      </Grid>
+      <Grid item>
+        <Button
+          className={classes.button}
+          onClick={props.handleClickReset}
+        >
+          Reset
         </Button>
       </Grid>
     </Grid>

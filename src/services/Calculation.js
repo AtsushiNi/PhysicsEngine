@@ -1,5 +1,5 @@
 class Calculation {
-  static updatevalues = (boxes, boxConfigs, g) => {
+  static updateValues = (boxes, boxConfigs, g) => {
     // 重力加速度
     // g
     //
@@ -28,6 +28,17 @@ class Calculation {
       box.lotation[0] += box.lotVelocity[0]
       box.lotation[1] += box.lotVelocity[1]
       box.lotation[2] += box.lotVelocity[2]
+    })
+  }
+
+  static resetValues = (boxes) => {
+    boxes.forEach((box) => {
+      box.velocity[0] = 0
+      box.velocity[1] = 0
+      box.velocity[2] = 0
+      box.lotVelocity[0] = 0
+      box.lotVelocity[1] = 0
+      box.lotVelocity[2] = 0
     })
   }
 }

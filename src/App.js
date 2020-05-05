@@ -75,10 +75,18 @@ class App extends React.Component {
     clearInterval(this.intervalId)
   }
 
+  resetAnimation = (event) => {
+    var boxes = this.state.boxes.slice()
+    Calculation.resetValues(boxes)
+    this.setState({
+      boxes: boxes
+    })
+  }
+
   animate = () => {
     var boxes = this.state.boxes.slice()
     const { boxConfigs, g } = this.state
-    Calculation.updatevalues(boxes, boxConfigs, g)
+    Calculation.updateValues(boxes, boxConfigs, g)
     this.setState({
       boxes: boxes
     })
@@ -102,7 +110,8 @@ class App extends React.Component {
             <Controller
               className="controller"
               handleClickStart={this.startAnimation}
-              handleClickStop={this.stopAnimation}/>
+              handleClickStop={this.stopAnimation}
+              handleClickReset={this.resetAnimation}/>
           </div>
         </div>
       </div>
