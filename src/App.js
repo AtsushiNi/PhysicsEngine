@@ -64,11 +64,26 @@ class App extends React.Component {
     })
   }
 
+  updatePosition = (index, i, value) => {
+    var boxes = this.state.boxes.slice()
+    var boxConfigs = this.state.boxConfigs.slice()
+    boxConfigs[index].initialPosition[i] = value
+    boxes[index].position[i] = value
+    this.setState({
+      boxes: boxes,
+      boxConfigs: boxConfigs,
+    })
+  }
+
   render() {
     return (
       <div className="App">
         <div className="Editor">
-          <Editor addBox={this.addBox} boxConfigs={this.state.boxConfigs} updateLotation={this.updateLotation}/>
+          <Editor
+            addBox={this.addBox}
+            boxConfigs={this.state.boxConfigs}
+            updateLotation={this.updateLotation}
+            updatePosition={this.updatePosition} />
         </div>
         <div className="Space">
           <Space boxes={this.state.boxes}/>

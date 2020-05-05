@@ -5,7 +5,7 @@ import Box from './Box'
 function Space(props) {
   const boxes = props.boxes.map((box) => {
     return (
-      <Box lotation={box.lotation} />
+      <Box lotation={box.lotation} position={box.position}/>
     )
   })
 
