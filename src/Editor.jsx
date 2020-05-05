@@ -43,6 +43,10 @@ export default function Editor(props) {
     props.updateLotation(id, i, newValue * Math.PI / 180.0)
   }
 
+  const handleSliderChangeCommit = (id, i, value) => {
+    props.updateLotation(id, i, value * Math.PI / 180.0)
+  }
+
   const handleInputChange = (id, i) => (event) => {
     console.log(event.type)
     const newValue = event.target.value
@@ -70,6 +74,7 @@ export default function Editor(props) {
           setLotationZ(newValue)
           break
       }
+      handleSliderChangeCommit(index, i, newValue)
     }
 
     return (
