@@ -5,6 +5,7 @@ import Controller from './Controller'
 import './App.css'
 import Box from './models/Box.js'
 import BoxConfig from './models/BoxConfig.js'
+import Calculation from './services/Calculation.js'
 
 class App extends React.Component {
   constructor(props) {
@@ -75,7 +76,8 @@ class App extends React.Component {
 
   animate = () => {
     var boxes = this.state.boxes.slice()
-    boxes[0].lotation[0] += 0.03
+    const boxConfigs = this.state.boxConfigs
+    Calculation.updatevalues(boxes, boxConfigs)
     this.setState({
       boxes: boxes
     })
