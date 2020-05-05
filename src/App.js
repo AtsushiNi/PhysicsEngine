@@ -17,6 +17,7 @@ class App extends React.Component {
       boxConfigs: [
         new BoxConfig(1,1,1,0,0,0,0,0,0)
       ],
+      g: [0, -0.005, 0]
     }
   }
 
@@ -76,8 +77,8 @@ class App extends React.Component {
 
   animate = () => {
     var boxes = this.state.boxes.slice()
-    const boxConfigs = this.state.boxConfigs
-    Calculation.updatevalues(boxes, boxConfigs)
+    const { boxConfigs, g } = this.state
+    Calculation.updatevalues(boxes, boxConfigs, g)
     this.setState({
       boxes: boxes
     })
