@@ -30,6 +30,9 @@ class App extends React.Component {
   }
 
   shouldComponentUpdate(nextProp, nextState) {
+    if (this.state.boxConfigs.length !== nextState.boxConfigs.length) {
+      return true
+    }
     return false
   }
 

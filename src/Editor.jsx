@@ -27,7 +27,7 @@ export default function Editor(props) {
 
   const classes = useStyles()
 
-  const [value, setValue] = useState(0)
+  const [tabIndex, setTabIndex] = useState(0)
 
   const theme = createMuiTheme({
     palette: {
@@ -35,8 +35,8 @@ export default function Editor(props) {
     }
   })
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
+  const handleChangeTab = (event, newTabIndex) => {
+    setTabIndex(newTabIndex)
   }
 
   const handleSliderCommit = (id, i) => (event, newValue) => {
@@ -55,7 +55,7 @@ export default function Editor(props) {
   }
 
   const TabPanel = (props) => {
-    const { boxConfig, value, index } = props
+    const { boxConfig, showTabIndex, index } = props
     const initialLotation = boxConfig.initialLotation
     const [lotationX, setLotationX] = useState(initialLotation[0] * 180 / Math.PI)
     const [lotationY, setLotationY] = useState(initialLotation[1] * 180 / Math.PI)
@@ -79,7 +79,7 @@ export default function Editor(props) {
 
     return (
       <div
-        hidden={value !== index}
+        hidden={showTabIndex !== index}
       >
         <Box p={3}>
           Lotation
@@ -110,8 +110,8 @@ export default function Editor(props) {
       </Button>
       <ThemeProvider theme={theme} >
         <Tabs
-          value={value}
-          onChange={handleChange}
+          value={tabIndex}
+          onChange={handleChangeTab}
           indicatorColor="primary"
           textColor="primary"
           variant="scrollable"
@@ -121,7 +121,7 @@ export default function Editor(props) {
         >
           {props.boxConfigs.map((_, i) => <Tab label={`box ${i}`} />)}
         </Tabs>
-        {props.boxConfigs.map((boxConfig, i) => <TabPanel boxConfig={boxConfig} value={value} index={i} />)}
+        {props.boxConfigs.map((boxConfig, i) => <TabPanel boxConfig={boxConfig} showTabIndex={tabIndex} index={i} />)}
       </ThemeProvider>
     </div>
   )
