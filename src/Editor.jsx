@@ -39,12 +39,20 @@ export default function Editor(props) {
     setTabIndex(newTabIndex)
   }
 
-  const handleSliderCommit = (id, i) => (event, newValue) => {
+  const handleLotationSliderCommit = (id, i) => (event, newValue) => {
     props.updateLotation(id, i, newValue * Math.PI / 180.0)
   }
 
-  const handleSliderChangeCommit = (id, i, value) => {
+  const handleLotationSliderChangeCommit = (id, i, value) => {
     props.updateLotation(id, i, value * Math.PI / 180.0)
+  }
+
+  const handlePositionSliderCommit = (id, i) => (event, newValue) => {
+    props.updatePosition(id, i, newValue)
+  }
+
+  const handlePositionSliderChangeCommit = (id, i, value) => {
+    props.updatePosition(id, i, value)
   }
 
   const handleInputChange = (id, i) => (event) => {
@@ -56,13 +64,21 @@ export default function Editor(props) {
 
   const TabPanel = (props) => {
     const { boxConfig, showTabIndex, index } = props
-    const initialLotation = boxConfig.initialLotation
-    const [lotationX, setLotationX] = useState(initialLotation[0] * 180 / Math.PI)
-    const [lotationY, setLotationY] = useState(initialLotation[1] * 180 / Math.PI)
-    const [lotationZ, setLotationZ] = useState(initialLotation[2] * 180 / Math.PI)
+
+    const [lotationX, setLotationX] =
+      useState(boxConfig.initialLotation[0] * 180 / Math.PI)
+    const [lotationY, setLotationY] =
+      useState(boxConfig.initialLotation[1] * 180 / Math.PI)
+    const [lotationZ, setLotationZ] =
+      useState(boxConfig.initialLotation[2] * 180 / Math.PI)
     const lotations = [lotationX, lotationY, lotationZ]
 
-    const handleSliderChanged = (i) => (event, newValue) => {
+    const [positionX, setPositionX] = useState(boxConfig.initialPosition[0])
+    const [positionY, setPositionY] = useState(boxConfig.initialPosition[1])
+    const [positionZ, setPositionZ] = useState(boxConfig.initialPosition[2])
+    const positions = [positionX, positionY, positionZ]
+
+    const handleLotationSliderChanged = (i) => (event, newValue) => {
       switch (i) {
         case 0:
           setLotationX(newValue)
@@ -73,14 +89,31 @@ export default function Editor(props) {
         case 2:
           setLotationZ(newValue)
           break
+        default:
       }
-      handleSliderChangeCommit(index, i, newValue)
+      handleLotationSliderChangeCommit(index, i, newValue)
     }
 
+    const handlePositionSliderChanged = (i) => (event, newValue) => {
+      switch (i) {
+        case 0:
+          setPositionX(newValue)
+          break
+        case 1:
+          setPositionY(newValue)
+          break
+        case 2:
+          setPositionZ(newValue)
+          break
+        default:
+      }
+      handlePositionSliderChangeCommit(index, i, newValue)
+    }
+
+    if (showTabIndex !== index) { return <div hidden={true} ></div>}
+
     return (
-      <div
-        hidden={showTabIndex !== index}
-      >
+      <div>
         <Box p={3}>
           Lotation
           {['x', 'y', 'z'].map((label, i) => {
@@ -90,10 +123,45 @@ export default function Editor(props) {
                   {label}
                 </Grid>
                 <Grid item xs>
-                  <Slider min={0} max={90} value={lotations[i]} onChangeCommitted={handleSliderCommit(index, i)} onChange={handleSliderChanged(i)}/>
+                  <Slider
+                    min={0}
+                    max={90}
+                    value={lotations[i]}
+                    onChangeCommitted={handleLotationSliderCommit(index, i)}
+                    onChange={handleLotationSliderChanged(i)}/>
                 </Grid>
                 <Grid item>
-                  <Input className={classes.input} value={lotations[i]} onChange={handleInputChange(index, i)}/>
+                  <Input
+                    className={classes.input}
+                    value={lotations[i]}
+                    onChange={handleInputChange(index, i)}/>
+                </Grid>
+              </Grid>
+            )
+          })}
+        </Box>
+        <Box p={3}>
+          Position
+          {['x', 'y', 'z'].map((label, i) => {
+            return (
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  {label}
+                </Grid>
+                <Grid item xs>
+                  <Slider
+                    min={-3.0}
+                    max={3.0}
+                    step={0.1}
+                    value={positions[i]}
+                    onChangeCommitted={handlePositionSliderCommit(index, i)}
+                    onChange={handlePositionSliderChanged(i)}/>
+                </Grid>
+                <Grid item>
+                  <Input
+                    className={classes.input}
+                    value={positions[i]}
+                    onChange={handleInputChange(index, i)}/>
                 </Grid>
               </Grid>
             )
@@ -121,7 +189,9 @@ export default function Editor(props) {
         >
           {props.boxConfigs.map((_, i) => <Tab label={`box ${i}`} />)}
         </Tabs>
-        {props.boxConfigs.map((boxConfig, i) => <TabPanel boxConfig={boxConfig} showTabIndex={tabIndex} index={i} />)}
+        {props.boxConfigs.map((boxConfig, i) => (
+          <TabPanel boxConfig={boxConfig} showTabIndex={tabIndex} index={i} />
+        ))}
       </ThemeProvider>
     </div>
   )
