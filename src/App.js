@@ -5,6 +5,7 @@ import Controller from './Controller'
 import './App.css'
 import Box from './models/Box.js'
 import BoxConfig from './models/BoxConfig.js'
+import GeneralConfig from './models/GeneralConfig.js'
 import Calculation from './services/Calculation.js'
 
 class App extends React.Component {
@@ -17,7 +18,7 @@ class App extends React.Component {
       boxConfigs: [
         new BoxConfig(1,1,1,1,1,1,0,0,0)
       ],
-      g: [0, -0.005, 0]
+      generalConfig: new GeneralConfig(0, -0.005, 0, 0.005)
     }
   }
 
@@ -67,6 +68,12 @@ class App extends React.Component {
     })
   }
 
+  updateGeneralConfig = (generalConfig) => {
+    this.setState({
+      generalConfig: generalConfig
+    })
+  }
+
   startAnimation = (event) => {
     this.intervalId = setInterval(this.animate, 20)
   }
@@ -85,8 +92,8 @@ class App extends React.Component {
 
   animate = () => {
     var boxes = this.state.boxes.slice()
-    const { boxConfigs, g } = this.state
-    Calculation.updateValues(boxes, boxConfigs, g)
+    const { boxConfigs, generalConfig } = this.state
+    Calculation.updateValues(boxes, boxConfigs, generalConfig.gravity)
     this.setState({
       boxes: boxes
     })
@@ -97,6 +104,8 @@ class App extends React.Component {
       <div className="App">
         <div className="Editor">
           <Editor
+            generalConfig={this.state.generalConfig}
+            updateGeneralConfig={this.updateGeneralConfig}
             addBox={this.addBox}
             boxConfigs={this.state.boxConfigs}
             updateLotation={this.updateLotation}
