@@ -6,6 +6,7 @@ import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
+import CheckBox from '@material-ui/core/Checkbox'
 import { makeStyles, createStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
 
@@ -23,9 +24,7 @@ export default function Editor(props) {
 
   const useStyles = makeStyles(theme => createStyles({
     button: {
-      color: 'white',
-      borderColor: 'white',
-      margin: 10
+      margin: 10,
     },
     tab: {
       backgroundColor: '#222',
@@ -196,6 +195,16 @@ export default function Editor(props) {
             )
           })}
         </Box>
+        <Box p={3}>
+          <Grid container spacing={0} alignItems="center">
+            <Grid item>
+              <CheckBox color="primary" />
+            </Grid>
+            <Grid item xs>
+              fix this Object
+            </Grid>
+          </Grid>
+        </Box>
       </div>
     )
   }
@@ -258,10 +267,10 @@ export default function Editor(props) {
 
   return(
     <div>
-      <Button variant="outlined" className={classes.button} onClick={addBox} >
-        new Box
-      </Button>
       <ThemeProvider theme={theme} >
+        <Button variant="outlined" color="primary" className={classes.button} onClick={addBox} >
+          new Box
+        </Button>
         <Tabs
           value={tabIndex}
           onChange={handleChangeTab}
