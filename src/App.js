@@ -68,6 +68,14 @@ class App extends React.Component {
     })
   }
 
+  updateChecked = (index) => {
+    var boxConfigs = this.state.boxConfigs.slice()
+    boxConfigs[index].fixed = !boxConfigs[index].fixed
+    this.setState({
+      boxConfigs: boxConfigs
+    })
+  }
+
   updateGeneralConfig = (generalConfig) => {
     this.setState({
       generalConfig: generalConfig
@@ -109,7 +117,8 @@ class App extends React.Component {
             addBox={this.addBox}
             boxConfigs={this.state.boxConfigs}
             updateLotation={this.updateLotation}
-            updatePosition={this.updatePosition} />
+            updatePosition={this.updatePosition}
+            updateChecked={this.updateChecked}/>
         </div>
         <div className="RightBlock">
           <div className="Space">

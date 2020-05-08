@@ -1,5 +1,5 @@
 class Calculation {
-  static updateValues = (boxes, boxConfigs, g) => {
+  static updateValues = (boxes, boxConfigs, gravity) => {
     // 重力加速度
     // g
     //
@@ -15,11 +15,13 @@ class Calculation {
     // 角速度[x, y, z]
     // boxes[i].lotVelocity
     //
-    boxes.forEach((box) => {
+    boxes.forEach((box, i) => {
       // 速度の更新
-      box.velocity[0] += g[0]
-      box.velocity[1] += g[1]
-      box.velocity[2] += g[2]
+      if (boxConfigs[i].fixed === false) {
+        box.velocity[0] += gravity[0]
+        box.velocity[1] += gravity[1]
+        box.velocity[2] += gravity[2]
+      }
       // 位置の更新
       box.position[0] += box.velocity[0]
       box.position[1] += box.velocity[1]

@@ -17,7 +17,8 @@ export default function Editor(props) {
     addBox,
     boxConfigs,
     updateLotation,
-    updatePosition
+    updatePosition,
+    updateChecked
   } = props
 
   const [tabIndex, setTabIndex] = useState(0)
@@ -106,6 +107,8 @@ export default function Editor(props) {
     const [positionZ, setPositionZ] = useState(boxConfig.initialPosition[2])
     const positions = [positionX, positionY, positionZ]
 
+    const [checked, setChecked] = useState(boxConfig.fixed)
+
     const handleLotationSliderChanged = (i) => (event, newValue) => {
       switch (i) {
         case 0:
@@ -136,6 +139,11 @@ export default function Editor(props) {
         default:
       }
       handlePositionSliderChangeCommit(index, i, newValue)
+    }
+
+    const handleFixCheck = (event) => {
+      setChecked(!checked)
+      updateChecked(index)
     }
 
     if (showTabIndex !== index) { return <div hidden={true} ></div>}
@@ -198,7 +206,7 @@ export default function Editor(props) {
         <Box p={3}>
           <Grid container spacing={0} alignItems="center">
             <Grid item>
-              <CheckBox color="primary" />
+              <CheckBox color="primary" checked={boxConfig.fixed} onChange={handleFixCheck} />
             </Grid>
             <Grid item xs>
               fix this Object
