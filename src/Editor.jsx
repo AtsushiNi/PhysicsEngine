@@ -29,7 +29,8 @@ export default function Editor(props) {
     },
     tab: {
       backgroundColor: '#222',
-      margin: 5
+      margin: 5,
+      marginBottom: 0,
     },
     input: {
       width: 42
@@ -149,7 +150,7 @@ export default function Editor(props) {
     if (showTabIndex !== index) { return <div hidden={true} ></div>}
 
     return (
-      <div>
+      <div style={{backgroundColor: '#444', marginRight: 5, marginLeft: 5, border: 'solid', borderWidth: 2, borderColor: '#222'}}>
         <Box p={3}>
           Lotation
           {['x', 'y', 'z'].map((label, i) => {
@@ -243,33 +244,35 @@ export default function Editor(props) {
     if (showTabIndex !== index) { return <div hidden={true} ></div> }
 
     return (
-      <Box p={3}>
-        Gravity
-        {['x', 'y', 'z'].map((label, i) => {
-          return (
-            <Grid container spacing={2} alignItems="center">
-              <Grid item>
-                {label}
+      <div style={{backgroundColor: '#444', marginRight: 5, marginLeft: 5, border: 'solid', borderWidth: 2, borderColor: '#222'}}>
+        <Box p={3}>
+          Gravity
+          {['x', 'y', 'z'].map((label, i) => {
+            return (
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  {label}
+                </Grid>
+                <Grid item xs>
+                  <Slider
+                    max={3}
+                    min={-3}
+                    step={0.1}
+                    value={gravity[i]}
+                    onChange={handleGravitySliderChange(i)}
+                    onChangeCommitted={handleGravitySliderCommit(i)} />
+                </Grid>
+                <Grid item>
+                  <Input
+                    className={classes.input}
+                    value={gravity[i]}
+                    onChange={handleGravityInputChange(i)} />
+                </Grid>
               </Grid>
-              <Grid item xs>
-                <Slider
-                  max={3}
-                  min={-3}
-                  step={0.1}
-                  value={gravity[i]}
-                  onChange={handleGravitySliderChange(i)}
-                  onChangeCommitted={handleGravitySliderCommit(i)} />
-              </Grid>
-              <Grid item>
-                <Input
-                  className={classes.input}
-                  value={gravity[i]}
-                  onChange={handleGravityInputChange(i)} />
-              </Grid>
-            </Grid>
-          )
-        })}
-      </Box>
+            )
+          })}
+        </Box>
+      </div>
     )
   }
 
