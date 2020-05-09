@@ -6,19 +6,31 @@ import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
+import CheckBox from '@material-ui/core/Checkbox'
 import { makeStyles, createStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
 
 export default function Editor(props) {
+  const {
+    generalConfig,
+    updateGeneralConfig,
+    addBox,
+    boxConfigs,
+    updateLotation,
+    updatePosition,
+    updateChecked
+  } = props
+
+  const [tabIndex, setTabIndex] = useState(0)
+
   const useStyles = makeStyles(theme => createStyles({
     button: {
-      color: 'white',
-      borderColor: 'white',
-      margin: 10
+      margin: 10,
     },
     tab: {
       backgroundColor: '#222',
-      margin: 5
+      margin: 5,
+      marginBottom: 0,
     },
     input: {
       width: 42
@@ -26,8 +38,6 @@ export default function Editor(props) {
   }))
 
   const classes = useStyles()
-
-  const [tabIndex, setTabIndex] = useState(0)
 
   const theme = createMuiTheme({
     palette: {
@@ -40,26 +50,46 @@ export default function Editor(props) {
   }
 
   const handleLotationSliderCommit = (id, i) => (event, newValue) => {
-    props.updateLotation(id, i, newValue * Math.PI / 180.0)
+    updateLotation(id, i, newValue * Math.PI / 180.0)
   }
 
   const handleLotationSliderChangeCommit = (id, i, value) => {
-    props.updateLotation(id, i, value * Math.PI / 180.0)
+    updateLotation(id, i, value * Math.PI / 180.0)
   }
 
   const handlePositionSliderCommit = (id, i) => (event, newValue) => {
-    props.updatePosition(id, i, newValue)
+    updatePosition(id, i, newValue)
   }
 
   const handlePositionSliderChangeCommit = (id, i, value) => {
-    props.updatePosition(id, i, value)
+    updatePosition(id, i, value)
   }
 
   const handleInputChange = (id, i) => (event) => {
-    console.log(event.type)
     const newValue = event.target.value
     if (isFinite(newValue) && newValue !== '' )
-    props.updateLotation(id, i, Number(newValue) * Math.PI / 180.0)
+    updateLotation(id, i, Number(newValue) * Math.PI / 180.0)
+  }
+
+  const handleGravitySliderCommit = (i) => (event, newValue) => {
+    var gravity = generalConfig.gravity
+    gravity[i] = generalConfig.standardGravity * newValue
+
+    updateGeneralConfig({
+      ...generalConfig,
+      gravity: gravity
+    })
+  }
+
+  const handleGravityInputChange = (i) => (event) => {
+    const newValue = event.target.value
+    var gravity = generalConfig.gravity
+    gravity[i] = generalConfig.standardGravity * newValue
+
+    updateGeneralConfig({
+      ...generalConfig,
+      gravity: gravity
+    })
   }
 
   const TabPanel = (props) => {
@@ -77,6 +107,8 @@ export default function Editor(props) {
     const [positionY, setPositionY] = useState(boxConfig.initialPosition[1])
     const [positionZ, setPositionZ] = useState(boxConfig.initialPosition[2])
     const positions = [positionX, positionY, positionZ]
+
+    const [checked, setChecked] = useState(boxConfig.fixed)
 
     const handleLotationSliderChanged = (i) => (event, newValue) => {
       switch (i) {
@@ -110,10 +142,15 @@ export default function Editor(props) {
       handlePositionSliderChangeCommit(index, i, newValue)
     }
 
+    const handleFixCheck = (event) => {
+      setChecked(!checked)
+      updateChecked(index)
+    }
+
     if (showTabIndex !== index) { return <div hidden={true} ></div>}
 
     return (
-      <div>
+      <div style={{backgroundColor: '#444', marginRight: 5, marginLeft: 5, border: 'solid', borderWidth: 2, borderColor: '#222'}}>
         <Box p={3}>
           Lotation
           {['x', 'y', 'z'].map((label, i) => {
@@ -167,16 +204,84 @@ export default function Editor(props) {
             )
           })}
         </Box>
+        <Box p={3}>
+          <Grid container spacing={0} alignItems="center">
+            <Grid item>
+              <CheckBox color="primary" checked={boxConfig.fixed} onChange={handleFixCheck} />
+            </Grid>
+            <Grid item xs>
+              fix this Object
+            </Grid>
+          </Grid>
+        </Box>
+      </div>
+    )
+  }
+
+  const GeneralSettingsTabPanel = (props) => {
+    const { showTabIndex, index } = props
+
+    const [gravityX, setGravityX] = useState(generalConfig.gravity[0] / generalConfig.standardGravity)
+    const [gravityY, setGravityY] = useState(generalConfig.gravity[1] / generalConfig.standardGravity)
+    const [gravityZ, setGravityZ] = useState(generalConfig.gravity[2] / generalConfig.standardGravity)
+    const gravity = [gravityX, gravityY, gravityZ]
+
+    const handleGravitySliderChange = (i) => (event, newValue) => {
+      switch(i) {
+        case 0:
+          setGravityX(newValue)
+          break
+        case 1:
+          setGravityY(newValue)
+          break
+        case 2:
+          setGravityZ(newValue)
+          break
+        default:
+      }
+    }
+
+    if (showTabIndex !== index) { return <div hidden={true} ></div> }
+
+    return (
+      <div style={{backgroundColor: '#444', marginRight: 5, marginLeft: 5, border: 'solid', borderWidth: 2, borderColor: '#222'}}>
+        <Box p={3}>
+          Gravity
+          {['x', 'y', 'z'].map((label, i) => {
+            return (
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  {label}
+                </Grid>
+                <Grid item xs>
+                  <Slider
+                    max={3}
+                    min={-3}
+                    step={0.1}
+                    value={gravity[i]}
+                    onChange={handleGravitySliderChange(i)}
+                    onChangeCommitted={handleGravitySliderCommit(i)} />
+                </Grid>
+                <Grid item>
+                  <Input
+                    className={classes.input}
+                    value={gravity[i]}
+                    onChange={handleGravityInputChange(i)} />
+                </Grid>
+              </Grid>
+            )
+          })}
+        </Box>
       </div>
     )
   }
 
   return(
     <div>
-      <Button variant="outlined" className={classes.button} onClick={props.addBox} >
-        new Box
-      </Button>
       <ThemeProvider theme={theme} >
+        <Button variant="outlined" color="primary" className={classes.button} onClick={addBox} >
+          new Box
+        </Button>
         <Tabs
           value={tabIndex}
           onChange={handleChangeTab}
@@ -187,11 +292,13 @@ export default function Editor(props) {
           aria-label="tabs"
           className={classes.tab}
         >
-          {props.boxConfigs.map((_, i) => <Tab label={`box ${i}`} />)}
+          {boxConfigs.map((_, i) => <Tab label={`box ${i}`} />)}
+          <Tab label='Genaral' />
         </Tabs>
-        {props.boxConfigs.map((boxConfig, i) => (
+        {boxConfigs.map((boxConfig, i) => (
           <TabPanel boxConfig={boxConfig} showTabIndex={tabIndex} index={i} />
         ))}
+        <GeneralSettingsTabPanel showTabIndex={tabIndex} index={boxConfigs.length}/>
       </ThemeProvider>
     </div>
   )
