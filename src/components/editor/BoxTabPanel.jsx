@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
 import CheckBox from '@material-ui/core/Checkbox'
+import TextField from '@material-ui/core/TextField'
 
 class BoxTabPanel extends React.Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class BoxTabPanel extends React.Component {
     this.state = {
       lotation: props.boxConfig.initialLotation.map((l) => l * 180 / Math.PI),
       position: props.boxConfig.initialPosition.slice(),
-      fixed: props.boxConfig.fixed
+      fixed: props.boxConfig.fixed,
+      size: props.boxConfig.size,
     }
   }
 
@@ -104,12 +106,14 @@ class BoxTabPanel extends React.Component {
                     max={90}
                     value={this.state.lotation[i]}
                     onChangeCommitted={this.handleBoxLotationSliderCommit(i)}
-                    onChange={this.handleBoxLotationSliderChange(i)}/>
+                    onChange={this.handleBoxLotationSliderChange(i)}
+                  />
                 </Grid>
                 <Grid item xs>
                   <Input
                     value={this.state.lotation[i]}
-                    onChange={this.handleBoxLotationInputChange(i)}/>
+                    onChange={this.handleBoxLotationInputChange(i)}
+                  />
                 </Grid>
               </Grid>
             )
@@ -130,12 +134,33 @@ class BoxTabPanel extends React.Component {
                     step={0.1}
                     value={this.state.position[i]}
                     onChangeCommitted={this.handleBoxPositionSliderCommit(i)}
-                    onChange={this.handleBoxPositionSliderChange(i)}/>
+                    onChange={this.handleBoxPositionSliderChange(i)}
+                  />
                 </Grid>
                 <Grid item xs>
                   <Input
                     value={this.state.position[i]}
-                    onChange={this.handleBoxPositionInputChange(i)}/>
+                    onChange={this.handleBoxPositionInputChange(i)}
+                  />
+                </Grid>
+              </Grid>
+            )
+          })}
+        </Box>
+        <Box p={3}>
+          Size
+          {['x', 'y', 'z'].map((label, i) => {
+            return (
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  {label}
+                </Grid>
+                <Grid item>
+                  <TextField
+                    disabled
+                    type="number"
+                    value={this.state.size[i]}
+                  />
                 </Grid>
               </Grid>
             )
@@ -144,7 +169,11 @@ class BoxTabPanel extends React.Component {
         <Box p={3}>
           <Grid container spacing={0} alignItems="center">
             <Grid item>
-              <CheckBox color="primary" checked={this.state.fixed} onChange={this.handleFixCheck} />
+              <CheckBox
+                color="primary"
+                checked={this.state.fixed}
+                onChange={this.handleFixCheck}
+              />
             </Grid>
             <Grid item xs>
               fix this Object
