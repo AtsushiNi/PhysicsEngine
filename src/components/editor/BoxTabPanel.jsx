@@ -25,7 +25,7 @@ class BoxTabPanel extends React.Component {
     this.props.updateBox(this.props.index, box)
   }
 
-  handleBoxLotationSlicerChangeCommit = (i) => (event, newValue) => {
+  handleBoxLotationSliderCommit = (i) => (event, newValue) => {
     const boxConfig = Object.assign({}, this.props.boxConfig)
     boxConfig.initialLotation[i] = newValue * Math.PI / 180.0
     this.props.updateBoxConfig(this.props.index, boxConfig)
@@ -54,7 +54,7 @@ class BoxTabPanel extends React.Component {
     this.props.updateBox(this.props.index, box)
   }
 
-  handleBoxPositionSliderChangeCommit = (i) => (event, newValue) => {
+  handleBoxPositionSliderCommit = (i) => (event, newValue) => {
     const boxConfig = Object.assign({}, this.props.boxConfig)
     boxConfig.initialPosition[i] = newValue
     this.props.updateBoxConfig(this.props.index, boxConfig)
@@ -103,7 +103,7 @@ class BoxTabPanel extends React.Component {
                     min={0}
                     max={90}
                     value={this.state.lotation[i]}
-                    onChangeCommitted={this.handleBoxLotationSlicerChangeCommit(i)}
+                    onChangeCommitted={this.handleBoxLotationSliderCommit(i)}
                     onChange={this.handleBoxLotationSliderChange(i)}/>
                 </Grid>
                 <Grid item xs>
@@ -129,7 +129,7 @@ class BoxTabPanel extends React.Component {
                     max={3.0}
                     step={0.1}
                     value={this.state.position[i]}
-                    onChangeCommitted={this.handleBoxPositionSliderChangeCommit(i)}
+                    onChangeCommitted={this.handleBoxPositionSliderCommit(i)}
                     onChange={this.handleBoxPositionSliderChange(i)}/>
                 </Grid>
                 <Grid item xs>
