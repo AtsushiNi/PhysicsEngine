@@ -12,13 +12,13 @@ import { blue } from '@material-ui/core/colors'
 
 export default function Editor(props) {
   const {
-    generalConfig,
-    updateGeneralConfig,
-    addBox,
+    boxes,
     boxConfigs,
-    updateLotation,
-    updatePosition,
-    updateChecked
+    generalConfig,
+    addBox,
+    updateBox,
+    updateBoxConfig,
+    updateGeneralConfig,
   } = props
 
   const [tabIndex, setTabIndex] = useState(0)
@@ -49,51 +49,8 @@ export default function Editor(props) {
     setTabIndex(newTabIndex)
   }
 
-  const handleLotationSliderCommit = (id, i) => (event, newValue) => {
-    updateLotation(id, i, newValue * Math.PI / 180.0)
-  }
-
-  const handleLotationSliderChangeCommit = (id, i, value) => {
-    updateLotation(id, i, value * Math.PI / 180.0)
-  }
-
-  const handlePositionSliderCommit = (id, i) => (event, newValue) => {
-    updatePosition(id, i, newValue)
-  }
-
-  const handlePositionSliderChangeCommit = (id, i, value) => {
-    updatePosition(id, i, value)
-  }
-
-  const handleInputChange = (id, i) => (event) => {
-    const newValue = event.target.value
-    if (isFinite(newValue) && newValue !== '' )
-    updateLotation(id, i, Number(newValue) * Math.PI / 180.0)
-  }
-
-  const handleGravitySliderCommit = (i) => (event, newValue) => {
-    var gravity = generalConfig.gravity
-    gravity[i] = generalConfig.standardGravity * newValue
-
-    updateGeneralConfig({
-      ...generalConfig,
-      gravity: gravity
-    })
-  }
-
-  const handleGravityInputChange = (i) => (event) => {
-    const newValue = event.target.value
-    var gravity = generalConfig.gravity
-    gravity[i] = generalConfig.standardGravity * newValue
-
-    updateGeneralConfig({
-      ...generalConfig,
-      gravity: gravity
-    })
-  }
-
   const TabPanel = (props) => {
-    const { boxConfig, showTabIndex, index } = props
+    const { box, boxConfig, showTabIndex, index } = props
 
     const [lotationX, setLotationX] =
       useState(boxConfig.initialLotation[0] * 180 / Math.PI)
@@ -108,9 +65,9 @@ export default function Editor(props) {
     const [positionZ, setPositionZ] = useState(boxConfig.initialPosition[2])
     const positions = [positionX, positionY, positionZ]
 
-    const [checked, setChecked] = useState(boxConfig.fixed)
+    const [fixed, setFixed] = useState(boxConfig.fixed)
 
-    const handleLotationSliderChanged = (i) => (event, newValue) => {
+    const handleBoxLotationSliderChange = (i) => (event, newValue) => {
       switch (i) {
         case 0:
           setLotationX(newValue)
@@ -123,10 +80,27 @@ export default function Editor(props) {
           break
         default:
       }
-      handleLotationSliderChangeCommit(index, i, newValue)
+
+      box.lotation[i] = Number(newValue * Math.PI / 180.0)
+      updateBox(index, box)
     }
 
-    const handlePositionSliderChanged = (i) => (event, newValue) => {
+    const handleBoxLotationSlicerChangeCommit = (i) => (event, newValue) => {
+      boxConfig.initialLotation[i] = Number(newValue * Math.PI / 180.0)
+      updateBoxConfig(index, boxConfig)
+    }
+
+    const handleBoxLotationInputChange = (i) => (event) => {
+      const newValue = event.target.value
+      if (isFinite(newValue)) {
+        box.lotation[i] = Number(newValue * Math.PI / 180.0)
+        boxConfig.initialLotation[i] = Number(newValue * Math.PI / 180.0)
+        updateBox(index, box)
+        updateBoxConfig(index, boxConfig)
+      }
+    }
+
+    const handleBoxPositionSliderChange = (i) => (event, newValue) => {
       switch (i) {
         case 0:
           setPositionX(newValue)
@@ -139,12 +113,31 @@ export default function Editor(props) {
           break
         default:
       }
-      handlePositionSliderChangeCommit(index, i, newValue)
+
+      box.position[i] = newValue
+      updateBox(index, box)
+    }
+
+    const handleBoxPositionSliderChangeCommit = (i) => (event, newValue) => {
+      boxConfig.initialPosition[i] = newValue
+      updateBoxConfig(index, boxConfig)
+    }
+
+    const handleBoxPositionInputChange = (i) => (event) => {
+      const newValue = event.target.value
+      if (isFinite(newValue)) {
+        box.position[i] = Number(newValue)
+        boxConfig.initialPosition[i] = Number(newValue)
+        updateBox(index, box)
+        updateBoxConfig(index, boxConfig)
+      }
     }
 
     const handleFixCheck = (event) => {
-      setChecked(!checked)
-      updateChecked(index)
+      setFixed(!fixed)
+
+      boxConfig.fixed = !boxConfig.fixed
+      updateBoxConfig(index, boxConfig)
     }
 
     if (showTabIndex !== index) { return <div hidden={true} ></div>}
@@ -164,14 +157,14 @@ export default function Editor(props) {
                     min={0}
                     max={90}
                     value={lotations[i]}
-                    onChangeCommitted={handleLotationSliderCommit(index, i)}
-                    onChange={handleLotationSliderChanged(i)}/>
+                    onChangeCommitted={handleBoxLotationSlicerChangeCommit(i)}
+                    onChange={handleBoxLotationSliderChange(i)}/>
                 </Grid>
                 <Grid item>
                   <Input
                     className={classes.input}
                     value={lotations[i]}
-                    onChange={handleInputChange(index, i)}/>
+                    onChange={handleBoxLotationInputChange(i)}/>
                 </Grid>
               </Grid>
             )
@@ -191,14 +184,14 @@ export default function Editor(props) {
                     max={3.0}
                     step={0.1}
                     value={positions[i]}
-                    onChangeCommitted={handlePositionSliderCommit(index, i)}
-                    onChange={handlePositionSliderChanged(i)}/>
+                    onChangeCommitted={handleBoxPositionSliderChangeCommit(i)}
+                    onChange={handleBoxPositionSliderChange(i)}/>
                 </Grid>
                 <Grid item>
                   <Input
                     className={classes.input}
                     value={positions[i]}
-                    onChange={handleInputChange(index, i)}/>
+                    onChange={handleBoxPositionInputChange(i)}/>
                 </Grid>
               </Grid>
             )
@@ -207,7 +200,7 @@ export default function Editor(props) {
         <Box p={3}>
           <Grid container spacing={0} alignItems="center">
             <Grid item>
-              <CheckBox color="primary" checked={boxConfig.fixed} onChange={handleFixCheck} />
+              <CheckBox color="primary" checked={fixed} onChange={handleFixCheck} />
             </Grid>
             <Grid item xs>
               fix this Object
@@ -239,6 +232,27 @@ export default function Editor(props) {
           break
         default:
       }
+    }
+
+    const handleGravitySliderCommit = (i) => (event, newValue) => {
+      var gravity = generalConfig.gravity
+      gravity[i] = generalConfig.standardGravity * newValue
+
+      updateGeneralConfig({
+        ...generalConfig,
+        gravity: gravity
+      })
+    }
+
+    const handleGravityInputChange = (i) => (event) => {
+      const newValue = event.target.value
+      var gravity = generalConfig.gravity
+      gravity[i] = generalConfig.standardGravity * newValue
+
+      updateGeneralConfig({
+        ...generalConfig,
+        gravity: gravity
+      })
     }
 
     if (showTabIndex !== index) { return <div hidden={true} ></div> }
@@ -296,7 +310,7 @@ export default function Editor(props) {
           <Tab label='Genaral' />
         </Tabs>
         {boxConfigs.map((boxConfig, i) => (
-          <TabPanel boxConfig={boxConfig} showTabIndex={tabIndex} index={i} />
+          <TabPanel box={boxes[i]} boxConfig={boxConfig} showTabIndex={tabIndex} index={i} />
         ))}
         <GeneralSettingsTabPanel showTabIndex={tabIndex} index={boxConfigs.length}/>
       </ThemeProvider>
