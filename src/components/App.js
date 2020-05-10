@@ -1,12 +1,12 @@
 import React from 'react';
-import Space from './Spase'
-import Editor from './Editor'
+import Space from './Space'
+import Editor from './editor/Editor'
 import Controller from './Controller'
 import './App.css'
-import Box from './models/Box.js'
-import BoxConfig from './models/BoxConfig.js'
-import GeneralConfig from './models/GeneralConfig.js'
-import Calculation from './services/Calculation.js'
+import Box from '../models/Box.js'
+import BoxConfig from '../models/BoxConfig.js'
+import GeneralConfig from '../models/GeneralConfig.js'
+import Calculation from '../services/Calculation.js'
 
 class App extends React.Component {
   constructor(props) {

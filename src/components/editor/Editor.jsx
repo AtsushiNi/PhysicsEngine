@@ -9,6 +9,7 @@ import Input from '@material-ui/core/Input'
 import CheckBox from '@material-ui/core/Checkbox'
 import { makeStyles, createStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
+import BoxTabPanel from './BoxTabPanel'
 
 export default function Editor(props) {
   const {
@@ -310,7 +311,7 @@ export default function Editor(props) {
           <Tab label='Genaral' />
         </Tabs>
         {boxConfigs.map((boxConfig, i) => (
-          <TabPanel box={boxes[i]} boxConfig={boxConfig} showTabIndex={tabIndex} index={i} />
+          <BoxTabPanel box={boxes[i]} boxConfig={boxConfig} updateBox={updateBox} updateBoxConfig={updateBoxConfig} showTabIndex={tabIndex} index={i} />
         ))}
         <GeneralSettingsTabPanel showTabIndex={tabIndex} index={boxConfigs.length}/>
       </ThemeProvider>
