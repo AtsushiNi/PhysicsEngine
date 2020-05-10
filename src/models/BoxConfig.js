@@ -1,8 +1,8 @@
 export default class BoxConfig {
   constructor(
-    height = 1,
-    width = 1,
-    depth = 1,
+    sizeX = 1,
+    sizeY = 1,
+    sizeZ = 1,
     initialPositionX = 0,
     initialPositionY = 0,
     initialPositionZ = 0,
@@ -11,9 +11,7 @@ export default class BoxConfig {
     initialLotationZ = 0,
     fixed = false,
   ) {
-    this.height = height
-    this.width = width
-    this.depth = depth
+    this.size = [sizeX, sizeY, sizeZ]
     this.initialPosition = [initialPositionX, initialPositionY, initialPositionZ]
     this.initialLotation = [initialLotationX, initialLotationY, initialLotationZ]
     this.fixed = fixed

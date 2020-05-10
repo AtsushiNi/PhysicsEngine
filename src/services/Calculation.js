@@ -4,7 +4,7 @@ class Calculation {
     // g
     //
     // 大きさ(不変)
-    // boxConfigs[i].height, boxConfigs[i].width, boxConfigs[i].depth
+    // boxConfigs[i].size
     //
     // 位置[x, y, z]
     // boxes[i].position
