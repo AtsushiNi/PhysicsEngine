@@ -25,10 +25,10 @@ class Calculation {
   //回転行列からクォータニオンへの変換
   quat_cnv(rot_mat){
     const quat_vct = [0, 0, 0, 0]; 
-    const w = Math.sqrt(rot_mat[1][1]+rot_mat[2][2]+rot_mat[3][3]+1)/2;
-    const x = Math.sqrt(rot_mat[1][1]-rot_mat[2][2]-rot_mat[3][3]+1)/2;
-    const y = Math.sqrt(-rot_mat[1][1]+rot_mat[2][2]-rot_mat[3][3]+1)/2;
-    const z = Math.sqrt(-rot_mat[1][1]-rot_mat[2][2]+rot_mat[3][3]+1)/2;
+    let w = Math.sqrt(rot_mat[1][1]+rot_mat[2][2]+rot_mat[3][3]+1)/2;
+    let x = Math.sqrt(rot_mat[1][1]-rot_mat[2][2]-rot_mat[3][3]+1)/2;
+    let y = Math.sqrt(-rot_mat[1][1]+rot_mat[2][2]-rot_mat[3][3]+1)/2;
+    let z = Math.sqrt(-rot_mat[1][1]-rot_mat[2][2]+rot_mat[3][3]+1)/2;
     const max_quat = Math.max(w, x, y, z);
 
     if(max_quat === x){
@@ -37,7 +37,7 @@ class Calculation {
     }else if(max_quat === y){
       z = (rot_mat[2][3]+rot_mat[3][2])/(4 * y);
       x = (rot_mat[1][2]+rot_mat[2][1])/(4 * y);
-    }else(max_quat === z){
+    }else if(max_quat === z){
       x = (rot_mat[3][1]+rot_mat[1][3])/(4 * z);
       y = (rot_mat[2][3]+rot_mat[3][2])/(4 * z);
     }
@@ -66,7 +66,7 @@ class Calculation {
     return r_quat;
   }
   //各速度ベクトルをクォータニオンに変換
-  quat_w(){
+  quat_w(w){
     const w_quat = [1, w[0], w[1], w[2]];
     return w_quat;
   }
@@ -93,14 +93,6 @@ class Calculation {
     // boxes[i].lotVelocity
     //
     
-    boxes.forEach((box, i)=>{
-      console.log(
-      `id[${i}]:(${box.position[0]},${box.position[1]},${box.position[2]})`        
-      );
-    });
-
-    console.log("*************************")
-
     boxes.forEach((box) => {
       // 速度の更新
       box.velocity[0] += g[0]
