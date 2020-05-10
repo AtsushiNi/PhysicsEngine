@@ -16,8 +16,15 @@ class BoxTabPanel extends React.Component {
       lotVelocity: props.boxConfig.initialLotVelocity.map(lv => lv / props.boxConfig.standardLotVelocity),
       fixed: props.boxConfig.fixed,
       size: props.boxConfig.size,
+      error: {
+        velocity: [false, false, false],
+        lotVelocity: [false, false, false],
+        size: [false, false, false],
+      },
     }
   }
+
+  NumberRegExpPattern = /^-?[0-9]+(.[0-9]+)?$/
 
   handleBoxLotationSliderChange = (i) => (event, newValue) => {
     const newLotation = this.state.lotation.slice()
@@ -80,7 +87,7 @@ class BoxTabPanel extends React.Component {
   handleBoxVelocityInputChange = (i) => (event) => {
     const newValue = event.target.value
 
-    if (isFinite(newValue)) {
+    if (this.NumberRegExpPattern.test(newValue)) {
       const box = Object.assign({}, this.props.box)
       box.velocity[i] = Number(newValue) * this.props.boxConfig.standardVelocity
       const boxConfig = Object.assign({}, this.props.boxConfig)
@@ -90,14 +97,22 @@ class BoxTabPanel extends React.Component {
 
       const velocity = Object.assign([], this.state.velocity)
       velocity[i] = newValue
-      this.setState({ velocity: velocity })
+      const error = Object.assign({}, this.state.error)
+      error.velocity[i] = false
+      this.setState({ velocity: velocity, error: error })
+    } else {
+      const velocity = Object.assign([], this.state.velocity)
+      velocity[i] = newValue
+      const error = Object.assign({}, this.state.error)
+      error.velocity[i] = true
+      this.setState({ velocity: velocity, error: error })
     }
   }
 
   handleBoxLotVelocityInputChange = (i) => (event) => {
     const newValue = event.target.value
 
-    if (isFinite(newValue)) {
+    if (this.NumberRegExpPattern.test(newValue)) {
       const box = Object.assign({}, this.props.box)
       box.lotVelocity[i] = Number(newValue) * this.props.boxConfig.standardLotVelocity
       const boxConfig = Object.assign({}, this.props.boxConfig)
@@ -107,7 +122,15 @@ class BoxTabPanel extends React.Component {
 
       const lotVelocity = Object.assign([], this.state.lotVelocity)
       lotVelocity[i] = newValue
-      this.setState({ lotVelocity: lotVelocity })
+      const error = Object.assign({}, this.state.error)
+      error.lotVelocity[i] = false
+      this.setState({ lotVelocity: lotVelocity, error: error })
+    } else {
+      const lotVelocity = Object.assign([], this.state.lotVelocity)
+      lotVelocity[i] = newValue
+      const error = Object.assign({}, this.state.error)
+      error.lotVelocity[i] = true
+      this.setState({ lotVelocity: lotVelocity, error: error })
     }
   }
 
@@ -192,7 +215,9 @@ class BoxTabPanel extends React.Component {
                   {label}
                 </Grid>
                 <Grid item xs>
-                  <Input
+                  <TextField
+                    error={this.state.error.velocity[i]}
+                    helperText={this.state.error.velocity[i] ? 'only number' : ''}
                     value={this.state.velocity[i]}
                     onChange={this.handleBoxVelocityInputChange(i)}
                   />
@@ -211,7 +236,8 @@ class BoxTabPanel extends React.Component {
                 </Grid>
                 <Grid item xs>
                   <TextField
-                    type="number"
+                    error={this.state.error.lotVelocity[i]}
+                    helperText={this.state.error.lotVelocity[i] ? 'only number' : ''}
                     value={this.state.lotVelocity[i]}
                     onChange={this.handleBoxLotVelocityInputChange(i)}
                   />
@@ -230,7 +256,8 @@ class BoxTabPanel extends React.Component {
                 </Grid>
                 <Grid item>
                   <TextField
-                    type="number"
+                    error={this.state.error.size[i]}
+                    helperText={this.state.error.size[i] ? 'only number' : ''}
                     label="read only"
                     InputProps={{ readOnly: true }}
                     value={this.state.size[i]}
