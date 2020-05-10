@@ -12,7 +12,7 @@ class BoxTabPanel extends React.Component {
     this.state = {
       lotation: props.boxConfig.initialLotation.map(l => l * 180 / Math.PI),
       position: props.boxConfig.initialPosition.slice(),
-      velocity: props.boxConfig.initialVelocity.slice(),
+      velocity: props.boxConfig.initialVelocity.map(v => v / props.boxConfig.standardVelocity),
       lotVelocity: props.boxConfig.initialLotVelocity.map(lv => lv / props.boxConfig.standardLotVelocity),
       fixed: props.boxConfig.fixed,
       size: props.boxConfig.size,
@@ -82,11 +82,15 @@ class BoxTabPanel extends React.Component {
 
     if (isFinite(newValue)) {
       const box = Object.assign({}, this.props.box)
-      box.velocity[i] = Number(newValue)
+      box.velocity[i] = Number(newValue) * this.props.boxConfig.standardVelocity
       const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialVelocity[i] = Number(newValue)
+      boxConfig.initialVelocity[i] = Number(newValue) * this.props.boxConfig.standardVelocity
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
+
+      const velocity = Object.assign([], this.state.velocity)
+      velocity[i] = newValue
+      this.setState({ velocity: velocity })
     }
   }
 

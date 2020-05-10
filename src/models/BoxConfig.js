@@ -17,6 +17,7 @@ export default class BoxConfig {
     this.initialVelocity = [0, 0, 0]
     this.standardLotVelocity = 0.03
     this.initialLotVelocity = [0, 0, 0]
+    this.standardVelocity = 0.03
     this.fixed = fixed
   }
 }
