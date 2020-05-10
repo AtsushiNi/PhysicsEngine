@@ -1,12 +1,12 @@
 import React from 'react';
-import Space from './Spase'
-import Editor from './Editor'
+import Space from './Space'
+import Editor from './editor/Editor'
 import Controller from './Controller'
 import './App.css'
-import Box from './models/Box.js'
-import BoxConfig from './models/BoxConfig.js'
-import GeneralConfig from './models/GeneralConfig.js'
-import Calculation from './services/Calculation.js'
+import Box from '../models/Box.js'
+import BoxConfig from '../models/BoxConfig.js'
+import GeneralConfig from '../models/GeneralConfig.js'
+import Calculation from '../services/Calculation.js'
 
 class App extends React.Component {
   constructor(props) {
@@ -46,31 +46,17 @@ class App extends React.Component {
     })
   }
 
-  updateLotation = (index, i, value) => {
-    var boxes = this.state.boxes.slice()
-    var boxConfigs = this.state.boxConfigs.slice()
-    boxConfigs[index].initialLotation[i] = value
-    boxes[index].lotation[i] = value
+  updateBox = (index, box) => {
+    var boxes = Object.assign([], this.state.boxes)
+    boxes[index] = box
     this.setState({
-      boxes: boxes,
-      boxConfigs: boxConfigs,
+      boxes: boxes
     })
   }
 
-  updatePosition = (index, i, value) => {
-    var boxes = this.state.boxes.slice()
-    var boxConfigs = this.state.boxConfigs.slice()
-    boxConfigs[index].initialPosition[i] = value
-    boxes[index].position[i] = value
-    this.setState({
-      boxes: boxes,
-      boxConfigs: boxConfigs,
-    })
-  }
-
-  updateChecked = (index) => {
-    var boxConfigs = this.state.boxConfigs.slice()
-    boxConfigs[index].fixed = !boxConfigs[index].fixed
+  updateBoxConfig = (index, boxConfig) => {
+    var boxConfigs = Object.assign([], this.state.boxConfigs)
+    boxConfigs[index] = boxConfig
     this.setState({
       boxConfigs: boxConfigs
     })
@@ -112,13 +98,13 @@ class App extends React.Component {
       <div className="App">
         <div className="Editor">
           <Editor
-            generalConfig={this.state.generalConfig}
-            updateGeneralConfig={this.updateGeneralConfig}
-            addBox={this.addBox}
+            boxes={this.state.boxes}
             boxConfigs={this.state.boxConfigs}
-            updateLotation={this.updateLotation}
-            updatePosition={this.updatePosition}
-            updateChecked={this.updateChecked}/>
+            generalConfig={this.state.generalConfig}
+            addBox={this.addBox}
+            updateBox={this.updateBox}
+            updateBoxConfig={this.updateBoxConfig}
+            updateGeneralConfig={this.updateGeneralConfig}/>
         </div>
         <div className="RightBlock">
           <div className="Space">

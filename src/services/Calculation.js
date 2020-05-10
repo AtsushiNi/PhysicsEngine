@@ -7,7 +7,7 @@ class Calculation {
     // boxConfigs[i].height, boxConfigs[i].width, boxConfigs[i].depth
     //
     // 位置[x, y, z]
-    // boxes[i].location
+    // boxes[i].position
     // 向き[x, y, z]
     // boxes[i].lotation
     // 速度[x, y, z]
