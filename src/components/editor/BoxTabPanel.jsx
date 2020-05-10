@@ -10,8 +10,10 @@ class BoxTabPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      lotation: props.boxConfig.initialLotation.map((l) => l * 180 / Math.PI),
+      lotation: props.boxConfig.initialLotation.map(l => l * 180 / Math.PI),
       position: props.boxConfig.initialPosition.slice(),
+      velocity: props.boxConfig.initialVelocity.slice(),
+      lotVelocity: props.boxConfig.initialLotVelocity.map(lv => lv / props.boxConfig.standardLotVelocity),
       fixed: props.boxConfig.fixed,
       size: props.boxConfig.size,
     }
@@ -72,6 +74,36 @@ class BoxTabPanel extends React.Component {
       boxConfig.initialPosition[i] = Number(newValue)
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
+    }
+  }
+
+  handleBoxVelocityInputChange = (i) => (event) => {
+    const newValue = event.target.value
+
+    if (isFinite(newValue)) {
+      const box = Object.assign({}, this.props.box)
+      box.velocity[i] = Number(newValue)
+      const boxConfig = Object.assign({}, this.props.boxConfig)
+      boxConfig.initialVelocity[i] = Number(newValue)
+      this.props.updateBox(this.props.index, box)
+      this.props.updateBoxConfig(this.props.index, boxConfig)
+    }
+  }
+
+  handleBoxLotVelocityInputChange = (i) => (event) => {
+    const newValue = event.target.value
+
+    if (isFinite(newValue)) {
+      const box = Object.assign({}, this.props.box)
+      box.lotVelocity[i] = Number(newValue) * this.props.boxConfig.standardLotVelocity
+      const boxConfig = Object.assign({}, this.props.boxConfig)
+      boxConfig.initialLotVelocity[i] = Number(newValue) * this.props.boxConfig.standardLotVelocity
+      this.props.updateBox(this.props.index, box)
+      this.props.updateBoxConfig(this.props.index, boxConfig)
+
+      const lotVelocity = Object.assign([], this.state.lotVelocity)
+      lotVelocity[i] = newValue
+      this.setState({ lotVelocity: lotVelocity })
     }
   }
 
@@ -148,6 +180,43 @@ class BoxTabPanel extends React.Component {
           })}
         </Box>
         <Box p={3}>
+          Velocity
+          {['x', 'y', 'z'].map((label, i) => {
+            return (
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={1}>
+                  {label}
+                </Grid>
+                <Grid item xs>
+                  <Input
+                    value={this.state.velocity[i]}
+                    onChange={this.handleBoxVelocityInputChange(i)}
+                  />
+                </Grid>
+              </Grid>
+            )
+          })}
+        </Box>
+        <Box p={3}>
+          Angular Velocity
+          {['x', 'y', 'z'].map((label, i) => {
+            return (
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={1}>
+                  {label}
+                </Grid>
+                <Grid item xs>
+                  <TextField
+                    type="number"
+                    value={this.state.lotVelocity[i]}
+                    onChange={this.handleBoxLotVelocityInputChange(i)}
+                  />
+                </Grid>
+              </Grid>
+            )
+          })}
+        </Box>
+        <Box p={3}>
           Size
           {['x', 'y', 'z'].map((label, i) => {
             return (
@@ -157,8 +226,9 @@ class BoxTabPanel extends React.Component {
                 </Grid>
                 <Grid item>
                   <TextField
-                    disabled
                     type="number"
+                    label="read only"
+                    InputProps={{ readOnly: true }}
                     value={this.state.size[i]}
                   />
                 </Grid>

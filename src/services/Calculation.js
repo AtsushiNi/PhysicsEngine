@@ -41,12 +41,12 @@ class Calculation {
       box.lotation[0] = boxConfigs[i].initialLotation[0]
       box.lotation[1] = boxConfigs[i].initialLotation[1]
       box.lotation[2] = boxConfigs[i].initialLotation[2]
-      box.velocity[0] = 0
-      box.velocity[1] = 0
-      box.velocity[2] = 0
-      box.lotVelocity[0] = 0
-      box.lotVelocity[1] = 0
-      box.lotVelocity[2] = 0
+      box.velocity[0] = boxConfigs[i].initialVelocity[0]
+      box.velocity[1] = boxConfigs[i].initialVelocity[1]
+      box.velocity[2] = boxConfigs[i].initialVelocity[2]
+      box.lotVelocity[0] = boxConfigs[i].initialLotVelocity[0]
+      box.lotVelocity[1] = boxConfigs[i].initialLotVelocity[1]
+      box.lotVelocity[2] = boxConfigs[i].initialLotVelocity[2]
     })
   }
 }
