@@ -4,14 +4,18 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
 import CheckBox from '@material-ui/core/Checkbox'
+import TextField from '@material-ui/core/TextField'
 
 class BoxTabPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      lotation: props.boxConfig.initialLotation.map((l) => l * 180 / Math.PI),
+      lotation: props.boxConfig.initialLotation.map(l => l * 180 / Math.PI),
       position: props.boxConfig.initialPosition.slice(),
-      fixed: props.boxConfig.fixed
+      velocity: props.boxConfig.initialVelocity.map(v => v / props.boxConfig.standardVelocity),
+      lotVelocity: props.boxConfig.initialLotVelocity.map(lv => lv / props.boxConfig.standardLotVelocity),
+      fixed: props.boxConfig.fixed,
+      size: props.boxConfig.size,
     }
   }
 
@@ -73,6 +77,40 @@ class BoxTabPanel extends React.Component {
     }
   }
 
+  handleBoxVelocityInputChange = (i) => (event) => {
+    const newValue = event.target.value
+
+    if (isFinite(newValue)) {
+      const box = Object.assign({}, this.props.box)
+      box.velocity[i] = Number(newValue) * this.props.boxConfig.standardVelocity
+      const boxConfig = Object.assign({}, this.props.boxConfig)
+      boxConfig.initialVelocity[i] = Number(newValue) * this.props.boxConfig.standardVelocity
+      this.props.updateBox(this.props.index, box)
+      this.props.updateBoxConfig(this.props.index, boxConfig)
+
+      const velocity = Object.assign([], this.state.velocity)
+      velocity[i] = newValue
+      this.setState({ velocity: velocity })
+    }
+  }
+
+  handleBoxLotVelocityInputChange = (i) => (event) => {
+    const newValue = event.target.value
+
+    if (isFinite(newValue)) {
+      const box = Object.assign({}, this.props.box)
+      box.lotVelocity[i] = Number(newValue) * this.props.boxConfig.standardLotVelocity
+      const boxConfig = Object.assign({}, this.props.boxConfig)
+      boxConfig.initialLotVelocity[i] = Number(newValue) * this.props.boxConfig.standardLotVelocity
+      this.props.updateBox(this.props.index, box)
+      this.props.updateBoxConfig(this.props.index, boxConfig)
+
+      const lotVelocity = Object.assign([], this.state.lotVelocity)
+      lotVelocity[i] = newValue
+      this.setState({ lotVelocity: lotVelocity })
+    }
+  }
+
   handleFixCheck = (event) => {
     const newValue = event.target.checked
 
@@ -104,12 +142,14 @@ class BoxTabPanel extends React.Component {
                     max={90}
                     value={this.state.lotation[i]}
                     onChangeCommitted={this.handleBoxLotationSliderCommit(i)}
-                    onChange={this.handleBoxLotationSliderChange(i)}/>
+                    onChange={this.handleBoxLotationSliderChange(i)}
+                  />
                 </Grid>
                 <Grid item xs>
                   <Input
                     value={this.state.lotation[i]}
-                    onChange={this.handleBoxLotationInputChange(i)}/>
+                    onChange={this.handleBoxLotationInputChange(i)}
+                  />
                 </Grid>
               </Grid>
             )
@@ -130,12 +170,71 @@ class BoxTabPanel extends React.Component {
                     step={0.1}
                     value={this.state.position[i]}
                     onChangeCommitted={this.handleBoxPositionSliderCommit(i)}
-                    onChange={this.handleBoxPositionSliderChange(i)}/>
+                    onChange={this.handleBoxPositionSliderChange(i)}
+                  />
                 </Grid>
                 <Grid item xs>
                   <Input
                     value={this.state.position[i]}
-                    onChange={this.handleBoxPositionInputChange(i)}/>
+                    onChange={this.handleBoxPositionInputChange(i)}
+                  />
+                </Grid>
+              </Grid>
+            )
+          })}
+        </Box>
+        <Box p={3}>
+          Velocity
+          {['x', 'y', 'z'].map((label, i) => {
+            return (
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={1}>
+                  {label}
+                </Grid>
+                <Grid item xs>
+                  <Input
+                    value={this.state.velocity[i]}
+                    onChange={this.handleBoxVelocityInputChange(i)}
+                  />
+                </Grid>
+              </Grid>
+            )
+          })}
+        </Box>
+        <Box p={3}>
+          Angular Velocity
+          {['x', 'y', 'z'].map((label, i) => {
+            return (
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={1}>
+                  {label}
+                </Grid>
+                <Grid item xs>
+                  <TextField
+                    type="number"
+                    value={this.state.lotVelocity[i]}
+                    onChange={this.handleBoxLotVelocityInputChange(i)}
+                  />
+                </Grid>
+              </Grid>
+            )
+          })}
+        </Box>
+        <Box p={3}>
+          Size
+          {['x', 'y', 'z'].map((label, i) => {
+            return (
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  {label}
+                </Grid>
+                <Grid item>
+                  <TextField
+                    type="number"
+                    label="read only"
+                    InputProps={{ readOnly: true }}
+                    value={this.state.size[i]}
+                  />
                 </Grid>
               </Grid>
             )
@@ -144,7 +243,11 @@ class BoxTabPanel extends React.Component {
         <Box p={3}>
           <Grid container spacing={0} alignItems="center">
             <Grid item>
-              <CheckBox color="primary" checked={this.state.fixed} onChange={this.handleFixCheck} />
+              <CheckBox
+                color="primary"
+                checked={this.state.fixed}
+                onChange={this.handleFixCheck}
+              />
             </Grid>
             <Grid item xs>
               fix this Object
