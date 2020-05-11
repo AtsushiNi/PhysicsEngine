@@ -9,11 +9,19 @@ export default class BoxConfig {
     initialLotationX = 0,
     initialLotationY = 0,
     initialLotationZ = 0,
-    fixed = false,
+    fixed = false
   ) {
     this.size = [sizeX, sizeY, sizeZ]
-    this.initialPosition = [initialPositionX, initialPositionY, initialPositionZ]
-    this.initialLotation = [initialLotationX, initialLotationY, initialLotationZ]
+    this.initialPosition = [
+      initialPositionX,
+      initialPositionY,
+      initialPositionZ,
+    ]
+    this.initialLotation = [
+      initialLotationX,
+      initialLotationY,
+      initialLotationZ,
+    ]
     this.initialVelocity = [0, 0, 0]
     this.standardLotVelocity = 0.03
     this.initialLotVelocity = [0, 0, 0]

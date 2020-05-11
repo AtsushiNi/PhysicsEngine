@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import Space from './Space'
 import Editor from './editor/Editor'
 import Controller from './Controller'
@@ -12,13 +12,9 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      boxes: [
-        new Box(1,1,1,0,0,0),
-      ],
-      boxConfigs: [
-        new BoxConfig(1,1,1,1,1,1,0,0,0)
-      ],
-      generalConfig: new GeneralConfig(0, -0.005, 0, 0.005)
+      boxes: [new Box(1, 1, 1, 0, 0, 0)],
+      boxConfigs: [new BoxConfig(1, 1, 1, 1, 1, 1, 0, 0, 0)],
+      generalConfig: new GeneralConfig(0, -0.005, 0, 0.005),
     }
   }
 
@@ -50,7 +46,7 @@ class App extends React.Component {
     var boxes = Object.assign([], this.state.boxes)
     boxes[index] = box
     this.setState({
-      boxes: boxes
+      boxes: boxes,
     })
   }
 
@@ -58,29 +54,29 @@ class App extends React.Component {
     var boxConfigs = Object.assign([], this.state.boxConfigs)
     boxConfigs[index] = boxConfig
     this.setState({
-      boxConfigs: boxConfigs
+      boxConfigs: boxConfigs,
     })
   }
 
-  updateGeneralConfig = (generalConfig) => {
+  updateGeneralConfig = generalConfig => {
     this.setState({
-      generalConfig: generalConfig
+      generalConfig: generalConfig,
     })
   }
 
-  startAnimation = (event) => {
+  startAnimation = event => {
     this.intervalId = setInterval(this.animate, 20)
   }
 
-  stopAnimation = (event) => {
+  stopAnimation = event => {
     clearInterval(this.intervalId)
   }
 
-  resetAnimation = (event) => {
+  resetAnimation = event => {
     var boxes = this.state.boxes.slice()
     Calculation.resetValues(boxes, this.state.boxConfigs)
     this.setState({
-      boxes: boxes
+      boxes: boxes,
     })
   }
 
@@ -89,7 +85,7 @@ class App extends React.Component {
     const { boxConfigs, generalConfig } = this.state
     Calculation.updateValues(boxes, boxConfigs, generalConfig.gravity)
     this.setState({
-      boxes: boxes
+      boxes: boxes,
     })
   }
 
@@ -104,23 +100,25 @@ class App extends React.Component {
             addBox={this.addBox}
             updateBox={this.updateBox}
             updateBoxConfig={this.updateBoxConfig}
-            updateGeneralConfig={this.updateGeneralConfig}/>
+            updateGeneralConfig={this.updateGeneralConfig}
+          />
         </div>
         <div className="RightBlock">
           <div className="Space">
-            <Space boxes={this.state.boxes}/>
+            <Space boxes={this.state.boxes} />
           </div>
-          <div className="Controller" >
+          <div className="Controller">
             <Controller
               className="controller"
               handleClickStart={this.startAnimation}
               handleClickStop={this.stopAnimation}
-              handleClickReset={this.resetAnimation}/>
+              handleClickReset={this.resetAnimation}
+            />
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

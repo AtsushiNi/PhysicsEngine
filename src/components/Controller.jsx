@@ -8,19 +8,26 @@ import Grid from '@material-ui/core/Grid'
 import { blue } from '@material-ui/core/colors'
 
 export default function Controller(props) {
-  const useStyles = makeStyles(theme => createStyles({
-    container: {
-      height: '10%'
-    },
-    button: {
-      backgroundColor: blue[500]
-    }
-  }))
+  const useStyles = makeStyles(theme =>
+    createStyles({
+      container: {
+        height: '10%',
+      },
+      button: {
+        backgroundColor: blue[500],
+      },
+    })
+  )
 
   const classes = useStyles()
 
   return (
-    <Grid container spacing={3} alignItems="center" className={classes.container}>
+    <Grid
+      container
+      spacing={3}
+      alignItems="center"
+      className={classes.container}
+    >
       <Grid item>
         <Button
           endIcon={<PlayArrowRoundedIcon />}
@@ -40,10 +47,7 @@ export default function Controller(props) {
         </Button>
       </Grid>
       <Grid item>
-        <Button
-          className={classes.button}
-          onClick={props.handleClickReset}
-        >
+        <Button className={classes.button} onClick={props.handleClickReset}>
           Reset
         </Button>
       </Grid>
@@ -54,5 +58,5 @@ export default function Controller(props) {
 Controller.propTypes = {
   handleClickStart: PropTypes.func,
   handleClickStop: PropTypes.func,
-  handleClickReset: PropTypes.func
+  handleClickReset: PropTypes.func,
 }
