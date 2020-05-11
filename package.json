@@ -56,7 +56,7 @@
   "lint-staged": {
     "!(serviceWorker)*.{js,jsx}": [
       "eslint",
-      "prettier"
+      "prettier --write"
     ]
   }
 }
