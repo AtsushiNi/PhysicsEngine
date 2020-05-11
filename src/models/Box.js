@@ -20,6 +20,14 @@ export default class Box {
     quatVelocityX = 0,
     quatVelocityY = 0,
     quatVelocityZ = 0,
+    vertexPosition1 = [0, 0, 0],
+    vertexPosition2 = [0, 0, 0],
+    vertexPosition3 = [0, 0, 0],
+    vertexPosition4 = [0, 0, 0],
+    vertexPosition5 = [0, 0, 0],
+    vertexPosition6 = [0, 0, 0],
+    vertexPosition7 = [0, 0, 0],
+    vertexPosition8 = [0, 0, 0]
     
   ) {
     this.position = [positionX, positionY, positionZ]
@@ -28,5 +36,6 @@ export default class Box {
     this.lotVelocity = [lotVelocityX, lotVelocityY, lotVelocityZ]
     this.quaternion = [quaternionW, quaternionX, quaternionY, quaternionZ]
     this.quatVelocity = [quatVelocityW, quatVelocityX, quatVelocityY, quatVelocityZ]
+    this.vertexPosition = [vertexPosition1, vertexPosition2, vertexPosition3, vertexPosition4, vertexPosition5, vertexPosition6, vertexPosition7, vertexPosition8]
   }
 }

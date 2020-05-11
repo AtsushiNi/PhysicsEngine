@@ -9,6 +9,7 @@ export default class BoxConfig {
     initialLotationX = 0,
     initialLotationY = 0,
     initialLotationZ = 0,
+
     fixed = false,
   ) {
     this.size = [sizeX, sizeY, sizeZ]
