@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import PropTypes from 'prop-types'
 import { useFrame } from 'react-three-fiber'
 
 function Box(props) {
@@ -15,15 +16,16 @@ function Box(props) {
   })
 
   return (
-    <mesh
-      {...props}
-      ref={mesh}
-      scale={[1, 1, 1]}
-    >
-      <boxBufferGeometry attach='geometry' args={[1, 1, 1]} />
-      <meshStandardMaterial attach='material' color='gray' />
+    <mesh {...props} ref={mesh} scale={[1, 1, 1]}>
+      <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+      <meshStandardMaterial attach="material" color="gray" />
     </mesh>
   )
+}
+
+Box.propTypes = {
+  lotation: PropTypes.arrayOf(PropTypes.number),
+  position: PropTypes.arrayOf(PropTypes.number),
 }
 
 export default Box

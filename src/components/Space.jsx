@@ -1,15 +1,15 @@
 import React from 'react'
-import { Canvas, useFrame } from 'react-three-fiber'
+import PropTypes from 'prop-types'
+import { Canvas } from 'react-three-fiber'
 import Box from './objects/Box'
+import { default as BoxInfo } from '../models/Box'
 
 function Space(props) {
-  const boxes = props.boxes.map((box) => {
-    return (
-      <Box lotation={box.lotation} position={box.position}/>
-    )
+  const boxes = props.boxes.map((box, i) => {
+    return <Box lotation={box.lotation} position={box.position} key={i} />
   })
 
-  return(
+  return (
     <Canvas>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
@@ -19,3 +19,7 @@ function Space(props) {
 }
 
 export default Space
+
+Space.propTypes = {
+  boxes: PropTypes.arrayOf(PropTypes.instanceOf(BoxInfo)),
+}
