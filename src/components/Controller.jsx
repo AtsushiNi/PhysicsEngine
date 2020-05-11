@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded'
 import StopRoundedIcon from '@material-ui/icons/StopRounded'
 import { makeStyles, createStyles } from '@material-ui/core/styles'
@@ -48,4 +49,10 @@ export default function Controller(props) {
       </Grid>
     </Grid>
   )
+}
+
+Controller.propTypes = {
+  handleClickStart: PropTypes.func,
+  handleClickStop: PropTypes.func,
+  handleClickReset: PropTypes.func
 }

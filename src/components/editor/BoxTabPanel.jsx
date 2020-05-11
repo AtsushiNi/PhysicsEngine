@@ -1,10 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Slider from '@material-ui/core/Slider'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
 import CheckBox from '@material-ui/core/Checkbox'
 import TextField from '@material-ui/core/TextField'
+import { default as BoxInfo } from '../../models/Box'
+import { default as BoxConfigInfo } from '../../models/BoxConfig'
 
 class BoxTabPanel extends React.Component {
   constructor(props) {
@@ -155,7 +158,7 @@ class BoxTabPanel extends React.Component {
           Lotation
           {['x', 'y', 'z'].map((label, i) => {
             return (
-              <Grid container spacing={2} alignItems="center">
+              <Grid container spacing={2} alignItems="center" key={i}>
                 <Grid item xs={1}>
                   {label}
                 </Grid>
@@ -182,7 +185,7 @@ class BoxTabPanel extends React.Component {
           Position
           {['x', 'y', 'z'].map((label, i) => {
             return (
-              <Grid container spacing={2} alignItems="center">
+              <Grid container spacing={2} alignItems="center" key={i}>
                 <Grid item xs={1}>
                   {label}
                 </Grid>
@@ -210,7 +213,7 @@ class BoxTabPanel extends React.Component {
           Velocity
           {['x', 'y', 'z'].map((label, i) => {
             return (
-              <Grid container spacing={2} alignItems="center">
+              <Grid container spacing={2} alignItems="center" key={i}>
                 <Grid item xs={1}>
                   {label}
                 </Grid>
@@ -230,7 +233,7 @@ class BoxTabPanel extends React.Component {
           Angular Velocity
           {['x', 'y', 'z'].map((label, i) => {
             return (
-              <Grid container spacing={2} alignItems="center">
+              <Grid container spacing={2} alignItems="center" key={i}>
                 <Grid item xs={1}>
                   {label}
                 </Grid>
@@ -250,7 +253,7 @@ class BoxTabPanel extends React.Component {
           Size
           {['x', 'y', 'z'].map((label, i) => {
             return (
-              <Grid container spacing={2} alignItems="center">
+              <Grid container spacing={2} alignItems="center" key={i}>
                 <Grid item>
                   {label}
                 </Grid>
@@ -287,3 +290,12 @@ class BoxTabPanel extends React.Component {
 }
 
 export default BoxTabPanel
+
+BoxTabPanel.propTypes = {
+  box: PropTypes.instanceOf(BoxInfo),
+  boxConfig: PropTypes.instanceOf(BoxConfigInfo),
+  index: PropTypes.number,
+  showTabIndex: PropTypes.number,
+  updateBox: PropTypes.func,
+  updateBoxConfig: PropTypes.func
+}

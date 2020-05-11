@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
@@ -6,6 +7,9 @@ import { makeStyles, createStyles, ThemeProvider, createMuiTheme } from '@materi
 import { blue } from '@material-ui/core/colors'
 import BoxTabPanel from './BoxTabPanel'
 import GeneralSettingsTabPanel from './GeneralSettingsTabPanel'
+import Box from '../../models/Box'
+import BoxConfig from '../../models/BoxConfig'
+import GeneralConfig from '../../models/GeneralConfig'
 
 export default function Editor(props) {
   const {
@@ -59,7 +63,7 @@ export default function Editor(props) {
           aria-label="tabs"
           className={classes.tab}
         >
-          {boxConfigs.map((_, i) => <Tab label={`box ${i}`} />)}
+          {boxConfigs.map((_, i) => <Tab label={`box ${i}`} key={i} />)}
           <Tab label='Genaral' />
         </Tabs>
         {boxConfigs.map((boxConfig, i) => (
@@ -70,6 +74,7 @@ export default function Editor(props) {
             updateBoxConfig={updateBoxConfig}
             showTabIndex={tabIndex}
             index={i}
+            key={i}
           />
         ))}
         <GeneralSettingsTabPanel
@@ -81,4 +86,14 @@ export default function Editor(props) {
       </ThemeProvider>
     </div>
   )
+}
+
+Editor.propTypes = {
+  boxes: PropTypes.arrayOf(PropTypes.instanceOf(Box)),
+  boxConfigs: PropTypes.arrayOf(PropTypes.instanceOf(BoxConfig)),
+  generalConfig: PropTypes.instanceOf(GeneralConfig),
+  addBox: PropTypes.func,
+  updateBox: PropTypes.func,
+  updateBoxConfig: PropTypes.func,
+  updateGeneralConfig: PropTypes.func
 }

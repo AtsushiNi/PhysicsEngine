@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "babel-eslint": "^10.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2",
     "react": "^16.13.1",
@@ -22,7 +23,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "lint-staged",
-    "lint-all": "eslint ./src/*.js ./src/**/*.js ./src/**/*.jsx ./src/**/**/*.jsx"
+    "lint-all": "eslint ./src/**/*.js ./src/**/*.jsx ./src/**/**/*.jsx"
   },
   "eslintConfig": {
     "extends": "react-app"

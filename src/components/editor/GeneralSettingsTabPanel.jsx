@@ -1,8 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Slider from '@material-ui/core/Slider'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
+import GeneralConfig from '../../models/GeneralConfig'
 
 export default class GeneralSettingsTabPanel extends React.Component {
   constructor(props) {
@@ -45,7 +47,7 @@ export default class GeneralSettingsTabPanel extends React.Component {
           Gravity
           {['x', 'y', 'z'].map((label, i) => {
             return (
-              <Grid container spacing={2} alignItems="center">
+              <Grid container spacing={2} alignItems="center" key={i}>
                 <Grid item xs={1}>
                   {label}
                 </Grid>
@@ -70,4 +72,11 @@ export default class GeneralSettingsTabPanel extends React.Component {
       </div>
     )
   }
+}
+
+GeneralSettingsTabPanel.propTypes = {
+  generalConfig: PropTypes.instanceOf(GeneralConfig),
+  showTabIndex: PropTypes.number,
+  index: PropTypes.number,
+  updateGeneralConfig: PropTypes.func
 }

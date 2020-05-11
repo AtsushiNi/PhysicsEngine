@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import PropTypes from 'prop-types'
 import { useFrame } from 'react-three-fiber'
 
 function Box(props) {
@@ -24,6 +25,11 @@ function Box(props) {
       <meshStandardMaterial attach='material' color='gray' />
     </mesh>
   )
+}
+
+Box.propTypes = {
+  lotation: PropTypes.arrayOf(PropTypes.number),
+  position: PropTypes.arrayOf(PropTypes.number)
 }
 
 export default Box
