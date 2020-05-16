@@ -25,7 +25,6 @@ function Box(props) {
 }
 
 Box.propTypes = {
-  rotation: PropTypes.arrayOf(PropTypes.number),
   position: PropTypes.arrayOf(PropTypes.number),
   quaternion: PropTypes.arrayOf(PropTypes.number),
 }
