@@ -20,7 +20,7 @@ class BoxTabPanel extends React.Component {
       initialVelocity: props.boxConfig.initialVelocity.map(
         v => v / props.boxConfig.standardVelocity
       ),
-      rotVelocity: props.boxConfig.initialRotVelocity.map(
+      initialRotVelocity: props.boxConfig.initialRotVelocity.map(
         lv => lv / props.boxConfig.standardRotVelocity
       ),
       fixed: props.boxConfig.fixed,
@@ -132,17 +132,17 @@ class BoxTabPanel extends React.Component {
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
 
-      const rotVelocity = Object.assign([], this.state.rotVelocity)
-      rotVelocity[i] = newValue
+      const initialRotVelocity = Object.assign([], this.state.initialRotVelocity)
+      initialRotVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
       error.rotVelocity[i] = false
-      this.setState({ rotVelocity: rotVelocity, error: error })
+      this.setState({ initialRotVelocity: initialRotVelocity, error: error })
     } else {
-      const rotVelocity = Object.assign([], this.state.rotVelocity)
-      rotVelocity[i] = newValue
+      const initialRotVelocity = Object.assign([], this.state.initialRotVelocity)
+      initialRotVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
       error.rotVelocity[i] = true
-      this.setState({ rotVelocity: rotVelocity, error: error })
+      this.setState({ initialRotVelocity: initialRotVelocity, error: error })
     }
   }
 
@@ -265,7 +265,7 @@ class BoxTabPanel extends React.Component {
                     helperText={
                       this.state.error.rotVelocity[i] ? 'only number' : ''
                     }
-                    value={this.state.rotVelocity[i]}
+                    value={this.state.initialRotVelocity[i]}
                     onChange={this.handleBoxRotVelocityInputChange(i)}
                   />
                 </Grid>
