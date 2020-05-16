@@ -80,6 +80,48 @@ class Calculation {
     return quaternion
   }
 
+  // オイラー角[x, y, z]からクォータニオン[w, x, y, z]を得る
+  // https://www.kazetest.com/vcmemo/quaternion/quaternion.htm
+  static eulerToQuaternion(euler) {
+    const sin = [
+      Math.sin(euler[0] / 2),
+      Math.sin(euler[1] / 2),
+      Math.sin(euler[2] / 2),
+    ]
+    const cos = [
+      Math.cos(euler[0] / 2),
+      Math.cos(euler[1] / 2),
+      Math.cos(euler[2] / 2),
+    ]
+
+    const quaternion = [
+      cos[0] * cos[1] * cos[2] + sin[0] * sin[1] * sin[2],
+      cos[0] * cos[1] * sin[2] - sin[0] * sin[1] * cos[2],
+      cos[0] * sin[1] * cos[2] + sin[0] * cos[1] * sin[2],
+      sin[0] * cos[1] * cos[2] - cos[0] * sin[1] * sin[2],
+    ]
+
+    return quaternion
+  }
+
+  // クォータニオン[w, x, y, z]からオイラー角[x, y, z]を得る
+  // https://www.kazetest.com/vcmemo/quaternion/quaternion.htm
+  static quaternionToEuler(q) {
+    const euler = [
+      Math.atan2(
+        2 * q[2] * q[3] + q[0] * q[1],
+        q[0] * q[0] - q[1] * q[1] + q[2] * q[2] + q[3] * q[3]
+      ),
+      Math.asin(2 * (q[0] * q[2] - q[1] * q[3])),
+      Math.atan2(
+        2 * q[1] * q[2] + q[0] * q[3],
+        q[0] * q[0] + q[1] * q[1] - q[2] * q[2] - q[3] * q[3]
+      ),
+    ]
+
+    return euler
+  }
+
   //クォータニオンの計算:q=[w,x,y,z]
   static quatCalcuration(q, p) {
     const newQuaternion = [0, 0, 0, 0]
