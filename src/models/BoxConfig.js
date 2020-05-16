@@ -4,8 +4,8 @@ export default class BoxConfig {
     this.initialPosition = [0, 0, 0]
     this.initialRotation = [0, 0, 0]
     this.initialVelocity = [0, 0, 0]
-    this.standardLotVelocity = 0.03
-    this.initialLotVelocity = [0, 0, 0]
+    this.standardRotVelocity = 0.03
+    this.initialRotVelocity = [0, 0, 0]
     this.standardVelocity = 0.03
     this.fixed = false
   }

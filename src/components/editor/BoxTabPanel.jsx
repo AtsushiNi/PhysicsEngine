@@ -13,19 +13,21 @@ class BoxTabPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      rotation: props.boxConfig.initialRotation.map(l => (l * 180) / Math.PI),
-      position: props.boxConfig.initialPosition.slice(),
-      velocity: props.boxConfig.initialVelocity.map(
+      initialRotation: props.boxConfig.initialRotation.map(
+        l => (l * 180) / Math.PI
+      ),
+      initialPosition: props.boxConfig.initialPosition.slice(),
+      initialVelocity: props.boxConfig.initialVelocity.map(
         v => v / props.boxConfig.standardVelocity
       ),
-      lotVelocity: props.boxConfig.initialLotVelocity.map(
-        lv => lv / props.boxConfig.standardLotVelocity
+      rotVelocity: props.boxConfig.initialRotVelocity.map(
+        lv => lv / props.boxConfig.standardRotVelocity
       ),
       fixed: props.boxConfig.fixed,
       size: props.boxConfig.size,
       error: {
         velocity: [false, false, false],
-        lotVelocity: [false, false, false],
+        rotVelocity: [false, false, false],
         size: [false, false, false],
       },
     }
@@ -34,9 +36,9 @@ class BoxTabPanel extends React.Component {
   NumberRegExpPattern = /^-?[0-9]+(.[0-9]+)?$/
 
   handleBoxRotationSliderChange = i => (event, newValue) => {
-    const newRotation = this.state.rotation.slice()
+    const newRotation = this.state.initialRotation.slice()
     newRotation[i] = newValue
-    this.setState({ rotation: newRotation })
+    this.setState({ initialRotation: newRotation })
 
     const box = Object.assign({}, this.props.box)
     box.rotation[i] = (newValue * Math.PI) / 180.0
@@ -63,9 +65,9 @@ class BoxTabPanel extends React.Component {
   }
 
   handleBoxPositionSliderChange = i => (event, newValue) => {
-    const newPosition = this.state.position.slice()
+    const newPosition = this.state.initialPosition.slice()
     newPosition[i] = newValue
-    this.setState({ position: newPosition })
+    this.setState({ initialPosition: newPosition })
 
     const box = Object.assign({}, this.props.box)
     box.position[i] = newValue
@@ -103,44 +105,44 @@ class BoxTabPanel extends React.Component {
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
 
-      const velocity = Object.assign([], this.state.velocity)
-      velocity[i] = newValue
+      const initialVelocity = Object.assign([], this.state.initialVelocity)
+      initialVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
       error.velocity[i] = false
-      this.setState({ velocity: velocity, error: error })
+      this.setState({ initialVelocity: initialVelocity, error: error })
     } else {
-      const velocity = Object.assign([], this.state.velocity)
-      velocity[i] = newValue
+      const initialVelocity = Object.assign([], this.state.initialVelocity)
+      initialVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
       error.velocity[i] = true
-      this.setState({ velocity: velocity, error: error })
+      this.setState({ initialVelocity: initialVelocity, error: error })
     }
   }
 
-  handleBoxLotVelocityInputChange = i => event => {
+  handleBoxRotVelocityInputChange = i => event => {
     const newValue = event.target.value
 
     if (this.NumberRegExpPattern.test(newValue)) {
       const box = Object.assign({}, this.props.box)
-      box.lotVelocity[i] =
-        Number(newValue) * this.props.boxConfig.standardLotVelocity
+      box.rotVelocity[i] =
+        Number(newValue) * this.props.boxConfig.standardRotVelocity
       const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialLotVelocity[i] =
-        Number(newValue) * this.props.boxConfig.standardLotVelocity
+      boxConfig.initialRotVelocity[i] =
+        Number(newValue) * this.props.boxConfig.standardRotVelocity
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
 
-      const lotVelocity = Object.assign([], this.state.lotVelocity)
-      lotVelocity[i] = newValue
+      const rotVelocity = Object.assign([], this.state.rotVelocity)
+      rotVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
-      error.lotVelocity[i] = false
-      this.setState({ lotVelocity: lotVelocity, error: error })
+      error.rotVelocity[i] = false
+      this.setState({ rotVelocity: rotVelocity, error: error })
     } else {
-      const lotVelocity = Object.assign([], this.state.lotVelocity)
-      lotVelocity[i] = newValue
+      const rotVelocity = Object.assign([], this.state.rotVelocity)
+      rotVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
-      error.lotVelocity[i] = true
-      this.setState({ lotVelocity: lotVelocity, error: error })
+      error.rotVelocity[i] = true
+      this.setState({ rotVelocity: rotVelocity, error: error })
     }
   }
 
@@ -184,14 +186,14 @@ class BoxTabPanel extends React.Component {
                   <Slider
                     min={0}
                     max={90}
-                    value={this.state.rotation[i]}
+                    value={this.state.initialRotation[i]}
                     onChangeCommitted={this.handleBoxRotationSliderCommit(i)}
                     onChange={this.handleBoxRotationSliderChange(i)}
                   />
                 </Grid>
                 <Grid item xs>
                   <Input
-                    value={this.state.rotation[i]}
+                    value={this.state.initialRotation[i]}
                     onChange={this.handleBoxRotationInputChange(i)}
                   />
                 </Grid>
@@ -212,14 +214,14 @@ class BoxTabPanel extends React.Component {
                     min={-3.0}
                     max={3.0}
                     step={0.1}
-                    value={this.state.position[i]}
+                    value={this.state.initialPosition[i]}
                     onChangeCommitted={this.handleBoxPositionSliderCommit(i)}
                     onChange={this.handleBoxPositionSliderChange(i)}
                   />
                 </Grid>
                 <Grid item xs>
                   <Input
-                    value={this.state.position[i]}
+                    value={this.state.initialPosition[i]}
                     onChange={this.handleBoxPositionInputChange(i)}
                   />
                 </Grid>
@@ -241,7 +243,7 @@ class BoxTabPanel extends React.Component {
                     helperText={
                       this.state.error.velocity[i] ? 'only number' : ''
                     }
-                    value={this.state.velocity[i]}
+                    value={this.state.initialVelocity[i]}
                     onChange={this.handleBoxVelocityInputChange(i)}
                   />
                 </Grid>
@@ -259,12 +261,12 @@ class BoxTabPanel extends React.Component {
                 </Grid>
                 <Grid item xs>
                   <TextField
-                    error={this.state.error.lotVelocity[i]}
+                    error={this.state.error.rotVelocity[i]}
                     helperText={
-                      this.state.error.lotVelocity[i] ? 'only number' : ''
+                      this.state.error.rotVelocity[i] ? 'only number' : ''
                     }
-                    value={this.state.lotVelocity[i]}
-                    onChange={this.handleBoxLotVelocityInputChange(i)}
+                    value={this.state.rotVelocity[i]}
+                    onChange={this.handleBoxRotVelocityInputChange(i)}
                   />
                 </Grid>
               </Grid>

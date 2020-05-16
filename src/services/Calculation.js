@@ -124,7 +124,7 @@ class Calculation {
     // 速度[x, y, z]
     // boxes[index].velocity
     // 角速度[x, y, z]
-    // boxes[index].lotVelocity
+    // boxes[index].rotVelocity
     //
     boxes.forEach((box, index) => {
       // 速度の更新
@@ -138,9 +138,9 @@ class Calculation {
       box.position[1] += box.velocity[1]
       box.position[2] += box.velocity[2]
       // 向きの更新
-      box.rotation[0] += box.lotVelocity[0]
-      box.rotation[1] += box.lotVelocity[1]
-      box.rotation[2] += box.lotVelocity[2]
+      box.rotation[0] += box.rotVelocity[0]
+      box.rotation[1] += box.rotVelocity[1]
+      box.rotation[2] += box.rotVelocity[2]
       //クォータニオンの更新
       let deltaQuaternion = this.reminderQuaternion(
         box.quaternion,
@@ -168,9 +168,9 @@ class Calculation {
       box.velocity[0] = boxConfigs[index].initialVelocity[0]
       box.velocity[1] = boxConfigs[index].initialVelocity[1]
       box.velocity[2] = boxConfigs[index].initialVelocity[2]
-      box.lotVelocity[0] = boxConfigs[index].initialLotVelocity[0]
-      box.lotVelocity[1] = boxConfigs[index].initialLotVelocity[1]
-      box.lotVelocity[2] = boxConfigs[index].initialLotVelocity[2]
+      box.rotVelocity[0] = boxConfigs[index].initialRotVelocity[0]
+      box.rotVelocity[1] = boxConfigs[index].initialRotVelocity[1]
+      box.rotVelocity[2] = boxConfigs[index].initialRotVelocity[2]
     })
   }
 }
