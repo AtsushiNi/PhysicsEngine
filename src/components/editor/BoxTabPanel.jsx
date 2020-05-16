@@ -13,7 +13,7 @@ class BoxTabPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      lotation: props.boxConfig.initialLotation.map(l => (l * 180) / Math.PI),
+      rotation: props.boxConfig.initialRotation.map(l => (l * 180) / Math.PI),
       position: props.boxConfig.initialPosition.slice(),
       velocity: props.boxConfig.initialVelocity.map(
         v => v / props.boxConfig.standardVelocity
@@ -33,30 +33,30 @@ class BoxTabPanel extends React.Component {
 
   NumberRegExpPattern = /^-?[0-9]+(.[0-9]+)?$/
 
-  handleBoxLotationSliderChange = i => (event, newValue) => {
-    const newLotation = this.state.lotation.slice()
-    newLotation[i] = newValue
-    this.setState({ lotation: newLotation })
+  handleBoxRotationSliderChange = i => (event, newValue) => {
+    const newRotation = this.state.rotation.slice()
+    newRotation[i] = newValue
+    this.setState({ rotation: newRotation })
 
     const box = Object.assign({}, this.props.box)
-    box.lotation[i] = (newValue * Math.PI) / 180.0
+    box.rotation[i] = (newValue * Math.PI) / 180.0
     this.props.updateBox(this.props.index, box)
   }
 
-  handleBoxLotationSliderCommit = i => (event, newValue) => {
+  handleBoxRotationSliderCommit = i => (event, newValue) => {
     const boxConfig = Object.assign({}, this.props.boxConfig)
-    boxConfig.initialLotation[i] = (newValue * Math.PI) / 180.0
+    boxConfig.initialRotation[i] = (newValue * Math.PI) / 180.0
     this.props.updateBoxConfig(this.props.index, boxConfig)
   }
 
-  handleBoxLotationInputChange = i => event => {
+  handleBoxRotationInputChange = i => event => {
     const newValue = event.target.value
 
     if (isFinite(newValue)) {
       const box = Object.assign({}, this.props.box)
-      box.lotation[i] = Number((newValue * Math.PI) / 180.0)
+      box.rotation[i] = Number((newValue * Math.PI) / 180.0)
       const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialLotation[i] = Number((newValue * Math.PI) / 180.0)
+      boxConfig.initialRotation[i] = Number((newValue * Math.PI) / 180.0)
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
     }
@@ -173,7 +173,7 @@ class BoxTabPanel extends React.Component {
         }}
       >
         <Box p={3}>
-          Lotation
+          Rotation
           {['x', 'y', 'z'].map((label, i) => {
             return (
               <Grid container spacing={2} alignItems="center" key={i}>
@@ -184,15 +184,15 @@ class BoxTabPanel extends React.Component {
                   <Slider
                     min={0}
                     max={90}
-                    value={this.state.lotation[i]}
-                    onChangeCommitted={this.handleBoxLotationSliderCommit(i)}
-                    onChange={this.handleBoxLotationSliderChange(i)}
+                    value={this.state.rotation[i]}
+                    onChangeCommitted={this.handleBoxRotationSliderCommit(i)}
+                    onChange={this.handleBoxRotationSliderChange(i)}
                   />
                 </Grid>
                 <Grid item xs>
                   <Input
-                    value={this.state.lotation[i]}
-                    onChange={this.handleBoxLotationInputChange(i)}
+                    value={this.state.rotation[i]}
+                    onChange={this.handleBoxRotationInputChange(i)}
                   />
                 </Grid>
               </Grid>

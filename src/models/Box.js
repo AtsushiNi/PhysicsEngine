@@ -3,9 +3,9 @@ export default class Box {
     positionX = 0,
     positionY = 0,
     positionZ = 0,
-    lotationX = 0,
-    lotationY = 0,
-    lotationZ = 0,
+    rotationX = 0,
+    rotationY = 0,
+    rotationZ = 0,
     velocityX = 0,
     velocityY = 0,
     velocityZ = 0,
@@ -22,7 +22,7 @@ export default class Box {
     quatVelocityZ = 0
   ) {
     this.position = [positionX, positionY, positionZ]
-    this.lotation = [lotationX, lotationY, lotationZ]
+    this.rotation = [rotationX, rotationY, rotationZ]
     this.velocity = [velocityX, velocityY, velocityZ]
     this.lotVelocity = [lotVelocityX, lotVelocityY, lotVelocityZ]
     this.quaternion = [quaternionW, quaternionX, quaternionY, quaternionZ]
