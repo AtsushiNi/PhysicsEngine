@@ -153,21 +153,6 @@ class Calculation {
   }
 
   static updateValues = (boxes, boxConfigs, gravity) => {
-    // 重力加速度
-    // g
-    //
-    // 大きさ(不変)
-    // boxConfigs[index].size
-    //
-    // 位置[x, y, z]
-    // boxes[index].position
-    // 向き[x, y, z]
-    // boxes[index].rotation
-    // 速度[x, y, z]
-    // boxes[index].velocity
-    // 角速度[x, y, z]
-    // boxes[index].rotVelocity
-    //
     boxes.forEach((box, index) => {
       // 速度の更新
       if (boxConfigs[index].fixed === false) {
@@ -179,12 +164,8 @@ class Calculation {
       box.position[0] += box.velocity[0]
       box.position[1] += box.velocity[1]
       box.position[2] += box.velocity[2]
-      // 向きの更新
-      box.rotation[0] += box.rotVelocity[0]
-      box.rotation[1] += box.rotVelocity[1]
-      box.rotation[2] += box.rotVelocity[2]
       //クォータニオンの更新
-      let deltaQuaternion = this.reminderQuaternion(
+      let deltaQuaternion = Calculation.reminderQuaternion(
         box.quaternion,
         box.quatVelocity
       )
