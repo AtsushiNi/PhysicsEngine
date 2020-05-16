@@ -4,7 +4,7 @@ export default class Box {
     this.lotation = [0, 0, 0]
     this.velocity = [0, 0, 0]
     this.lotVelocity = [0, 0, 0]
-    this.quaternion = [0, 0, 0]
-    this.quatVelocity = [0, 0, 0]
+    this.quaternion = [1, 0, 0, 0]
+    this.quatVelocity = [1, 0, 0, 0]
   }
 }

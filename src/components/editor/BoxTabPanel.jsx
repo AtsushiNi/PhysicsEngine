@@ -14,7 +14,9 @@ class BoxTabPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      initialLotation: props.boxConfig.initialLotation.map(l => l * 180 / Math.PI),
+      initialLotation: props.boxConfig.initialLotation.map(
+        l => (l * 180) / Math.PI
+      ),
       initialPosition: props.boxConfig.initialPosition.slice(),
       initialVelocity: props.boxConfig.initialVelocity.map(
         v => v / props.boxConfig.standardVelocity
@@ -57,7 +59,7 @@ class BoxTabPanel extends React.Component {
     if (isFinite(newValue)) {
       const box = Object.assign({}, this.props.box)
       const newLotation = Object.assign({}, this.state.initialLotation)
-      newLotation[i] = Number((newValue * Math.PI / 180))
+      newLotation[i] = Number((newValue * Math.PI) / 180)
       const quaternion = Calculation.eulerToQuaternion(newLotation)
       box.auaternion = quaternion
       const boxConfig = Object.assign({}, this.props.boxConfig)
