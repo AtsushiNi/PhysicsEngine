@@ -14,7 +14,7 @@ class BoxTabPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      initialLotation: props.boxConfig.initialLotation.map(
+      initialRotation: props.boxConfig.initialRotation.map(
         l => (l * 180) / Math.PI
       ),
       initialPosition: props.boxConfig.initialPosition.slice(),
@@ -36,34 +36,34 @@ class BoxTabPanel extends React.Component {
 
   NumberRegExpPattern = /^-?[0-9]+(.[0-9]+)?$/
 
-  handleBoxLotationSliderChange = i => (event, newValue) => {
-    const newLotation = this.state.initialLotation.slice()
-    newLotation[i] = newValue
-    this.setState({ initialLotation: newLotation })
+  handleBoxRotationSliderChange = i => (event, newValue) => {
+    const newRotation = this.state.initialRotation.slice()
+    newRotation[i] = newValue
+    this.setState({ initialRotation: newRotation })
 
-    const quaternion = Calculation.eulerToQuaternion(newLotation)
+    const quaternion = Calculation.eulerToQuaternion(newRotation)
     const box = Object.assign({}, this.props.box)
     box.quaternion = quaternion
     this.props.updateBox(this.props.index, box)
   }
 
-  handleBoxLotationSliderCommit = i => (event, newValue) => {
+  handleBoxRotationSliderCommit = i => (event, newValue) => {
     const boxConfig = Object.assign({}, this.props.boxConfig)
-    boxConfig.initialLotation[i] = (newValue * Math.PI) / 180
+    boxConfig.initialRotation[i] = (newValue * Math.PI) / 180
     this.props.updateBoxConfig(this.props.index, boxConfig)
   }
 
-  handleBoxLotationInputChange = i => event => {
+  handleBoxRotationInputChange = i => event => {
     const newValue = event.target.value
 
     if (isFinite(newValue)) {
       const box = Object.assign({}, this.props.box)
-      const newLotation = Object.assign({}, this.state.initialLotation)
-      newLotation[i] = Number((newValue * Math.PI) / 180)
-      const quaternion = Calculation.eulerToQuaternion(newLotation)
+      const newRotation = Object.assign({}, this.state.initialRotation)
+      newRotation[i] = Number((newValue * Math.PI) / 180)
+      const quaternion = Calculation.eulerToQuaternion(newRotation)
       box.auaternion = quaternion
       const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialLotation[i] = Number((newValue * Math.PI) / 180)
+      boxConfig.initialRotation[i] = Number((newValue * Math.PI) / 180)
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
     }
@@ -180,7 +180,7 @@ class BoxTabPanel extends React.Component {
         }}
       >
         <Box p={3}>
-          Lotation
+          Rotation
           {['x', 'y', 'z'].map((label, i) => {
             return (
               <Grid container spacing={2} alignItems="center" key={i}>
@@ -191,15 +191,15 @@ class BoxTabPanel extends React.Component {
                   <Slider
                     min={0}
                     max={90}
-                    value={this.state.initialLotation[i]}
-                    onChangeCommitted={this.handleBoxLotationSliderCommit(i)}
-                    onChange={this.handleBoxLotationSliderChange(i)}
+                    value={this.state.initialRotation[i]}
+                    onChangeCommitted={this.handleBoxRotationSliderCommit(i)}
+                    onChange={this.handleBoxRotationSliderChange(i)}
                   />
                 </Grid>
                 <Grid item xs>
                   <Input
-                    value={this.state.initialLotation[i]}
-                    onChange={this.handleBoxLotationInputChange(i)}
+                    value={this.state.initialRotation[i]}
+                    onChange={this.handleBoxRotationInputChange(i)}
                   />
                 </Grid>
               </Grid>
