@@ -8,24 +8,27 @@ import CheckBox from '@material-ui/core/Checkbox'
 import TextField from '@material-ui/core/TextField'
 import { default as BoxInfo } from '../../models/Box'
 import { default as BoxConfigInfo } from '../../models/BoxConfig'
+import Calculation from '../../services/Calculation'
 
 class BoxTabPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      lotation: props.boxConfig.initialLotation.map(l => (l * 180) / Math.PI),
-      position: props.boxConfig.initialPosition.slice(),
-      velocity: props.boxConfig.initialVelocity.map(
+      initialRotation: props.boxConfig.initialRotation.map(
+        l => (l * 180) / Math.PI
+      ),
+      initialPosition: props.boxConfig.initialPosition.slice(),
+      initialVelocity: props.boxConfig.initialVelocity.map(
         v => v / props.boxConfig.standardVelocity
       ),
-      lotVelocity: props.boxConfig.initialLotVelocity.map(
-        lv => lv / props.boxConfig.standardLotVelocity
+      initialRotVelocity: props.boxConfig.initialRotVelocity.map(
+        lv => lv / props.boxConfig.standardRotVelocity
       ),
       fixed: props.boxConfig.fixed,
       size: props.boxConfig.size,
       error: {
         velocity: [false, false, false],
-        lotVelocity: [false, false, false],
+        rotVelocity: [false, false, false],
         size: [false, false, false],
       },
     }
@@ -33,39 +36,48 @@ class BoxTabPanel extends React.Component {
 
   NumberRegExpPattern = /^-?[0-9]+(.[0-9]+)?$/
 
-  handleBoxLotationSliderChange = i => (event, newValue) => {
-    const newLotation = this.state.lotation.slice()
-    newLotation[i] = newValue
-    this.setState({ lotation: newLotation })
+  handleBoxRotationSliderChange = i => (event, newValue) => {
+    const newRotation = this.state.initialRotation.slice()
+    newRotation[i] = newValue
+    this.setState({ initialRotation: newRotation })
 
+    const quaternion = Calculation.eulerToQuaternion([
+      newRotation[0] * Math.PI / 180,
+      newRotation[1] * Math.PI / 180,
+      newRotation[2] * Math.PI / 180,
+    ])
     const box = Object.assign({}, this.props.box)
-    box.lotation[i] = (newValue * Math.PI) / 180.0
+    box.rotation[i] = (newValue * Math.PI) / 180.0
+    box.quaternion[0] = quaternion[0]
+    box.quaternion[1] = quaternion[1]
+    box.quaternion[2] = quaternion[2]
+    box.quaternion[3] = quaternion[3]
     this.props.updateBox(this.props.index, box)
   }
 
-  handleBoxLotationSliderCommit = i => (event, newValue) => {
+  handleBoxRotationSliderCommit = i => (event, newValue) => {
     const boxConfig = Object.assign({}, this.props.boxConfig)
-    boxConfig.initialLotation[i] = (newValue * Math.PI) / 180.0
+    boxConfig.initialRotation[i] = (newValue * Math.PI) / 180.0
     this.props.updateBoxConfig(this.props.index, boxConfig)
   }
 
-  handleBoxLotationInputChange = i => event => {
+  handleBoxRotationInputChange = i => event => {
     const newValue = event.target.value
 
     if (isFinite(newValue)) {
       const box = Object.assign({}, this.props.box)
-      box.lotation[i] = Number((newValue * Math.PI) / 180.0)
+      box.rotation[i] = Number((newValue * Math.PI) / 180.0)
       const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialLotation[i] = Number((newValue * Math.PI) / 180.0)
+      boxConfig.initialRotation[i] = Number((newValue * Math.PI) / 180.0)
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
     }
   }
 
   handleBoxPositionSliderChange = i => (event, newValue) => {
-    const newPosition = this.state.position.slice()
+    const newPosition = this.state.initialPosition.slice()
     newPosition[i] = newValue
-    this.setState({ position: newPosition })
+    this.setState({ initialPosition: newPosition })
 
     const box = Object.assign({}, this.props.box)
     box.position[i] = newValue
@@ -103,44 +115,47 @@ class BoxTabPanel extends React.Component {
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
 
-      const velocity = Object.assign([], this.state.velocity)
-      velocity[i] = newValue
+      const initialVelocity = Object.assign([], this.state.initialVelocity)
+      initialVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
       error.velocity[i] = false
-      this.setState({ velocity: velocity, error: error })
+      this.setState({ initialVelocity: initialVelocity, error: error })
     } else {
-      const velocity = Object.assign([], this.state.velocity)
-      velocity[i] = newValue
+      const initialVelocity = Object.assign([], this.state.initialVelocity)
+      initialVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
       error.velocity[i] = true
-      this.setState({ velocity: velocity, error: error })
+      this.setState({ initialVelocity: initialVelocity, error: error })
     }
   }
 
-  handleBoxLotVelocityInputChange = i => event => {
+  handleBoxRotVelocityInputChange = i => event => {
     const newValue = event.target.value
 
     if (this.NumberRegExpPattern.test(newValue)) {
       const box = Object.assign({}, this.props.box)
-      box.lotVelocity[i] =
-        Number(newValue) * this.props.boxConfig.standardLotVelocity
       const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialLotVelocity[i] =
-        Number(newValue) * this.props.boxConfig.standardLotVelocity
+      boxConfig.initialRotVelocity[i] =
+        Number(newValue) * this.props.boxConfig.standardRotVelocity
+      const quaternion = Calculation.eulerToQuaternion(boxConfig.initialRotVelocity)
+      box.quatVelocity[0] = quaternion[0]
+      box.quatVelocity[1] = quaternion[1]
+      box.quatVelocity[2] = quaternion[2]
+      box.quatVelocity[3] = quaternion[3]
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
 
-      const lotVelocity = Object.assign([], this.state.lotVelocity)
-      lotVelocity[i] = newValue
+      const initialRotVelocity = Object.assign([], this.state.initialRotVelocity)
+      initialRotVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
-      error.lotVelocity[i] = false
-      this.setState({ lotVelocity: lotVelocity, error: error })
+      error.rotVelocity[i] = false
+      this.setState({ initialRotVelocity: initialRotVelocity, error: error })
     } else {
-      const lotVelocity = Object.assign([], this.state.lotVelocity)
-      lotVelocity[i] = newValue
+      const initialRotVelocity = Object.assign([], this.state.initialRotVelocity)
+      initialRotVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
-      error.lotVelocity[i] = true
-      this.setState({ lotVelocity: lotVelocity, error: error })
+      error.rotVelocity[i] = true
+      this.setState({ initialRotVelocity: initialRotVelocity, error: error })
     }
   }
 
@@ -173,7 +188,7 @@ class BoxTabPanel extends React.Component {
         }}
       >
         <Box p={3}>
-          Lotation
+          Rotation
           {['x', 'y', 'z'].map((label, i) => {
             return (
               <Grid container spacing={2} alignItems="center" key={i}>
@@ -184,15 +199,15 @@ class BoxTabPanel extends React.Component {
                   <Slider
                     min={0}
                     max={90}
-                    value={this.state.lotation[i]}
-                    onChangeCommitted={this.handleBoxLotationSliderCommit(i)}
-                    onChange={this.handleBoxLotationSliderChange(i)}
+                    value={this.state.initialRotation[i]}
+                    onChangeCommitted={this.handleBoxRotationSliderCommit(i)}
+                    onChange={this.handleBoxRotationSliderChange(i)}
                   />
                 </Grid>
                 <Grid item xs>
                   <Input
-                    value={this.state.lotation[i]}
-                    onChange={this.handleBoxLotationInputChange(i)}
+                    value={this.state.initialRotation[i]}
+                    onChange={this.handleBoxRotationInputChange(i)}
                   />
                 </Grid>
               </Grid>
@@ -212,14 +227,14 @@ class BoxTabPanel extends React.Component {
                     min={-3.0}
                     max={3.0}
                     step={0.1}
-                    value={this.state.position[i]}
+                    value={this.state.initialPosition[i]}
                     onChangeCommitted={this.handleBoxPositionSliderCommit(i)}
                     onChange={this.handleBoxPositionSliderChange(i)}
                   />
                 </Grid>
                 <Grid item xs>
                   <Input
-                    value={this.state.position[i]}
+                    value={this.state.initialPosition[i]}
                     onChange={this.handleBoxPositionInputChange(i)}
                   />
                 </Grid>
@@ -241,7 +256,7 @@ class BoxTabPanel extends React.Component {
                     helperText={
                       this.state.error.velocity[i] ? 'only number' : ''
                     }
-                    value={this.state.velocity[i]}
+                    value={this.state.initialVelocity[i]}
                     onChange={this.handleBoxVelocityInputChange(i)}
                   />
                 </Grid>
@@ -259,12 +274,12 @@ class BoxTabPanel extends React.Component {
                 </Grid>
                 <Grid item xs>
                   <TextField
-                    error={this.state.error.lotVelocity[i]}
+                    error={this.state.error.rotVelocity[i]}
                     helperText={
-                      this.state.error.lotVelocity[i] ? 'only number' : ''
+                      this.state.error.rotVelocity[i] ? 'only number' : ''
                     }
-                    value={this.state.lotVelocity[i]}
-                    onChange={this.handleBoxLotVelocityInputChange(i)}
+                    value={this.state.initialRotVelocity[i]}
+                    onChange={this.handleBoxRotVelocityInputChange(i)}
                   />
                 </Grid>
               </Grid>

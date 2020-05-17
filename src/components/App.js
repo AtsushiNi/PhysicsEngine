@@ -12,8 +12,8 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      boxes: [new Box(1, 1, 1, 0, 0, 0)],
-      boxConfigs: [new BoxConfig(1, 1, 1, 1, 1, 1, 0, 0, 0)],
+      boxes: [new Box()],
+      boxConfigs: [new BoxConfig()],
       generalConfig: new GeneralConfig(0, -0.005, 0, 0.005),
     }
   }
@@ -30,9 +30,9 @@ class App extends React.Component {
   }
 
   addBox = () => {
-    var newBox = new Box(0, 1, 1, 0, 0, 0)
+    var newBox = new Box()
     var boxes = this.state.boxes.slice()
-    var newBoxConfig = new BoxConfig(1, 1, 1, 0, 1, 1, 0, 0, 0)
+    var newBoxConfig = new BoxConfig()
     var boxConfigs = this.state.boxConfigs.slice()
     boxes.push(newBox)
     boxConfigs.push(newBoxConfig)
