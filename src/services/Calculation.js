@@ -74,7 +74,8 @@ class Calculation {
   }
   //各速度ベクトルをクォータニオンに変換
   static angularVelocityVectortoQuaternion(w){
-    const quatVelocity = [1, w[0], w[1], w[2]]
+    const absoluteW = Math.sqrt( Math.pow(w[0], 2) + Math.pow(w[1], 2) + Math.pow(w[2], 2))
+    const quatVelocity = [Math.cos(absoluteW / 2), w[0] * Math.sin(absoluteW / 2) / absoluteW, w[1] * Math.sin(absoluteW / 2) / absoluteW, w[2] * Math.sin(absoluteW / 2) / absoluteW]
     return quatVelocity
   }
   //各速度ベクトルω=[ω1,ω2,ω3]のときのクォータニオンの更新
@@ -103,32 +104,32 @@ class Calculation {
   }
 
   //各boxの頂点を求める(初期状態)＊＊更新前に使う(辺は±１と奇数は＋３、偶数は－３：インデックスで言うと奇数は－３、偶数は＋３)
-  initialVertexPosition(boxes, boxConfigs){
+  static initialVertexPosition(boxes, boxConfigs){
     boxes.forEach((box, index) => {
-      box.vertexPosition[0][0] = -boxConfigs[index].sizd[0] / 2
-      box.vertexPosition[0][1] = -boxConfigs[index].sizd[1] / 2
-      box.vertexPosition[0][2] = -boxConfigs[index].sizd[2] / 2
-      box.vertexPosition[1][0] =  boxConfigs[index].sizd[0] / 2
-      box.vertexPosition[1][1] = -boxConfigs[index].sizd[1] / 2
-      box.vertexPosition[1][2] = -boxConfigs[index].sizd[2] / 2
-      box.vertexPosition[2][0] =  boxConfigs[index].sizd[0] / 2
-      box.vertexPosition[2][1] =  boxConfigs[index].sizd[1] / 2
-      box.vertexPosition[2][2] = -boxConfigs[index].sizd[2] / 2
-      box.vertexPosition[3][0] = -boxConfigs[index].sizd[0] / 2
-      box.vertexPosition[3][1] =  boxConfigs[index].sizd[1] / 2
-      box.vertexPosition[3][2] = -boxConfigs[index].sizd[2] / 2
-      box.vertexPosition[4][0] = -boxConfigs[index].sizd[0] / 2
-      box.vertexPosition[4][1] =  boxConfigs[index].sizd[1] / 2
-      box.vertexPosition[4][2] =  boxConfigs[index].sizd[2] / 2
-      box.vertexPosition[5][0] =  boxConfigs[index].sizd[0] / 2
-      box.vertexPosition[5][1] =  boxConfigs[index].sizd[1] / 2
-      box.vertexPosition[5][2] =  boxConfigs[index].sizd[2] / 2
-      box.vertexPosition[6][0] =  boxConfigs[index].sizd[0] / 2
-      box.vertexPosition[6][1] = -boxConfigs[index].sizd[1] / 2
-      box.vertexPosition[6][2] =  boxConfigs[index].sizd[2] / 2
-      box.vertexPosition[7][0] = -boxConfigs[index].sizd[0] / 2
-      box.vertexPosition[7][1] = -boxConfigs[index].sizd[1] / 2
-      box.vertexPosition[7][2] =  boxConfigs[index].sizd[2] / 2
+      box.vertexPosition[0][0] = -boxConfigs[index].size[0] / 2
+      box.vertexPosition[0][1] = -boxConfigs[index].size[1] / 2
+      box.vertexPosition[0][2] = -boxConfigs[index].size[2] / 2
+      box.vertexPosition[1][0] =  boxConfigs[index].size[0] / 2
+      box.vertexPosition[1][1] = -boxConfigs[index].size[1] / 2
+      box.vertexPosition[1][2] = -boxConfigs[index].size[2] / 2
+      box.vertexPosition[2][0] =  boxConfigs[index].size[0] / 2
+      box.vertexPosition[2][1] =  boxConfigs[index].size[1] / 2
+      box.vertexPosition[2][2] = -boxConfigs[index].size[2] / 2
+      box.vertexPosition[3][0] = -boxConfigs[index].size[0] / 2
+      box.vertexPosition[3][1] =  boxConfigs[index].size[1] / 2
+      box.vertexPosition[3][2] = -boxConfigs[index].size[2] / 2
+      box.vertexPosition[4][0] = -boxConfigs[index].size[0] / 2
+      box.vertexPosition[4][1] =  boxConfigs[index].size[1] / 2
+      box.vertexPosition[4][2] =  boxConfigs[index].size[2] / 2
+      box.vertexPosition[5][0] =  boxConfigs[index].size[0] / 2
+      box.vertexPosition[5][1] =  boxConfigs[index].size[1] / 2
+      box.vertexPosition[5][2] =  boxConfigs[index].size[2] / 2
+      box.vertexPosition[6][0] =  boxConfigs[index].size[0] / 2
+      box.vertexPosition[6][1] = -boxConfigs[index].size[1] / 2
+      box.vertexPosition[6][2] =  boxConfigs[index].size[2] / 2
+      box.vertexPosition[7][0] = -boxConfigs[index].size[0] / 2
+      box.vertexPosition[7][1] = -boxConfigs[index].size[1] / 2
+      box.vertexPosition[7][2] =  boxConfigs[index].size[2] / 2
 
     })
   }
@@ -185,6 +186,14 @@ class Calculation {
       box.quaternion[3] += deltaQuaternion[3]
 
       console.log(`${box.quaternion[0]},${box.quaternion[1]},${box.quaternion[2]},${box.quaternion[3]}`)
+
+      let vertexPosition = this.vertexPosition(box)
+      console.log(`${box.quatVelocity[0]},${box.quatVelocity[1]},${box.quatVelocity[2]}`)
+      console.log(`1:${vertexPosition[0][0]},${vertexPosition[0][1]},${vertexPosition[0][2]}`)
+      console.log(`6:${vertexPosition[5][0]},${vertexPosition[5][1]},${vertexPosition[5][2]}`)
+      console.log(`position:${box.position[0]},${box.position[1]},${box.position[2]}`)
+      console.log("**********************************")
+
     })
   }
 
