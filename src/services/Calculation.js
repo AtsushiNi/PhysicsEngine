@@ -139,7 +139,7 @@ class Calculation {
   }
   //各速度ベクトルをクォータニオンに変換
   static angularVelocityVectortoQuaternion(w){
-    const absoluteW = Math.sqrt( Math.pow(w[0], 2) + Math.pow(w[1], 2) + Math.pow(w[2], 2))
+    const absoluteW = Math.sqrt(w[0] * w[0] + w[1] * w[1] + w[2] * w[2])
     const quatVelocity = [Math.cos(absoluteW / 2),
                           w[0] * Math.sin(absoluteW / 2) / absoluteW,
                           w[1] * Math.sin(absoluteW / 2) / absoluteW, 
@@ -204,19 +204,15 @@ class Calculation {
 
   //各boxの頂点を求める(移動後)
   static vertexPosition(box){
-    let vertexPosition = []
+    let nVertexPosition = []
     for(let i = 0; i < 8; i++){
-      let vertexTranslation = [0, 0, 0]
-      for(let j = 0; j < 3; j++){
-        vertexTranslation[j] = box.position[j] + box.vertexPosition[i][j]
-        console.log(`vertexTranslation:${vertexTranslation[j]}`)
-        //ここまで（平行移動）は正常値
-      vertexPosition.push(this.rotationalTranslate(box.quaternion, vertexTranslation))
-      }
+      let mVertexPosition = this.rotationalTranslate(box.quaternion, box.vertexPosition[i])
+      let vertexTranslation = mVertexPosition.map((element, index) => {
+        return box.position[index] + element
+      })
+      nVertexPosition.push(vertexTranslation)
     }
-    console.log(`vertexPosition: ${vertexPosition[0]};${vertexPosition[5]}`)
-    //回転移動後の値がおかしい（quaternion[1,0,0,0]でも変な値になる）
-    return vertexPosition
+    return nVertexPosition
   }
 
   static updateValues = (boxes, boxConfigs, gravity) => {
@@ -232,7 +228,7 @@ class Calculation {
       box.position[1] += box.velocity[1]
       box.position[2] += box.velocity[2]
       //クォータニオンの更新
-      let deltaQuaternion = Calculation.reminderQuaternion(
+      var deltaQuaternion = Calculation.reminderQuaternion(
         box.quaternion,
         box.quatVelocity
       )
@@ -241,10 +237,9 @@ class Calculation {
       box.quaternion[2] += deltaQuaternion[2]
       box.quaternion[3] += deltaQuaternion[3]
 
+      var vertexPosition = this.vertexPosition(box)
+      
       console.log(`quaternion:${box.quaternion[0]},${box.quaternion[1]},${box.quaternion[2]},${box.quaternion[3]}`)
-
-      let vertexPosition = this.vertexPosition(box)
-
       console.log(`quatVelocity:${box.quatVelocity[0]},${box.quatVelocity[1]},${box.quatVelocity[2]}`)
       console.log(`1:${vertexPosition[0][0]},${vertexPosition[0][1]},${vertexPosition[0][2]}`)
       console.log(`6:${vertexPosition[5][0]},${vertexPosition[5][1]},${vertexPosition[5][2]}`)
@@ -268,7 +263,7 @@ class Calculation {
       box.rotVelocity[0] = boxConfigs[index].initialRotVelocity[0]
       box.rotVelocity[1] = boxConfigs[index].initialRotVelocity[1]
       box.rotVelocity[2] = boxConfigs[index].initialRotVelocity[2]
-      let initialQuaternion = this.eulerToQuaternion(boxConfigs[index].initialRotation)
+      var initialQuaternion = this.eulerToQuaternion(boxConfigs[index].initialRotation)
       box.quaternion[0] = initialQuaternion[0]
       box.quaternion[1] = initialQuaternion[1]
       box.quaternion[2] = initialQuaternion[2]

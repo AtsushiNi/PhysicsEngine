@@ -70,9 +70,6 @@ class App extends React.Component {
     this.setState({
       boxes: boxes
     })
-    console.log(this.state.boxes[0].vertexPosition[5][0])
-    console.log(this.state.boxes[0].vertexPosition[5][1])
-    console.log(this.state.boxes[0].vertexPosition[5][2])
     this.intervalId = setInterval(this.animate, 20)
   }
 
