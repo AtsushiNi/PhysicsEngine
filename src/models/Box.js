@@ -21,7 +21,8 @@ export default class Box {
       return false
     }
     const v2 = Vector.verticalVector2(p0, p1)
-    const p2 = this.localSupportMapping(v2) - box.relativeSupportMapping(v2.negate())
+    const p2 =
+      this.localSupportMapping(v2) - box.relativeSupportMapping(v2.negate())
     if (v2.dot(p2) < 0) {
       return false
     }
@@ -30,7 +31,9 @@ export default class Box {
     let clash = false
     while (true) {
       const vertical = Vector.verticalVector3(...vectors)
-      const newP = this.localSupportMapping(vertical) - box.relativeSupportMapping(vertical.negate())
+      const newP =
+        this.localSupportMapping(vertical) -
+        box.relativeSupportMapping(vertical.negate())
       if (vertical.dot(newP) < 0) {
         clash = false
         break
@@ -41,7 +44,7 @@ export default class Box {
         // vが原点と平面に存在することはない(もしあれば5行上でreturn falseしている)
         const vertical3 = Vector.verticalVector3(...(array - v))
 
-        return (vertical3.dot(v) < 0)
+        return vertical3.dot(v) < 0
       })
 
       if (vectors.length == 4) {
@@ -59,7 +62,9 @@ export default class Box {
   relativeSupportMapping = vector => {
     // 全頂点とvectorの内積が最大の頂点のベクトルを返す
     const globalVertexes = this.getRelativeVertexPositions()
-    const dotProducts = globalVertexes.map((vertex) => vector.dot(new Vector(vertex)))
+    const dotProducts = globalVertexes.map(vertex =>
+      vector.dot(new Vector(vertex))
+    )
     const i = dotProducts.indexOf(Math.max.apply(null, dotProducts))
     return new Vector(globalVertexes[i])
   }
@@ -70,7 +75,9 @@ export default class Box {
   localSupportMapping = vector => {
     // 全頂点とvectorの内積が最大の頂点のベクトルを返す
     const localVertexes = this.getLocalVertexPositions()
-    const dotProducts = localVertexes.map((vertex) => vector.dot(new Vector(vertex)))
+    const dotProducts = localVertexes.map(vertex =>
+      vector.dot(new Vector(vertex))
+    )
     const i = dotProducts.indexOf(Math.max.apply(null, dotProducts))
     return new Vector(localVertexes[i])
   }
@@ -96,8 +103,8 @@ export default class Box {
   // return Array[Array]
   getRelativeVertexPositions = () => {
     const len = Math.sqrt(1 / 2)
-    const sin30 = Math.sin(30 * Math.PI / 180)
-    const cos30 = Math.cos(30 * Math.PI / 180)
+    const sin30 = Math.sin((30 * Math.PI) / 180)
+    const cos30 = Math.cos((30 * Math.PI) / 180)
     return [
       [len * cos30, 1 / 2, len * sin30],
       [len * sin30, 1 / 2, -len * cos30],

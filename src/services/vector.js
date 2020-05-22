@@ -27,7 +27,7 @@ export default class Vector {
   // vectorとの内積を返す
   // params vector: Vector
   // return Number
-  dot = (vector) => {
+  dot = vector => {
     const callback = (sum, component, i) => component * vector[i]
     this.value.reduce(callback)
   }
@@ -35,7 +35,9 @@ export default class Vector {
   // 絶対値の二乗を返す
   // return Number
   squaredLength = () => {
-    this.value[0] * this.value[0] + this.value[1] * this.value[1] + this.value[2] * this.value[2]
+    this.value[0] * this.value[0] +
+      this.value[1] * this.value[1] +
+      this.value[2] * this.value[2]
   }
 
   // vectorA-vectorBに垂直で0ベクトルを通るベクトルを返す
@@ -44,8 +46,11 @@ export default class Vector {
   // return Vector
   static verticalVector2 = (vectorA, vectorB) => {
     // vectorA, vectorBを1-s:sで内分した点から0ベクトルへむかうベクトルを計算する
-    const s = vectorB.sub(vectorA).dot(vectorB) / vectorB.sub(vectorA).squaredLength()
-    const vertical = vectorA.multiplyScalar(-s).add(vectorB.multiplyScalar(s - 1))
+    const s =
+      vectorB.sub(vectorA).dot(vectorB) / vectorB.sub(vectorA).squaredLength()
+    const vertical = vectorA
+      .multiplyScalar(-s)
+      .add(vectorB.multiplyScalar(s - 1))
 
     return vertical
   }
@@ -56,7 +61,7 @@ export default class Vector {
   // params vectorC: Vector
   // return Vector
   static verticalVector3 = (vectorA, vectorB, vectorC) => {
-    let vertical =  vectorB.nimus(vectorA).cross(vectorC.minus(vectorA))
+    let vertical = vectorB.nimus(vectorA).cross(vectorC.minus(vectorA))
     if (vertical.dot(vectorA) > 0) {
       vertical = vertical.negate
     }
