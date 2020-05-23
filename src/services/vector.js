@@ -28,7 +28,7 @@ export default class Vector {
   // params vector: Vector
   // return Number
   dot = vector => {
-    const callback = (sum, component, i) => sum += component * vector[i]
+    const callback = (sum, component, i) => (sum += component * vector[i])
     this.value.reduce(callback)
   }
 
