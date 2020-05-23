@@ -17,6 +17,16 @@ export default class Vector {
     new Vector([-this.value[0], -this.value[1], -this.value[2]])
   }
 
+  // vectorを引いたものを返す
+  // params vector: Vector
+  // return Vector
+  sub = vector => {
+    new Vector([
+      this.value[0] - vector.getValue[0],
+      this.value[1] - vector.getValue[1],
+      this.value[2] - vector.getValue[2],
+    ])
+  }
   // n倍したベクトルを返す
   // params n: Number
   // return Vector
@@ -28,7 +38,7 @@ export default class Vector {
   // params vector: Vector
   // return Number
   dot = vector => {
-    const callback = (sum, component, i) => sum += component * vector[i]
+    const callback = (sum, component, i) => (sum += component * vector[i])
     this.value.reduce(callback)
   }
 
