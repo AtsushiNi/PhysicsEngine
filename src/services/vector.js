@@ -7,21 +7,17 @@ export default class Vector {
 
   // このベクトルを返す
   // return Array[3]
-  getValue = () => {
-    this.value
-  }
+  getValue = () => this.value
 
   // 逆向きのベクトルを返す
   // return Vector
-  negate = () => {
-    new Vector([-this.value[0], -this.value[1], -this.value[2]])
-  }
+  negate = () => new Vector([-this.value[0], -this.value[1], -this.value[2]])
 
   // n倍したベクトルを返す
   // params n: Number
   // return Vector
   multiplyScalar = n => {
-    new Vector([this.value[0] * n, this.value[1] * n, this.value[2] * n])
+    return new Vector([this.value[0] * n, this.value[1] * n, this.value[2] * n])
   }
 
   // vectorとの内積を返す
@@ -29,15 +25,17 @@ export default class Vector {
   // return Number
   dot = vector => {
     const callback = (sum, component, i) => (sum += component * vector[i])
-    this.value.reduce(callback)
+    return this.value.reduce(callback)
   }
 
   // 絶対値の二乗を返す
   // return Number
   squaredLength = () => {
-    this.value[0] * this.value[0] +
+    return (
+      this.value[0] * this.value[0] +
       this.value[1] * this.value[1] +
       this.value[2] * this.value[2]
+    )
   }
 
   // vectorA-vectorBに垂直で0ベクトルを通るベクトルを返す

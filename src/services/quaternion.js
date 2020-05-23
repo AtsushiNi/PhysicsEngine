@@ -8,9 +8,7 @@ export default class Quaternion {
 
   // このクォータニオンを返す
   // return Quaternion
-  getValue = () => {
-    this.value
-  }
+  getValue = () => this.value
 
   // quaternionを右から掛ける
   // params quaternion: Quaternion
@@ -82,7 +80,7 @@ export default class Quaternion {
   //     z = (matrix[0][1] - matrix[1][0]) / (4 * w)
   //   }
 
-  //   new Quaternion([w, x, y, z])
+  //   return new Quaternion([w, x, y, z])
   // }
 
   // オイラー角からクォータニオンを得る
