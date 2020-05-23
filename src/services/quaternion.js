@@ -99,12 +99,12 @@ export default class Quaternion {
       Math.cos(euler[2] / 2),
     ]
 
-    const quaternion = [
+    const quaternion = new Quaternion([
       cos[0] * cos[1] * cos[2] + sin[0] * sin[1] * sin[2],
       sin[0] * cos[1] * cos[2] - cos[0] * sin[1] * sin[2],
       cos[0] * sin[1] * cos[2] + sin[0] * cos[1] * sin[2],
       cos[0] * cos[1] * sin[2] - sin[0] * sin[1] * cos[2],
-    ]
+    ])
 
     return quaternion
   }
