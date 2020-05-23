@@ -42,9 +42,9 @@ class BoxTabPanel extends React.Component {
     this.setState({ initialRotation: newRotation })
 
     const quaternion = Calculation.eulerToQuaternion([
-      newRotation[0] * Math.PI / 180,
-      newRotation[1] * Math.PI / 180,
-      newRotation[2] * Math.PI / 180,
+      (newRotation[0] * Math.PI) / 180,
+      (newRotation[1] * Math.PI) / 180,
+      (newRotation[2] * Math.PI) / 180,
     ])
     const box = Object.assign({}, this.props.box)
     box.rotation[i] = (newValue * Math.PI) / 180.0
@@ -137,7 +137,9 @@ class BoxTabPanel extends React.Component {
       const boxConfig = Object.assign({}, this.props.boxConfig)
       boxConfig.initialRotVelocity[i] =
         Number(newValue) * this.props.boxConfig.standardRotVelocity
-      const quaternion = Calculation.eulerToQuaternion(boxConfig.initialRotVelocity)
+      const quaternion = Calculation.eulerToQuaternion(
+        boxConfig.initialRotVelocity
+      )
       box.quatVelocity[0] = quaternion[0]
       box.quatVelocity[1] = quaternion[1]
       box.quatVelocity[2] = quaternion[2]
@@ -145,13 +147,19 @@ class BoxTabPanel extends React.Component {
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
 
-      const initialRotVelocity = Object.assign([], this.state.initialRotVelocity)
+      const initialRotVelocity = Object.assign(
+        [],
+        this.state.initialRotVelocity
+      )
       initialRotVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
       error.rotVelocity[i] = false
       this.setState({ initialRotVelocity: initialRotVelocity, error: error })
     } else {
-      const initialRotVelocity = Object.assign([], this.state.initialRotVelocity)
+      const initialRotVelocity = Object.assign(
+        [],
+        this.state.initialRotVelocity
+      )
       initialRotVelocity[i] = newValue
       const error = Object.assign({}, this.state.error)
       error.rotVelocity[i] = true
