@@ -22,7 +22,8 @@
         "react"
     ],
     "rules": {
-      "no-unused-vars": ["error", {"args": "none"}]
+      "no-unused-vars": ["error", {"args": "none"}],
+      "no-constant-condition": 0
     },
     "parser": "babel-eslint",
     "settings": {
