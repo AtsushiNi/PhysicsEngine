@@ -8,7 +8,7 @@ import CheckBox from '@material-ui/core/Checkbox'
 import TextField from '@material-ui/core/TextField'
 import { default as BoxInfo } from '../../models/Box'
 import { default as BoxConfigInfo } from '../../models/BoxConfig'
-import Calculation from '../../services/Calculation'
+import Quaternion from '../../services/quaternion'
 
 class BoxTabPanel extends React.Component {
   constructor(props) {
@@ -41,17 +41,14 @@ class BoxTabPanel extends React.Component {
     newRotation[i] = newValue
     this.setState({ initialRotation: newRotation })
 
-    const quaternion = Calculation.eulerToQuaternion([
+    const quaternion = Quaternion.fromEuler([
       (newRotation[0] * Math.PI) / 180,
       (newRotation[1] * Math.PI) / 180,
       (newRotation[2] * Math.PI) / 180,
     ])
     const box = Object.assign({}, this.props.box)
     box.rotation[i] = (newValue * Math.PI) / 180.0
-    box.quaternion[0] = quaternion[0]
-    box.quaternion[1] = quaternion[1]
-    box.quaternion[2] = quaternion[2]
-    box.quaternion[3] = quaternion[3]
+    box.quaternion = quaternion
     this.props.updateBox(this.props.index, box)
   }
 
@@ -137,13 +134,10 @@ class BoxTabPanel extends React.Component {
       const boxConfig = Object.assign({}, this.props.boxConfig)
       boxConfig.initialRotVelocity[i] =
         Number(newValue) * this.props.boxConfig.standardRotVelocity
-      const quaternion = Calculation.eulerToQuaternion(
+      const quaternion = Quaternion.fromEuler(
         boxConfig.initialRotVelocity
       )
-      box.quatVelocity[0] = quaternion[0]
-      box.quatVelocity[1] = quaternion[1]
-      box.quatVelocity[2] = quaternion[2]
-      box.quatVelocity[3] = quaternion[3]
+      box.quaternion = quaternion
       this.props.updateBox(this.props.index, box)
       this.props.updateBoxConfig(this.props.index, boxConfig)
 
