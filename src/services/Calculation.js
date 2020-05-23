@@ -174,30 +174,30 @@ class Calculation {
   //各boxの頂点を求める(初期状態)＊＊更新前に使う(辺は±１と奇数は＋３、偶数は－３：インデックスで言うと奇数は－３、偶数は＋３)
   static initialVertexPosition(boxes, boxConfigs){
     boxes.forEach((box, index) => {
-      box.vertexPosition[0][0] = -boxConfigs[index].size[0] / 2
-      box.vertexPosition[0][1] = -boxConfigs[index].size[1] / 2
-      box.vertexPosition[0][2] = -boxConfigs[index].size[2] / 2
+      box.vertexPosition[0][0] =  boxConfigs[index].size[0] / 2
+      box.vertexPosition[0][1] =  boxConfigs[index].size[1] / 2
+      box.vertexPosition[0][2] =  boxConfigs[index].size[2] / 2
       box.vertexPosition[1][0] =  boxConfigs[index].size[0] / 2
-      box.vertexPosition[1][1] = -boxConfigs[index].size[1] / 2
+      box.vertexPosition[1][1] =  boxConfigs[index].size[1] / 2
       box.vertexPosition[1][2] = -boxConfigs[index].size[2] / 2
       box.vertexPosition[2][0] =  boxConfigs[index].size[0] / 2
-      box.vertexPosition[2][1] =  boxConfigs[index].size[1] / 2
-      box.vertexPosition[2][2] = -boxConfigs[index].size[2] / 2
-      box.vertexPosition[3][0] = -boxConfigs[index].size[0] / 2
-      box.vertexPosition[3][1] =  boxConfigs[index].size[1] / 2
+      box.vertexPosition[2][1] = -boxConfigs[index].size[1] / 2
+      box.vertexPosition[2][2] =  boxConfigs[index].size[2] / 2
+      box.vertexPosition[3][0] =  boxConfigs[index].size[0] / 2
+      box.vertexPosition[3][1] = -boxConfigs[index].size[1] / 2
       box.vertexPosition[3][2] = -boxConfigs[index].size[2] / 2
       box.vertexPosition[4][0] = -boxConfigs[index].size[0] / 2
-      box.vertexPosition[4][1] =  boxConfigs[index].size[1] / 2
+      box.vertexPosition[4][1] = -boxConfigs[index].size[1] / 2
       box.vertexPosition[4][2] =  boxConfigs[index].size[2] / 2
-      box.vertexPosition[5][0] =  boxConfigs[index].size[0] / 2
+      box.vertexPosition[5][0] = -boxConfigs[index].size[0] / 2
       box.vertexPosition[5][1] =  boxConfigs[index].size[1] / 2
-      box.vertexPosition[5][2] =  boxConfigs[index].size[2] / 2
-      box.vertexPosition[6][0] =  boxConfigs[index].size[0] / 2
+      box.vertexPosition[5][2] = -boxConfigs[index].size[2] / 2
+      box.vertexPosition[6][0] = -boxConfigs[index].size[0] / 2
       box.vertexPosition[6][1] = -boxConfigs[index].size[1] / 2
       box.vertexPosition[6][2] =  boxConfigs[index].size[2] / 2
       box.vertexPosition[7][0] = -boxConfigs[index].size[0] / 2
       box.vertexPosition[7][1] = -boxConfigs[index].size[1] / 2
-      box.vertexPosition[7][2] =  boxConfigs[index].size[2] / 2
+      box.vertexPosition[7][2] = -boxConfigs[index].size[2] / 2
 
     })
   }
