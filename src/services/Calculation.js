@@ -153,6 +153,14 @@ class Calculation {
   }
 
   static updateValues = (boxes, boxConfigs, gravity) => {
+    boxes.forEach((boxA, index) => {
+      for (var i = index + 1; boxes.length; i++) {
+        const boxB = boxes[i]
+        // boxAとboxBの衝突を調べる
+        boxA.isClash(boxB)
+      }
+    })
+
     boxes.forEach((box, index) => {
       // 速度の更新
       if (boxConfigs[index].fixed === false) {
