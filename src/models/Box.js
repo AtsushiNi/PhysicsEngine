@@ -45,7 +45,7 @@ export default class Box {
         // vが原点と平面に存在することはない(もしあれば5行上でreturn falseしている)
         const vertical3 = Vector.verticalVector3(...(array - v))
 
-        return vertical3.dot(v) < 0
+        return vertical3.dot(v) > 0
       })
 
       if (vectors.length == 4) {

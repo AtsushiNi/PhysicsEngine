@@ -6,7 +6,7 @@ import { default as BoxInfo } from '../models/Box'
 
 function Space(props) {
   const boxes = props.boxes.map((box, i) => {
-    return <Box position={box.position} quaternion={box.quaternion} key={i} />
+    return <Box box={box} key={i} />
   })
 
   return (
