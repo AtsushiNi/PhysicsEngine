@@ -23,7 +23,7 @@ export default class Quaternion {
     newQuaternion[2] = q[2] * p[0] + q[3] * p[1] - q[0] * p[2] - q[1] * p[3]
     newQuaternion[3] = q[3] * p[0] - q[2] * p[1] + q[1] * p[2] - q[0] * p[3]
 
-    return newQuaternion
+    return new Quaternion(newQuaternion)
   }
 
   // オイラー角を返す

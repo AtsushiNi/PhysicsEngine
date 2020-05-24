@@ -53,15 +53,6 @@ class Calculation {
     const quatVelocity = [1, w[0], w[1], w[2]]
     return quatVelocity
   }
-  //各速度ベクトルω=[ω1,ω2,ω3]のときのクォータニオンの更新
-  static reminderQuaternion(quaternion, quatVelocity) {
-    let newQuaternion = this.quatCalcuration(quaternion, quatVelocity)
-    let deltaQuaternion = [0, 0, 0, 0]
-    for (let i = 0; i < 4; i++) {
-      deltaQuaternion[i] = newQuaternion[i] - quaternion[i]
-    }
-    return deltaQuaternion
-  }
 
   static updateValues = (boxes, boxConfigs, gravity) => {
     if (boxes.length > 1) {
@@ -81,23 +72,13 @@ class Calculation {
         box.velocity[1] += gravity[1]
         box.velocity[2] += gravity[2]
       }
+
       // 位置の更新
       box.position[0] += box.velocity[0]
       box.position[1] += box.velocity[1]
       box.position[2] += box.velocity[2]
-      //クォータニオンの更新
-      let deltaQuaternion = Calculation.reminderQuaternion(
-        box.quaternion,
-        box.quatVelocity
-      )
-      box.quaternion[0] += deltaQuaternion[0]
-      box.quaternion[1] += deltaQuaternion[1]
-      box.quaternion[2] += deltaQuaternion[2]
-      box.quaternion[3] += deltaQuaternion[3]
 
-      console.log(
-        `${box.quaternion[0]},${box.quaternion[1]},${box.quaternion[2]},${box.quaternion[3]}`
-      )
+      box.quaternion = box.quaternion.dot(box.quatVelocity)
     })
   }
 
