@@ -27,5 +27,5 @@ export default function Box(props) {
 }
 
 Box.propTypes = {
-  box: PropTypes.instanceOf(BoxInfo)
+  box: PropTypes.instanceOf(BoxInfo),
 }

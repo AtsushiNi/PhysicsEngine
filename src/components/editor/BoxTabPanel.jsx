@@ -63,7 +63,9 @@ class BoxTabPanel extends React.Component {
 
     if (isFinite(newValue)) {
       this.props.box.rotation[i] = Number((newValue * Math.PI) / 180.0)
-      this.props.boxConfig.initialRotation[i] = Number((newValue * Math.PI) / 180.0)
+      this.props.boxConfig.initialRotation[i] = Number(
+        (newValue * Math.PI) / 180.0
+      )
     }
   }
 
