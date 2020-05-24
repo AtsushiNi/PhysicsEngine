@@ -46,31 +46,22 @@ class BoxTabPanel extends React.Component {
       (newRotation[1] * Math.PI) / 180,
       (newRotation[2] * Math.PI) / 180,
     ])
-    const box = Object.assign({}, this.props.box)
-    box.rotation[i] = (newValue * Math.PI) / 180.0
-    box.quaternion[0] = quaternion[0]
-    box.quaternion[1] = quaternion[1]
-    box.quaternion[2] = quaternion[2]
-    box.quaternion[3] = quaternion[3]
-    this.props.updateBox(this.props.index, box)
+    this.props.box.rotation[i] = (newValue * Math.PI) / 180.0
+    this.props.box.quaternion = quaternion
   }
 
   handleBoxRotationSliderCommit = i => (event, newValue) => {
-    const boxConfig = Object.assign({}, this.props.boxConfig)
-    boxConfig.initialRotation[i] = (newValue * Math.PI) / 180.0
-    this.props.updateBoxConfig(this.props.index, boxConfig)
+    this.props.boxConfig.initialRotation[i] = (newValue * Math.PI) / 180.0
   }
 
   handleBoxRotationInputChange = i => event => {
     const newValue = event.target.value
 
     if (isFinite(newValue)) {
-      const box = Object.assign({}, this.props.box)
-      box.rotation[i] = Number((newValue * Math.PI) / 180.0)
-      const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialRotation[i] = Number((newValue * Math.PI) / 180.0)
-      this.props.updateBox(this.props.index, box)
-      this.props.updateBoxConfig(this.props.index, boxConfig)
+      this.props.box.rotation[i] = Number((newValue * Math.PI) / 180.0)
+      this.props.boxConfig.initialRotation[i] = Number(
+        (newValue * Math.PI) / 180.0
+      )
     }
   }
 
@@ -79,27 +70,19 @@ class BoxTabPanel extends React.Component {
     newPosition[i] = newValue
     this.setState({ initialPosition: newPosition })
 
-    const box = Object.assign({}, this.props.box)
-    box.position[i] = newValue
-    this.props.updateBox(this.props.index, box)
+    this.props.box.position[i] = newValue
   }
 
   handleBoxPositionSliderCommit = i => (event, newValue) => {
-    const boxConfig = Object.assign({}, this.props.boxConfig)
-    boxConfig.initialPosition[i] = newValue
-    this.props.updateBoxConfig(this.props.index, boxConfig)
+    this.props.boxConfig.initialPosition[i] = newValue
   }
 
   handleBoxPositionInputChange = i => event => {
     const newValue = event.target.value
 
     if (isFinite(newValue)) {
-      const box = Object.assign({}, this.props.box)
-      box.position[i] = Number(newValue)
-      const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialPosition[i] = Number(newValue)
-      this.props.updateBox(this.props.index, box)
-      this.props.updateBoxConfig(this.props.index, boxConfig)
+      this.props.box.position[i] = Number(newValue)
+      this.props.boxConfig.initialPosition[i] = Number(newValue)
     }
   }
 
@@ -107,19 +90,16 @@ class BoxTabPanel extends React.Component {
     const newValue = event.target.value
 
     if (this.NumberRegExpPattern.test(newValue)) {
-      const box = Object.assign({}, this.props.box)
-      box.velocity[i] = Number(newValue) * this.props.boxConfig.standardVelocity
-      const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialVelocity[i] =
+      const initialVelocity =
         Number(newValue) * this.props.boxConfig.standardVelocity
-      this.props.updateBox(this.props.index, box)
-      this.props.updateBoxConfig(this.props.index, boxConfig)
+      this.props.box.velocity[i] = initialVelocity
+      this.props.boxConfig.initialVelocity[i] = initialVelocity
 
-      const initialVelocity = Object.assign([], this.state.initialVelocity)
-      initialVelocity[i] = newValue
+      const initialVelocityState = Object.assign([], this.state.initialVelocity)
+      initialVelocityState[i] = newValue
       const error = Object.assign({}, this.state.error)
       error.velocity[i] = false
-      this.setState({ initialVelocity: initialVelocity, error: error })
+      this.setState({ initialVelocity: initialVelocityState, error: error })
     } else {
       const initialVelocity = Object.assign([], this.state.initialVelocity)
       initialVelocity[i] = newValue
@@ -133,19 +113,12 @@ class BoxTabPanel extends React.Component {
     const newValue = event.target.value
 
     if (this.NumberRegExpPattern.test(newValue)) {
-      const box = Object.assign({}, this.props.box)
-      const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialRotVelocity[i] =
+      this.props.boxConfig.initialRotVelocity[i] =
         Number(newValue) * this.props.boxConfig.standardRotVelocity
       const quaternion = Calculation.eulerToQuaternion(
-        boxConfig.initialRotVelocity
+        this.props.boxConfig.initialRotVelocity
       )
-      box.quatVelocity[0] = quaternion[0]
-      box.quatVelocity[1] = quaternion[1]
-      box.quatVelocity[2] = quaternion[2]
-      box.quatVelocity[3] = quaternion[3]
-      this.props.updateBox(this.props.index, box)
-      this.props.updateBoxConfig(this.props.index, boxConfig)
+      this.props.box.quatVelocity = quaternion
 
       const initialRotVelocity = Object.assign(
         [],
@@ -172,9 +145,7 @@ class BoxTabPanel extends React.Component {
 
     this.setState({ fixed: newValue })
 
-    const boxConfig = Object.assign({}, this.props.boxConfig)
-    boxConfig.fixed = newValue
-    this.props.updateBoxConfig(this.props.index, boxConfig)
+    this.props.boxConfig.fixed = newValue
   }
 
   render() {

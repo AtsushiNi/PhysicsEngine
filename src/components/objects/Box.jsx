@@ -2,18 +2,20 @@ import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useFrame } from 'react-three-fiber'
 import Calculation from '../../services/Calculation'
+import { default as BoxInfo } from '../../models/Box'
 
-function Box(props) {
+export default function Box(props) {
   const mesh = useRef()
 
   useFrame(() => {
-    const euler = Calculation.quaternionToEuler(props.quaternion)
+    const euler = Calculation.quaternionToEuler(props.box.quaternion)
+    const position = props.box.position
     mesh.current.rotation.x = euler[0]
     mesh.current.rotation.y = euler[1]
     mesh.current.rotation.z = euler[2]
-    mesh.current.position.x = props.position[0]
-    mesh.current.position.y = props.position[1]
-    mesh.current.position.z = props.position[2]
+    mesh.current.position.x = position[0]
+    mesh.current.position.y = position[1]
+    mesh.current.position.z = position[2]
   })
 
   return (
@@ -25,8 +27,5 @@ function Box(props) {
 }
 
 Box.propTypes = {
-  position: PropTypes.arrayOf(PropTypes.number),
-  quaternion: PropTypes.arrayOf(PropTypes.number),
+  box: PropTypes.instanceOf(BoxInfo),
 }
-
-export default Box

@@ -42,21 +42,21 @@ class App extends React.Component {
     })
   }
 
-  updateBox = (index, box) => {
-    var boxes = Object.assign([], this.state.boxes)
-    boxes[index] = box
-    this.setState({
-      boxes: boxes,
-    })
-  }
+  // updateBox = (index, box) => {
+  //   var boxes = Object.assign([], this.state.boxes)
+  //   boxes[index] = box
+  //   this.setState({
+  //     boxes: boxes,
+  //   })
+  // }
 
-  updateBoxConfig = (index, boxConfig) => {
-    var boxConfigs = Object.assign([], this.state.boxConfigs)
-    boxConfigs[index] = boxConfig
-    this.setState({
-      boxConfigs: boxConfigs,
-    })
-  }
+  // updateBoxConfig = (index, boxConfig) => {
+  //   var boxConfigs = Object.assign([], this.state.boxConfigs)
+  //   boxConfigs[index] = boxConfig
+  //   this.setState({
+  //     boxConfigs: boxConfigs,
+  //   })
+  // }
 
   updateGeneralConfig = generalConfig => {
     this.setState({
