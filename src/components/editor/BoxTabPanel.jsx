@@ -46,31 +46,24 @@ class BoxTabPanel extends React.Component {
       (newRotation[1] * Math.PI) / 180,
       (newRotation[2] * Math.PI) / 180,
     ])
-    const box = Object.assign({}, this.props.box)
-    box.rotation[i] = (newValue * Math.PI) / 180.0
-    box.quaternion[0] = quaternion[0]
-    box.quaternion[1] = quaternion[1]
-    box.quaternion[2] = quaternion[2]
-    box.quaternion[3] = quaternion[3]
-    this.props.updateBox(this.props.index, box)
+    this.props.box.rotation[i] = (newValue * Math.PI) / 180.0
+    // this.props.box.quaternion = quaternion
+    this.props.box.quaternion[0] = quaternion[0]
+    this.props.box.quaternion[1] = quaternion[1]
+    this.props.box.quaternion[2] = quaternion[2]
+    this.props.box.quaternion[3] = quaternion[3]
   }
 
   handleBoxRotationSliderCommit = i => (event, newValue) => {
-    const boxConfig = Object.assign({}, this.props.boxConfig)
-    boxConfig.initialRotation[i] = (newValue * Math.PI) / 180.0
-    this.props.updateBoxConfig(this.props.index, boxConfig)
+    this.props.boxConfig.initialRotation[i] = (newValue * Math.PI) / 180.0
   }
 
   handleBoxRotationInputChange = i => event => {
     const newValue = event.target.value
 
     if (isFinite(newValue)) {
-      const box = Object.assign({}, this.props.box)
-      box.rotation[i] = Number((newValue * Math.PI) / 180.0)
-      const boxConfig = Object.assign({}, this.props.boxConfig)
-      boxConfig.initialRotation[i] = Number((newValue * Math.PI) / 180.0)
-      this.props.updateBox(this.props.index, box)
-      this.props.updateBoxConfig(this.props.index, boxConfig)
+      this.props.box.rotation[i] = Number((newValue * Math.PI) / 180.0)
+      this.props.boxConfig.initialRotation[i] = Number((newValue * Math.PI) / 180.0)
     }
   }
 
