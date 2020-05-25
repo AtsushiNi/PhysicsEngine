@@ -257,14 +257,32 @@ class Calculation {
       box.quaternion[2] += deltaQuaternion[2]
       box.quaternion[3] += deltaQuaternion[3]
 
-      var vertexPosition = this.vertexPosition(box)
-      
-      console.log(`quaternion:${box.quaternion[0]},${box.quaternion[1]},${box.quaternion[2]},${box.quaternion[3]}`)
-      console.log(`quatVelocity:${box.quatVelocity[0]},${box.quatVelocity[1]},${box.quatVelocity[2]}`)
-      console.log(`1:${vertexPosition[0][0]},${vertexPosition[0][1]},${vertexPosition[0][2]}`)
-      console.log(`6:${vertexPosition[5][0]},${vertexPosition[5][1]},${vertexPosition[5][2]}`)
-      console.log(`position:${box.position[0]},${box.position[1]},${box.position[2]}`)
-      console.log("**********************************")
+      //頂点の更新
+      var nVertexPosition = this.vertexPosition(box)
+      box.vertexPosition[0][0] = nVertexPosition[0][0]
+      box.vertexPosition[0][1] = nVertexPosition[0][1]
+      box.vertexPosition[0][2] = nVertexPosition[0][2]
+      box.vertexPosition[1][0] = nVertexPosition[1][0]
+      box.vertexPosition[1][1] = nVertexPosition[1][1]
+      box.vertexPosition[1][2] = nVertexPosition[1][2]
+      box.vertexPosition[2][0] = nVertexPosition[2][0]
+      box.vertexPosition[2][1] = nVertexPosition[2][1]
+      box.vertexPosition[2][2] = nVertexPosition[2][2]
+      box.vertexPosition[3][0] = nVertexPosition[3][0]
+      box.vertexPosition[3][1] = nVertexPosition[3][1]
+      box.vertexPosition[3][2] = nVertexPosition[3][2]
+      box.vertexPosition[4][0] = nVertexPosition[4][0]
+      box.vertexPosition[4][1] = nVertexPosition[4][1]
+      box.vertexPosition[4][2] = nVertexPosition[4][2]
+      box.vertexPosition[5][0] = nVertexPosition[5][0]
+      box.vertexPosition[5][1] = nVertexPosition[5][1]
+      box.vertexPosition[5][2] = nVertexPosition[5][2]
+      box.vertexPosition[6][0] = nVertexPosition[6][0]
+      box.vertexPosition[6][1] = nVertexPosition[6][1]
+      box.vertexPosition[6][2] = nVertexPosition[6][2]
+      box.vertexPosition[7][0] = nVertexPosition[7][0]
+      box.vertexPosition[7][1] = nVertexPosition[7][1]
+      box.vertexPosition[7][2] = nVertexPosition[7][2]
 
     })
   }

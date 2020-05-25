@@ -66,7 +66,7 @@ class App extends React.Component {
 
   startAnimation = (event) => {
     var boxes = this.state.boxes.slice()
-    Calculation.initialVertexPosition(boxes, this.state.boxConfigs)
+    Calculation.initialVertexPosition(this.state.boxes, this.state.boxConfigs)
     this.setState({
       boxes: boxes
     })
