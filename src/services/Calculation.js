@@ -137,7 +137,7 @@ class Calculation {
     const positionVector = [0, r[0], r[1], r[2]]
     return positionVector
   }
-  //各速度ベクトルをクォータニオンに変換
+  //角速度ベクトルをクォータニオンに変換
   static angularVelocityVectortoQuaternion(w){
     const absoluteW = Math.sqrt(w[0] * w[0] + w[1] * w[1] + w[2] * w[2])
     const quatVelocity = [Math.cos(absoluteW / 2),
@@ -170,6 +170,18 @@ class Calculation {
     let newR = [newQuaternionR[1], newQuaternionR[2], newQuaternionR[3]]
     return newR
   }
+
+  //逆回転移動
+  static inverseRotationalTranslate(q, r){
+    let quaternionR = this.positionVectortoQuaternion(r)
+    let conjugateQuaternion = this.conjugateQuaternion(q)
+    let newQuaternionR = this.quatCalcuration(this.quatCalcuration(conjugateQuaternion, quaternionR), q)
+    let newR = [newQuaternionR[1], newQuaternionR[2], newQuaternionR[3]]
+    return newR
+  }
+
+
+
 
   //各boxの頂点を求める(初期状態)＊＊更新前に使う(辺は±１と奇数は＋３、偶数は－３：インデックスで言うと奇数は－３、偶数は＋３)
   static initialVertexPosition(boxes, boxConfigs){

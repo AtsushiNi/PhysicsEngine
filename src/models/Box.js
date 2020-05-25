@@ -1,7 +1,9 @@
 import Vector from '../services/vector'
+import Calculation from '../services/Calculation.js'
 
 export default class Box {
-  constructor() {
+  constructor(sizeX = 1, sizeY = 1, sizeZ = 1) {
+    this.size = [sizeX, sizeY, sizeZ]
     this.position = [0, 0, 0]
     this.rotation = [0, 0, 0]
     this.velocity = [0, 0, 0]
@@ -69,12 +71,12 @@ export default class Box {
   // return Vector
   relativeSupportMapping = vector => {
     // 全頂点とvectorの内積が最大の頂点のベクトルを返す
-    const globalVertexes = this.getRelativeVertexPositions()
-    const dotProducts = globalVertexes.map(vertex =>
+    const relativeVertex = this.getRelativeVertexPositions()
+    const dotProducts = relativeVertex.map(vertex =>
       vector.dot(new Vector(vertex))
     )
     const i = dotProducts.indexOf(Math.max.apply(null, dotProducts))
-    return new Vector(globalVertexes[i])
+    return new Vector(relativeVertex[i])
   }
 
   // ローカル座標においてvector方向のサポート写像を返す
@@ -95,33 +97,30 @@ export default class Box {
   // return Array[Array]
   getLocalVertexPositions = () => {
     return [
-      [1 / 2, 1 / 2, 1 / 2],
-      [1 / 2, 1 / 2, -1 / 2],
-      [1 / 2, -1 / 2, 1 / 2],
-      [1 / 2, -1 / 2, -1 / 2],
-      [-1 / 2, 1 / 2, 1 / 2],
-      [-1 / 2, 1 / 2, -1 / 2],
-      [-1 / 2, -1 / 2, 1 / 2],
-      [-1 / 2, -1 / 2, -1 / 2],
+
+      [this.size[0] / 2, this.size[1] / 2, this.size[2] / 2 / 2],
+      [this.size[0] / 2, this.size[1] / 2, -this.size[2] / 2 / 2],
+      [this.size[0] / 2, -this.size[1] / 2, this.size[2] / 2 / 2],
+      [this.size[0] / 2, -this.size[1] / 2, -this.size[2] / 2 / 2],
+      [-this.size[0] / 2, this.size[1] / 2, this.size[2] / 2 / 2],
+      [-this.size[0] / 2, this.size[1] / 2, -this.size[2] / 2 / 2],
+      [-this.size[0] / 2, -this.size[1] / 2, this.size[2] / 2 / 2],
+      [-this.size[0] / 2, -this.size[1] / 2, -this.size[2] / 2 / 2],
     ]
   }
 
   // グローバル座標での頂点の座標を返す
   // TODO ちゃんと実装する
   // return Array[Array]
-  getRelativeVertexPositions = () => {
-    const len = Math.sqrt(1 / 2)
-    const sin30 = Math.sin((30 * Math.PI) / 180)
-    const cos30 = Math.cos((30 * Math.PI) / 180)
-    return [
-      [len * cos30, 1 / 2, len * sin30],
-      [len * sin30, 1 / 2, -len * cos30],
-      [len * cos30, -1 / 2, len * sin30],
-      [len * sin30, -1 / 2, -len * cos30],
-      [-len * sin30, 1 / 2, len * cos30],
-      [-len * cos30, 1 / 2, -len * sin30],
-      [-len * sin30, -1 / 2, len * cos30],
-      [-len * cos30, -1 / 2, -len * sin30],
-    ]
+  getRelativeVertexPositions = box => {
+    let nVertexPosition = []
+    for(let i = 0; i < 8; i++){
+      let vertexTranslation = box.vertexPosition[i].map((element, index) => {
+        return element - this.position[index]
+      })
+      let mVertexPosition = Calculation.inverseRotationalTranslate(this.quaternion, vertexTranslation)
+      nVertexPosition.push(mVertexPosition)
+    }
+    return nVertexPosition
   }
 }
