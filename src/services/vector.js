@@ -13,14 +13,25 @@ export default class Vector {
   // return Vector
   negate = () => new Vector([-this.value[0], -this.value[1], -this.value[2]])
 
+  // vectorを足したものを返す
+  // params vector: Vector
+  // return Vector
+  add = vector => {
+    return new Vector([
+      this.value[0] + vector.getValue()[0],
+      this.value[1] + vector.getValue()[1],
+      this.value[2] + vector.getValue()[2],
+    ])
+  }
+
   // vectorを引いたものを返す
   // params vector: Vector
   // return Vector
   sub = vector => {
     return new Vector([
-      this.value[0] - vector.getValue[0],
-      this.value[1] - vector.getValue[1],
-      this.value[2] - vector.getValue[2],
+      this.value[0] - vector.getValue()[0],
+      this.value[1] - vector.getValue()[1],
+      this.value[2] - vector.getValue()[2],
     ])
   }
   // n倍したベクトルを返す
@@ -34,8 +45,20 @@ export default class Vector {
   // params vector: Vector
   // return Number
   dot = vector => {
-    const callback = (sum, component, i) => (sum += component * vector[i])
-    return this.value.reduce(callback)
+    const callback = (sum, component, i) => (sum + component * vector.getValue()[i])
+    return this.value.reduce(callback, 0)
+  }
+
+  // vectorとの外積を返す
+  // params vector: Vector
+  // return Vector
+  cross = vector => {
+    const vectorValue = vector.getValue()
+    return new Vector([
+      this.value[1] * vectorValue[2] - this.value[2] * vectorValue[1],
+      this.value[2] * vectorValue[0] - this.value[0] * vectorValue[2],
+      this.value[0] * vectorValue[1] - this.value[1] * vectorValue[0],
+    ])
   }
 
   // 絶対値の二乗を返す
@@ -69,9 +92,9 @@ export default class Vector {
   // params vectorC: Vector
   // return Vector
   static verticalVector3 = (vectorA, vectorB, vectorC) => {
-    let vertical = vectorB.nimus(vectorA).cross(vectorC.minus(vectorA))
+    let vertical = vectorB.sub(vectorA).cross(vectorC.sub(vectorA))
     if (vertical.dot(vectorA) > 0) {
-      vertical = vertical.negate
+      vertical = vertical.negate()
     }
 
     return vertical
