@@ -16,13 +16,13 @@ export default class Box {
     // https://trap.jp/post/198/ GJKアルゴリズム 3次元の場合を参照
     const p0 = new Vector(box.position) // p0はboxの重心を使うことにする
     const v1 = p0.negate()
-    const p1 = this.localSupportMapping(v1) - box.relativeSupportMapping(p0) // v1方向の、ミンコフスキー差のサポート写像
+    const p1 = this.localSupportMapping(v1).sub(box.relativeSupportMapping(p0)) // v1方向の、ミンコフスキー差のサポート写像
     if (v1.dot(p1) < 0) {
       return false
     }
     const v2 = Vector.verticalVector2(p0, p1)
     const p2 =
-      this.localSupportMapping(v2) - box.relativeSupportMapping(v2.negate())
+      this.localSupportMapping(v2).sub(box.relativeSupportMapping(v2.negate()))
     if (v2.dot(p2) < 0) {
       return false
     }
@@ -32,17 +32,19 @@ export default class Box {
     while (true) {
       const vertical = Vector.verticalVector3(...vectors)
       const newP =
-        this.localSupportMapping(vertical) -
-        box.relativeSupportMapping(vertical.negate())
+        this.localSupportMapping(vertical).sub(
+        box.relativeSupportMapping(vertical.negate()))
       if (vertical.dot(newP) < 0) {
         clash = false
         break
       }
-      vectors = vectors.push(newP).filter((v, i, array) => {
+      vectors.push(newP)
+      vectors = vectors.filter((v, i, array) => {
         // vが他の3ベクトルの平面の向こう側かどうかを調べる
         // 全て手前なら原点は四面体の内部なので衝突
         // vが原点と平面に存在することはない(もしあれば5行上でreturn falseしている)
-        const vertical3 = Vector.verticalVector3(...(array - v))
+        const triangle = array.filter((item, index) => index !== i)
+        const vertical3 = Vector.verticalVector3(...(triangle))
 
         return vertical3.dot(v) > 0
       })
@@ -65,7 +67,7 @@ export default class Box {
     const dotProducts = globalVertexes.map(vertex =>
       vector.dot(new Vector(vertex))
     )
-    const i = dotProducts.indexOf(Math.max.apply(null, dotProducts))
+    const i = dotProducts.indexOf(Math.max(...dotProducts))
     return new Vector(globalVertexes[i])
   }
 
@@ -78,7 +80,7 @@ export default class Box {
     const dotProducts = localVertexes.map(vertex =>
       vector.dot(new Vector(vertex))
     )
-    const i = dotProducts.indexOf(Math.max.apply(null, dotProducts))
+    const i = dotProducts.indexOf(Math.max(...dotProducts))
     return new Vector(localVertexes[i])
   }
 
