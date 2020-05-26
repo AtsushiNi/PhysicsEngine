@@ -21,8 +21,9 @@ export default class Box {
       return false
     }
     const v2 = Vector.verticalVector2(p0, p1)
-    const p2 =
-      this.localSupportMapping(v2).sub(box.relativeSupportMapping(v2.negate()))
+    const p2 = this.localSupportMapping(v2).sub(
+      box.relativeSupportMapping(v2.negate())
+    )
     if (v2.dot(p2) < 0) {
       return false
     }
@@ -31,9 +32,9 @@ export default class Box {
     let clash = false
     while (true) {
       const vertical = Vector.verticalVector3(...vectors)
-      const newP =
-        this.localSupportMapping(vertical).sub(
-        box.relativeSupportMapping(vertical.negate()))
+      const newP = this.localSupportMapping(vertical).sub(
+        box.relativeSupportMapping(vertical.negate())
+      )
       if (vertical.dot(newP) < 0) {
         clash = false
         break
@@ -44,7 +45,7 @@ export default class Box {
         // 全て手前なら原点は四面体の内部なので衝突
         // vが原点と平面に存在することはない(もしあれば5行上でreturn falseしている)
         const triangle = array.filter((item, index) => index !== i)
-        const vertical3 = Vector.verticalVector3(...(triangle))
+        const vertical3 = Vector.verticalVector3(...triangle)
 
         return vertical3.dot(v) > 0
       })
