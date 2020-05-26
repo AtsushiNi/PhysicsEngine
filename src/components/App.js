@@ -65,11 +65,6 @@ class App extends React.Component {
   }
 
   startAnimation = (event) => {
-    var boxes = this.state.boxes.slice()
-    Calculation.initialVertexPosition(this.state.boxes, this.state.boxConfigs)
-    this.setState({
-      boxes: boxes
-    })
     this.intervalId = setInterval(this.animate, 20)
   }
 
