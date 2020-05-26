@@ -183,10 +183,6 @@ class Calculation {
       box.quaternion[1] += deltaQuaternion[1]
       box.quaternion[2] += deltaQuaternion[2]
       box.quaternion[3] += deltaQuaternion[3]
-
-      console.log(
-        `${box.quaternion[0]},${box.quaternion[1]},${box.quaternion[2]},${box.quaternion[3]}`
-      )
     })
   }
 
