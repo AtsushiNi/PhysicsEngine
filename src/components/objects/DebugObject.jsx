@@ -21,7 +21,7 @@ export default function DebugObject(props) {
   return (
     <line>
       <geometry attach="geometry" vertices={vertices} />
-      <lineBasicMaterial attach="material" color="white" />
+      <lineBasicMaterial attach="material" color="red" />
     </line>
   )
 }

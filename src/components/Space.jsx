@@ -14,8 +14,9 @@ function Space(props) {
 
   return (
     <Canvas>
-      <ambientLight />
-      <pointLight position={[10, 10, 10]} />
+      <spotLight intensity={0.4} position={[30, 30, 50]} angle={0.2} penumbra={1} />
+      <spotLight intensity={0.4} position={[-30, 30, 50]} angle={0.2} penumbra={1} />
+      <ambientLight intensity={0.5} />
       {boxes}
       {props.boxes.length > 1 && <DebugObject boxes={props.boxes} />}
       <Controls />
