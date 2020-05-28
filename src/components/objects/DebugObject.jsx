@@ -13,7 +13,10 @@ export default function DebugObject(props) {
 
   const start = [1, 1, 1]
   const end = [2, 2, 2]
-  const vertices = useMemo(() => [start, end].map((v) => new THREE.Vector3(...v)), [start, end])
+  const vertices = useMemo(
+    () => [start, end].map(v => new THREE.Vector3(...v)),
+    [start, end]
+  )
 
   return (
     <line>
@@ -24,5 +27,5 @@ export default function DebugObject(props) {
 }
 
 DebugObject.propTypes = {
-  box: PropTypes.instanceOf(Box)
+  box: PropTypes.instanceOf(Box),
 }
