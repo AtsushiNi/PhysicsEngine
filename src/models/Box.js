@@ -98,14 +98,14 @@ export default class Box {
   getLocalVertexPositions = () => {
     return [
 
-      [this.size[0] / 2, this.size[1] / 2, this.size[2] / 2 / 2],
-      [this.size[0] / 2, this.size[1] / 2, -this.size[2] / 2 / 2],
-      [this.size[0] / 2, -this.size[1] / 2, this.size[2] / 2 / 2],
-      [this.size[0] / 2, -this.size[1] / 2, -this.size[2] / 2 / 2],
-      [-this.size[0] / 2, this.size[1] / 2, this.size[2] / 2 / 2],
-      [-this.size[0] / 2, this.size[1] / 2, -this.size[2] / 2 / 2],
-      [-this.size[0] / 2, -this.size[1] / 2, this.size[2] / 2 / 2],
-      [-this.size[0] / 2, -this.size[1] / 2, -this.size[2] / 2 / 2],
+      [this.size[0] / 2, this.size[1] / 2, this.size[2] / 2],
+      [this.size[0] / 2, this.size[1] / 2, -this.size[2] / 2],
+      [this.size[0] / 2, -this.size[1] / 2, this.size[2] / 2],
+      [this.size[0] / 2, -this.size[1] / 2, -this.size[2] / 2],
+      [-this.size[0] / 2, this.size[1] / 2, this.size[2] / 2],
+      [-this.size[0] / 2, this.size[1] / 2, -this.size[2] / 2],
+      [-this.size[0] / 2, -this.size[1] / 2, this.size[2] / 2],
+      [-this.size[0] / 2, -this.size[1] / 2, -this.size[2] / 2],
     ]
   }
 

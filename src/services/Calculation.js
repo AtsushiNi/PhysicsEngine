@@ -1,3 +1,5 @@
+import Box from '../models/Box.js'
+
 class Calculation {
   static innerProductMatrix(matrixA, matrixB) {
     const newMatrix = [
@@ -182,6 +184,7 @@ class Calculation {
 
   //各boxの頂点を求める(移動後)
   static vertexPosition(box){
+    box.vertexPosition = Box.getLocalVertexPositions()
     let nVertexPosition = []
     for(let i = 0; i < 8; i++){
       let mVertexPosition = this.rotationalTranslate(box.quaternion, box.vertexPosition[i])
@@ -223,58 +226,8 @@ class Calculation {
       box.quaternion[2] += deltaQuaternion[2]
       box.quaternion[3] += deltaQuaternion[3]
 
-      //頂点の更新(リモートの頂点座標に初期化→回転移動→平行移動)
-      //リモートの頂点座標に初期化
-      box.vertexPosition[0][0] =  boxConfigs[index].size[0] / 2
-      box.vertexPosition[0][1] =  boxConfigs[index].size[1] / 2
-      box.vertexPosition[0][2] =  boxConfigs[index].size[2] / 2
-      box.vertexPosition[1][0] =  boxConfigs[index].size[0] / 2
-      box.vertexPosition[1][1] =  boxConfigs[index].size[1] / 2
-      box.vertexPosition[1][2] = -boxConfigs[index].size[2] / 2
-      box.vertexPosition[2][0] =  boxConfigs[index].size[0] / 2
-      box.vertexPosition[2][1] = -boxConfigs[index].size[1] / 2
-      box.vertexPosition[2][2] =  boxConfigs[index].size[2] / 2
-      box.vertexPosition[3][0] =  boxConfigs[index].size[0] / 2
-      box.vertexPosition[3][1] = -boxConfigs[index].size[1] / 2
-      box.vertexPosition[3][2] = -boxConfigs[index].size[2] / 2
-      box.vertexPosition[4][0] = -boxConfigs[index].size[0] / 2
-      box.vertexPosition[4][1] = -boxConfigs[index].size[1] / 2
-      box.vertexPosition[4][2] =  boxConfigs[index].size[2] / 2
-      box.vertexPosition[5][0] = -boxConfigs[index].size[0] / 2
-      box.vertexPosition[5][1] =  boxConfigs[index].size[1] / 2
-      box.vertexPosition[5][2] = -boxConfigs[index].size[2] / 2
-      box.vertexPosition[6][0] = -boxConfigs[index].size[0] / 2
-      box.vertexPosition[6][1] = -boxConfigs[index].size[1] / 2
-      box.vertexPosition[6][2] =  boxConfigs[index].size[2] / 2
-      box.vertexPosition[7][0] = -boxConfigs[index].size[0] / 2
-      box.vertexPosition[7][1] = -boxConfigs[index].size[1] / 2
-      box.vertexPosition[7][2] = -boxConfigs[index].size[2] / 2
-      //(回転移動→平行移動)
-      var nVertexPosition = this.vertexPosition(box)
-      box.vertexPosition[0][0] = nVertexPosition[0][0]
-      box.vertexPosition[0][1] = nVertexPosition[0][1]
-      box.vertexPosition[0][2] = nVertexPosition[0][2]
-      box.vertexPosition[1][0] = nVertexPosition[1][0]
-      box.vertexPosition[1][1] = nVertexPosition[1][1]
-      box.vertexPosition[1][2] = nVertexPosition[1][2]
-      box.vertexPosition[2][0] = nVertexPosition[2][0]
-      box.vertexPosition[2][1] = nVertexPosition[2][1]
-      box.vertexPosition[2][2] = nVertexPosition[2][2]
-      box.vertexPosition[3][0] = nVertexPosition[3][0]
-      box.vertexPosition[3][1] = nVertexPosition[3][1]
-      box.vertexPosition[3][2] = nVertexPosition[3][2]
-      box.vertexPosition[4][0] = nVertexPosition[4][0]
-      box.vertexPosition[4][1] = nVertexPosition[4][1]
-      box.vertexPosition[4][2] = nVertexPosition[4][2]
-      box.vertexPosition[5][0] = nVertexPosition[5][0]
-      box.vertexPosition[5][1] = nVertexPosition[5][1]
-      box.vertexPosition[5][2] = nVertexPosition[5][2]
-      box.vertexPosition[6][0] = nVertexPosition[6][0]
-      box.vertexPosition[6][1] = nVertexPosition[6][1]
-      box.vertexPosition[6][2] = nVertexPosition[6][2]
-      box.vertexPosition[7][0] = nVertexPosition[7][0]
-      box.vertexPosition[7][1] = nVertexPosition[7][1]
-      box.vertexPosition[7][2] = nVertexPosition[7][2]
+      //頂点の更新
+      box.vertexPosition = this.vertexPosition(box)
 
     })
   }
