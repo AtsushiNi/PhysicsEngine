@@ -155,7 +155,7 @@ class Calculation {
   static updateValues = (boxes, boxConfigs, gravity) => {
     if (boxes.length > 1) {
       boxes.forEach((boxA, index) => {
-        for (var i = index + 1; boxes.length; i++) {
+        for (var i = index + 1; i < boxes.length; i++) {
           const boxB = boxes[i]
           // boxAとboxBの衝突を調べる
           boxA.isClash(boxB)
@@ -183,10 +183,6 @@ class Calculation {
       box.quaternion[1] += deltaQuaternion[1]
       box.quaternion[2] += deltaQuaternion[2]
       box.quaternion[3] += deltaQuaternion[3]
-
-      console.log(
-        `${box.quaternion[0]},${box.quaternion[1]},${box.quaternion[2]},${box.quaternion[3]}`
-      )
     })
   }
 
