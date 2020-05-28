@@ -1,4 +1,5 @@
 import Vector from '../services/vector'
+import Quaternion from '../services/quaternion'
 
 export default class Box {
   constructor() {
@@ -6,8 +7,8 @@ export default class Box {
     this.rotation = [0, 0, 0]
     this.velocity = [0, 0, 0]
     this.rotVelocity = [0, 0, 0]
-    this.quaternion = [1, 0, 0, 0]
-    this.quatVelocity = [1, 0, 0, 0]
+    this.quaternion = new Quaternion([1, 0, 0, 0])
+    this.quatVelocity = new Quaternion([1, 0, 0, 0])
   }
 
   // boxと衝突しているかを調べる

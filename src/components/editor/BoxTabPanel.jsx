@@ -8,7 +8,7 @@ import CheckBox from '@material-ui/core/Checkbox'
 import TextField from '@material-ui/core/TextField'
 import { default as BoxInfo } from '../../models/Box'
 import { default as BoxConfigInfo } from '../../models/BoxConfig'
-import Calculation from '../../services/Calculation'
+import Quaternion from '../../services/quaternion'
 
 class BoxTabPanel extends React.Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class BoxTabPanel extends React.Component {
     newRotation[i] = newValue
     this.setState({ initialRotation: newRotation })
 
-    const quaternion = Calculation.eulerToQuaternion([
+    const quaternion = Quaternion.fromEuler([
       (newRotation[0] * Math.PI) / 180,
       (newRotation[1] * Math.PI) / 180,
       (newRotation[2] * Math.PI) / 180,
@@ -115,7 +115,7 @@ class BoxTabPanel extends React.Component {
     if (this.NumberRegExpPattern.test(newValue)) {
       this.props.boxConfig.initialRotVelocity[i] =
         Number(newValue) * this.props.boxConfig.standardRotVelocity
-      const quaternion = Calculation.eulerToQuaternion(
+      const quaternion = Quaternion.fromEuler(
         this.props.boxConfig.initialRotVelocity
       )
       this.props.box.quatVelocity = quaternion
