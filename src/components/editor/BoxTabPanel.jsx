@@ -115,7 +115,9 @@ class BoxTabPanel extends React.Component {
     if (this.NumberRegExpPattern.test(newValue)) {
       this.props.boxConfig.initialRotVelocity[i] =
         Number(newValue) * this.props.boxConfig.standardRotVelocity
-      const quaternion = Quaternion.fromEuler(this.props.boxConfig.initialRotVelocity)
+      const quaternion = Quaternion.fromEuler(
+        this.props.boxConfig.initialRotVelocity
+      )
       this.props.box.quatVelocity = quaternion
 
       const initialRotVelocity = Object.assign(
