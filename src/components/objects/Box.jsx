@@ -20,7 +20,7 @@ export default function Box(props) {
   return (
     <mesh {...props} ref={mesh} scale={[1, 1, 1]}>
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" color="gray" />
+      <meshStandardMaterial attach="material" color="white" />
     </mesh>
   )
 }
