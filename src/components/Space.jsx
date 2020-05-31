@@ -13,11 +13,21 @@ export default function Space(props) {
 
   return (
     <Canvas>
-      <spotLight intensity={0.4} position={[30, 30, 50]} angle={0.2} penumbra={1} />
-      <spotLight intensity={0.4} position={[-30, 30, 50]} angle={0.2} penumbra={1} />
+      <spotLight
+        intensity={0.4}
+        position={[30, 30, 50]}
+        angle={0.2}
+        penumbra={1}
+      />
+      <spotLight
+        intensity={0.4}
+        position={[-30, 30, 50]}
+        angle={0.2}
+        penumbra={1}
+      />
       <ambientLight intensity={0.5} />
       {boxes}
-    <Controls />
+      <Controls />
     </Canvas>
   )
 }
