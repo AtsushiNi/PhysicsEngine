@@ -51,7 +51,7 @@ export default class Box {
         return vertical3.dot(v) > 0
       })
 
-      if (vectors.length == 4) {
+      if (vectors.length === 4) {
         clash = true
         break
       }
