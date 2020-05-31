@@ -184,9 +184,16 @@ class Calculation {
       box.quaternion[2] += deltaQuaternion[2]
       box.quaternion[3] += deltaQuaternion[3]
 
-      console.log(
-        `${box.quaternion[0]},${box.quaternion[1]},${box.quaternion[2]},${box.quaternion[3]}`
-      )
+      box.vertexPositions = [
+        [box.position[0] + 1/2, box.position[1] + 1/2, box.position[2] + 1/2],
+        [box.position[0] + 1/2, box.position[1] + 1/2, box.position[2] - 1/2],
+        [box.position[0] + 1/2, box.position[1] - 1/2, box.position[2] + 1/2],
+        [box.position[0] + 1/2, box.position[1] - 1/2, box.position[2] - 1/2],
+        [box.position[0] - 1/2, box.position[1] + 1/2, box.position[2] + 1/2],
+        [box.position[0] - 1/2, box.position[1] + 1/2, box.position[2] - 1/2],
+        [box.position[0] - 1/2, box.position[1] - 1/2, box.position[2] + 1/2],
+        [box.position[0] - 1/2, box.position[1] - 1/2, box.position[2] - 1/2],
+      ]
     })
   }
 

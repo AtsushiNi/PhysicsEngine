@@ -71,6 +71,16 @@ class BoxTabPanel extends React.Component {
     this.setState({ initialPosition: newPosition })
 
     this.props.box.position[i] = newValue
+    this.props.box.vertexPositions = [
+      [this.props.box.position[0] + 1/2, this.props.box.position[1] + 1/2, this.props.box.position[2] + 1/2],
+      [this.props.box.position[0] + 1/2, this.props.box.position[1] + 1/2, this.props.box.position[2] - 1/2],
+      [this.props.box.position[0] + 1/2, this.props.box.position[1] - 1/2, this.props.box.position[2] + 1/2],
+      [this.props.box.position[0] + 1/2, this.props.box.position[1] - 1/2, this.props.box.position[2] - 1/2],
+      [this.props.box.position[0] - 1/2, this.props.box.position[1] + 1/2, this.props.box.position[2] + 1/2],
+      [this.props.box.position[0] - 1/2, this.props.box.position[1] + 1/2, this.props.box.position[2] - 1/2],
+      [this.props.box.position[0] - 1/2, this.props.box.position[1] - 1/2, this.props.box.position[2] + 1/2],
+      [this.props.box.position[0] - 1/2, this.props.box.position[1] - 1/2, this.props.box.position[2] - 1/2],
+    ]
   }
 
   handleBoxPositionSliderCommit = i => (event, newValue) => {

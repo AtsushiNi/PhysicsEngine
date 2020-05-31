@@ -1,31 +1,37 @@
-import React, { useRef, useMemo } from 'react'
+import React, { useCallback, useRef } from 'react'
 import PropTypes from 'prop-types'
 import * as THREE from 'three'
 import { useFrame } from 'react-three-fiber'
-import Box from '../../models/Box'
 
-export default function DebugObject(props) {
-  const mesh = useRef()
+export default function DebugObject({ side, updatePoints }) {
+  let vertices = [
+    new THREE.Vector3(1, 0, 0),
+    new THREE.Vector3(0, 0, 0)
+  ]
+
+  const updateVertices = () => {
+    vertices = [side[0], [0, 0, 0]].map(v => new THREE.Vector3(...v))
+  }
+
+  const update = useCallback((self) => ((self.verticesNeedUpdate = true), (self.verticesNeedUpdate = true), self.computeBoundingSphere()), [])
+
+  const ref = useRef()
 
   useFrame(() => {
-    console.log(mesh.current)
+    updatePoints()
+    ref.current.vertices[0] = new THREE.Vector3(...side[0])
+    updateVertices()
   })
-
-  const start = [1, 1, 1]
-  const end = [2, 2, 2]
-  const vertices = useMemo(
-    () => [start, end].map(v => new THREE.Vector3(...v)),
-    [start, end]
-  )
 
   return (
     <line>
-      <geometry attach="geometry" vertices={vertices} />
+      <geometry attach="geometry" vertices={vertices} onUpdate={update} ref={ref}/>
       <lineBasicMaterial attach="material" color="red" />
     </line>
   )
 }
 
 DebugObject.propTypes = {
-  box: PropTypes.instanceOf(Box),
+  side: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+  updatePoints: PropTypes.func,
 }
