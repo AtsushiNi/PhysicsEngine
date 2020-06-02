@@ -29,17 +29,47 @@ export default class Quaternion {
   //正規化
   standardization = () => {
     const q = this.getValue()
-    const absolute = Math.pow((Math.pow(q[0], 2) + Math.pow(q[1], 2) + Math.pow(q[2], 2) + Math.pow(q[3], 2)), 1 / 2)
+    const absolute = Math.sqrt(Math.pow(q[0], 2) + Math.pow(q[1], 2) + Math.pow(q[2], 2) + Math.pow(q[3], 2))
     this.value = q.map((element) => {
       return element / absolute
     })
   }
 
+  //共役なクォータニオン
+  conjugateQuaternion = () => {
+    const q = this.getValue()
+    let conjugateQuaternion = [q[0], -q[1], -q[2], -q[3]]
+    return new Quaternion(conjugateQuaternion)
+  }  
+
+  //位置ベクトルをクォータニオンに変換
+  positionVectortoQuaternion = r => {
+    const positionVector = [0, r[0], r[1], r[2]]
+    return new Quaternion(positionVector)
+  }
+
+  //クォータニオンから位置ベクトルに変換
+  quaterniontoPositionVector = () =>{
+    const q = this.getValue()
+    const r = [q[1], q[2], q[3]]
+    return r
+  }
+
+  // 今のところ使っていないのでコメントアウト
+  // 角速度ベクトルをクォータニオンに変換
+//angularVelocityVectortoQuaternion = w =>{
+//  const absoluteW = Math.sqrt(w[0] * w[0] + w[1] * w[1] + w[2] * w[2])
+//  const quatVelocity = [Math.cos(absoluteW / 2),
+//                        w[0] * Math.sin(absoluteW / 2) / absoluteW,
+//                        w[1] * Math.sin(absoluteW / 2) / absoluteW, 
+//                        w[2] * Math.sin(absoluteW / 2) / absoluteW]
+//  return new Quaternion(quatVelocity)
+//}
+
   // オイラー角を返す
   // https://www.kazetest.com/vcmemo/quaternion/quaternion.htm
   // return Array[x, y, z]
   toEuler = () => {
-    this.standardization()
     const q = this.getValue()
 
     const euler = [
