@@ -129,26 +129,8 @@ export default class Box {
     return nVertexPosition
   }
 
-  //回転移動
-  rotationalTranslate = (q, r) => {
-    let quaternionR = this.positionVectortoQuaternion(r)
-    let conjugateQuaternion = this.conjugateQuaternion()
-    let newQuaternionR = q.dot(quaternionR).dot(conjugateQuaternion)
-    let newR = newQuaternionR.quaterniontoPositionVector()
-    return newR
-  }
-
-  //逆回転移動
-  inverseRotationalTranslate = (q, r) => {
-    let quaternionR = this.positionVectortoQuaternion(r)
-    let conjugateQuaternion = this.conjugateQuaternion()
-    let newQuaternionR = conjugateQuaternion.dot(quaternionR).dot(q)
-    let newR = newQuaternionR.quaterniontoPositionVector()
-    return newR    
-  }
-
   //各boxの頂点を求める(移動後)
-  currentVertexPosition = box => {
+  static getGlobalVertexPositions = box => {
     box.vertexPosition = box.getLocalVertexPositions()
     let nVertexPosition = []
     for(let i = 0; i < 8; i++){
@@ -158,7 +140,7 @@ export default class Box {
       })
       nVertexPosition.push(vertexTranslation)
     }
-    return nVertexPosition
+    this.vertexPosition = nVertexPosition
   }
 
 }

@@ -27,31 +27,32 @@ export default class Quaternion {
   }
 
   //正規化
+  // params quaternion: Quaternion
   standardization = () => {
-    const q = this.getValue()
-    const absolute = Math.sqrt(Math.pow(q[0], 2) + Math.pow(q[1], 2) + Math.pow(q[2], 2) + Math.pow(q[3], 2))
-    this.value = q.map((element) => {
+    const absolute = Math.sqrt(Math.pow(this.value[0], 2) + Math.pow(this.value[1], 2) + Math.pow(this.value[2], 2) + Math.pow(this.value[3], 2))
+    this.value = this.value.map((element) => {
       return element / absolute
     })
   }
 
   //共役なクォータニオン
+  // params quaternion: Quaternion
   conjugateQuaternion = () => {
-    const q = this.getValue()
-    let conjugateQuaternion = [q[0], -q[1], -q[2], -q[3]]
+    let conjugateQuaternion = [this.value[0], -this.value[1], -this.value[2], -this.value[3]]
     return new Quaternion(conjugateQuaternion)
   }  
 
   //位置ベクトルをクォータニオンに変換
-  positionVectortoQuaternion = r => {
+  // params position: 位置ベクトル[x, y, z]
+  static positionVectortoQuaternion = r => {
     const positionVector = [0, r[0], r[1], r[2]]
     return new Quaternion(positionVector)
   }
 
   //クォータニオンから位置ベクトルに変換
+  // params quaternion: Quaternion
   quaterniontoPositionVector = () =>{
-    const q = this.getValue()
-    const r = [q[1], q[2], q[3]]
+    const r = [this.value[1], this.value[2], this.value[3]]
     return r
   }
 
