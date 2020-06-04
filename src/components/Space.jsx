@@ -58,6 +58,9 @@ Space.propTypes = {
 function Controls() {
   const ref = useRef()
   const { camera, gl } = useThree()
+  camera.position.x = 4
+  camera.position.y = 2
+  camera.position.z = 4
   useFrame(() => ref.current.update())
   return (
     <orbitControls
