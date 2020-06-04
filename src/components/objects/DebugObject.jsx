@@ -22,7 +22,7 @@ export default function DebugObject({ thisBox, targetBox, index, visibles }) {
   })
 
   return (
-    <mesh {...{thisBox, targetBox, index}} ref={mesh} scale={[1, 1, 1]}>
+    <mesh {...{ thisBox, targetBox, index }} ref={mesh} scale={[1, 1, 1]}>
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
       <meshStandardMaterial attach="material" color="white" />
     </mesh>

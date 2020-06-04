@@ -72,14 +72,46 @@ class BoxTabPanel extends React.Component {
 
     this.props.box.position[i] = newValue
     this.props.box.vertexPosition = [
-      [this.props.box.position[0] + 1/2, this.props.box.position[1] + 1/2, this.props.box.position[2] + 1/2],
-      [this.props.box.position[0] + 1/2, this.props.box.position[1] + 1/2, this.props.box.position[2] - 1/2],
-      [this.props.box.position[0] + 1/2, this.props.box.position[1] - 1/2, this.props.box.position[2] + 1/2],
-      [this.props.box.position[0] + 1/2, this.props.box.position[1] - 1/2, this.props.box.position[2] - 1/2],
-      [this.props.box.position[0] - 1/2, this.props.box.position[1] + 1/2, this.props.box.position[2] + 1/2],
-      [this.props.box.position[0] - 1/2, this.props.box.position[1] + 1/2, this.props.box.position[2] - 1/2],
-      [this.props.box.position[0] - 1/2, this.props.box.position[1] - 1/2, this.props.box.position[2] + 1/2],
-      [this.props.box.position[0] - 1/2, this.props.box.position[1] - 1/2, this.props.box.position[2] - 1/2],
+      [
+        this.props.box.position[0] + 1 / 2,
+        this.props.box.position[1] + 1 / 2,
+        this.props.box.position[2] + 1 / 2,
+      ],
+      [
+        this.props.box.position[0] + 1 / 2,
+        this.props.box.position[1] + 1 / 2,
+        this.props.box.position[2] - 1 / 2,
+      ],
+      [
+        this.props.box.position[0] + 1 / 2,
+        this.props.box.position[1] - 1 / 2,
+        this.props.box.position[2] + 1 / 2,
+      ],
+      [
+        this.props.box.position[0] + 1 / 2,
+        this.props.box.position[1] - 1 / 2,
+        this.props.box.position[2] - 1 / 2,
+      ],
+      [
+        this.props.box.position[0] - 1 / 2,
+        this.props.box.position[1] + 1 / 2,
+        this.props.box.position[2] + 1 / 2,
+      ],
+      [
+        this.props.box.position[0] - 1 / 2,
+        this.props.box.position[1] + 1 / 2,
+        this.props.box.position[2] - 1 / 2,
+      ],
+      [
+        this.props.box.position[0] - 1 / 2,
+        this.props.box.position[1] - 1 / 2,
+        this.props.box.position[2] + 1 / 2,
+      ],
+      [
+        this.props.box.position[0] - 1 / 2,
+        this.props.box.position[1] - 1 / 2,
+        this.props.box.position[2] - 1 / 2,
+      ],
     ]
   }
 

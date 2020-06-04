@@ -77,5 +77,5 @@ Controller.propTypes = {
   handleClickStart: PropTypes.func,
   handleClickStop: PropTypes.func,
   handleClickReset: PropTypes.func,
-  visibles: PropTypes.object
+  visibles: PropTypes.object,
 }

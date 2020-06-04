@@ -10,22 +10,22 @@ extend({ OrbitControls })
 
 export default function Space(props) {
   const boxes = props.boxes.map((box, i) => {
-    return <Box box={box} key={i} visibles={props.visibles}/>
+    return <Box box={box} key={i} visibles={props.visibles} />
   })
 
-  const debugBoxes =
-    useMemo(() => {
-      return props.boxes[1] ?
-        // props.boxes[1].vertexPosition.map((vertex, i) => {
-        //   let debugBox = new BoxInfo()
-        //   debugBox.position = vertex
-        //   return <Box box={debugBox} key={i} />
-        // })
-      [...new Array(8)].map((_, i) => <DebugObject thisBox={props.boxes[0]} targetBox={props.boxes[1]} index={i} key={i} visibles={props.visibles} />)
+  const debugBoxes = useMemo(() => {
+    return props.boxes[1]
+      ? [...new Array(8)].map((_, i) => (
+          <DebugObject
+            thisBox={props.boxes[0]}
+            targetBox={props.boxes[1]}
+            index={i}
+            key={i}
+            visibles={props.visibles}
+          />
+        ))
       : null
-    },
-      [props.boxes.length]
-    )
+  }, [props.boxes.length])
 
   return (
     <Canvas>
@@ -42,7 +42,7 @@ export default function Space(props) {
         penumbra={1}
       />
       <ambientLight intensity={0.5} />
-      <Axis visibles={props.visibles}/>
+      <Axis visibles={props.visibles} />
       {boxes}
       {debugBoxes}
       <Controls />

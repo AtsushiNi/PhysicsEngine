@@ -19,7 +19,7 @@ class App extends React.Component {
     this.visibles = {
       axis: true,
       boxes: true,
-      debugObjects: false
+      debugObjects: false,
     }
   }
 
