@@ -79,6 +79,18 @@ class Calculation {
       box.position[2] += box.velocity[2]
 
       box.quaternion = box.quaternion.dot(box.quatVelocity)
+
+      // 回転は考えてないけど動作確認用にとりあえずこれで
+      box.vertexPosition = [
+        [box.position[0] + 1/2, box.position[1] + 1/2, box.position[2] + 1/2],
+        [box.position[0] + 1/2, box.position[1] + 1/2, box.position[2] - 1/2],
+        [box.position[0] + 1/2, box.position[1] - 1/2, box.position[2] + 1/2],
+        [box.position[0] + 1/2, box.position[1] - 1/2, box.position[2] - 1/2],
+        [box.position[0] - 1/2, box.position[1] + 1/2, box.position[2] + 1/2],
+        [box.position[0] - 1/2, box.position[1] + 1/2, box.position[2] - 1/2],
+        [box.position[0] - 1/2, box.position[1] - 1/2, box.position[2] + 1/2],
+        [box.position[0] - 1/2, box.position[1] - 1/2, box.position[2] - 1/2],
+      ]
     })
   }
 

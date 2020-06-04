@@ -1,8 +1,9 @@
-import React, { useRef } from 'react'
+import React, { useRef, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Canvas, useThree, useFrame, extend } from 'react-three-fiber'
 import Box from './objects/Box'
+import DebugObject from './objects/DebugObject'
 import { default as BoxInfo } from '../models/Box'
 extend({ OrbitControls })
 
@@ -10,6 +11,20 @@ export default function Space(props) {
   const boxes = props.boxes.map((box, i) => {
     return <Box box={box} key={i} />
   })
+
+  const debugBoxes =
+    useMemo(() => {
+      return props.boxes[1] ?
+        // props.boxes[1].vertexPosition.map((vertex, i) => {
+        //   let debugBox = new BoxInfo()
+        //   debugBox.position = vertex
+        //   return <Box box={debugBox} key={i} />
+        // })
+      [...new Array(8)].map((_, i) => <DebugObject thisBox={props.boxes[0]} targetBox={props.boxes[1]} index={i} key={i} />)
+      : null
+    },
+      [props.boxes.length]
+    )
 
   return (
     <Canvas>
@@ -27,6 +42,7 @@ export default function Space(props) {
       />
       <ambientLight intensity={0.5} />
       {boxes}
+      {debugBoxes}
       <Controls />
     </Canvas>
   )
