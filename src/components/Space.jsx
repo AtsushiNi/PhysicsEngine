@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Canvas, useThree, useFrame, extend } from 'react-three-fiber'
 import Box from './objects/Box'
 import DebugObject from './objects/DebugObject'
+import Axis from './objects/Axis'
 import { default as BoxInfo } from '../models/Box'
 extend({ OrbitControls })
 
@@ -41,6 +42,7 @@ export default function Space(props) {
         penumbra={1}
       />
       <ambientLight intensity={0.5} />
+      <Axis />
       {boxes}
       {debugBoxes}
       <Controls />
