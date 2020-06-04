@@ -6,12 +6,13 @@ import { default as BoxInfo } from '../../models/Box'
 // ミンコフスキ差を表示するデバッグ用のコンポーネント
 // thisBoxは原点にあり、tartgetBoxの周りにthisBoxの反転したものをくっつけるとミンコフスキ差になる
 // targetBoxの各頂点(index番目の頂点)を中心として、自身の回転を加えたthisBoxを書く
-export default function DebugObject({ thisBox, targetBox, index }) {
+export default function DebugObject({ thisBox, targetBox, index, visibles }) {
   const mesh = useRef()
 
   useFrame(() => {
     const euler = thisBox.quaternion.toEuler()
     const position = targetBox.vertexPosition[index]
+    mesh.current.visible = visibles.debugObjects
     mesh.current.rotation.x = euler[0]
     mesh.current.rotation.y = euler[1]
     mesh.current.rotation.z = euler[2]
@@ -32,4 +33,5 @@ DebugObject.propTypes = {
   thisBox: PropTypes.instanceOf(BoxInfo),
   targetBox: PropTypes.instanceOf(BoxInfo),
   index: PropTypes.number,
+  visibles: PropTypes.object,
 }

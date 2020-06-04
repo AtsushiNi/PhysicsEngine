@@ -16,6 +16,11 @@ class App extends React.Component {
       boxConfigs: [new BoxConfig()],
       generalConfig: new GeneralConfig(0, -0.005, 0, 0.005),
     }
+    this.visibles = {
+      axis: true,
+      boxes: true,
+      debugObjects: false
+    }
   }
 
   shouldComponentUpdate(nextProp, nextState) {
@@ -105,7 +110,7 @@ class App extends React.Component {
         </div>
         <div className="RightBlock">
           <div className="Space">
-            <Space boxes={this.state.boxes} />
+            <Space boxes={this.state.boxes} visibles={this.visibles} />
           </div>
           <div className="Controller">
             <Controller
@@ -113,6 +118,7 @@ class App extends React.Component {
               handleClickStart={this.startAnimation}
               handleClickStop={this.stopAnimation}
               handleClickReset={this.resetAnimation}
+              visibles={this.visibles}
             />
           </div>
         </div>

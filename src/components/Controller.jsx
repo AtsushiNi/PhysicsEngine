@@ -21,6 +21,14 @@ export default function Controller(props) {
 
   const classes = useStyles()
 
+  const handleVisibleBoxes = () => {
+    props.visibles.boxes = !props.visibles.boxes
+  }
+
+  const handleVisibleDebugObjects = () => {
+    props.visibles.debugObjects = !props.visibles.debugObjects
+  }
+
   return (
     <Grid
       container
@@ -51,6 +59,16 @@ export default function Controller(props) {
           Reset
         </Button>
       </Grid>
+      <Grid item>
+        <Button className={classes.button} onClick={handleVisibleBoxes}>
+          Unvisible Boxes
+        </Button>
+      </Grid>
+      <Grid item>
+        <Button className={classes.button} onClick={handleVisibleDebugObjects}>
+          Visible DebugObjects
+        </Button>
+      </Grid>
     </Grid>
   )
 }
@@ -59,4 +77,5 @@ Controller.propTypes = {
   handleClickStart: PropTypes.func,
   handleClickStop: PropTypes.func,
   handleClickReset: PropTypes.func,
+  visibles: PropTypes.object
 }
