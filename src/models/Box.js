@@ -130,14 +130,13 @@ export default class Box {
   }
 
   //各boxの頂点を求める(移動後)
-  static getGlobalVertexPositions = box => {
-    box.vertexPosition = box.getLocalVertexPositions()
+  getGlobalVertexPositions = () => {
+    let localVertexPosition = this.getLocalVertexPositions()
     let nVertexPosition = []
     for(let i = 0; i < 8; i++){
-      let mVertexPosition = this.rotationalTranslate(box.quaternion, box.vertexPosition[i])
-      let vertexTranslation = mVertexPosition.map((element, index) => {
-        return box.position[index] + element
-      })
+      let vertexTranslation = this.rotationalTranslate(this.quaternion, localVertexPosition[i]).map((element, index) => 
+        this.position[index] + element
+      )
       nVertexPosition.push(vertexTranslation)
     }
     this.vertexPosition = nVertexPosition
