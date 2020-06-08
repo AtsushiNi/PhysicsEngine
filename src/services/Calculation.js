@@ -1,5 +1,4 @@
 import Quaternion from "./quaternion"
-import Box from "../models/Box"
 
 class Calculation {
   // 今のところ使っていないのでコメントアウト
