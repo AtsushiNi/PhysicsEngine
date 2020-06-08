@@ -130,7 +130,7 @@ export default class Box {
   }
 
   //各boxの頂点を求める(移動後)
-  getGlobalVertexPositions = () => {
+  updateVertexPositions = () => {
     let localVertexPosition = this.getLocalVertexPositions()
     let nVertexPosition = []
     for(let i = 0; i < 8; i++){

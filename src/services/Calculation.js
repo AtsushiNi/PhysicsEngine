@@ -93,7 +93,7 @@ class Calculation {
       box.quaternion.standardization()
 
       //頂点の更新
-      Box.getGlobalVertexPositions(box)      
+      box.updateVertexPositions()      
     })
   }
 
