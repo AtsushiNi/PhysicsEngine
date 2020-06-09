@@ -51,7 +51,7 @@ class Calculation {
   // return Array[x, y, z]
   static rotationalTranslate = (q, r) => {
     let quaternionR = Quaternion.positionVectortoQuaternion(r)
-    let conjugateQuaternion = q.conjugateQuaternion(q)
+    let conjugateQuaternion = q.conjugateQuaternion()
     let newQuaternionR = q.dot(quaternionR).dot(conjugateQuaternion)
     let newR = newQuaternionR.quaterniontoPositionVector()
     return newR
