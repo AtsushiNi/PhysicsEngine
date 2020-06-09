@@ -103,8 +103,6 @@ class App extends React.Component {
             boxConfigs={this.state.boxConfigs}
             generalConfig={this.state.generalConfig}
             addBox={this.addBox}
-            updateBox={this.updateBox}
-            updateBoxConfig={this.updateBoxConfig}
             updateGeneralConfig={this.updateGeneralConfig}
           />
         </div>

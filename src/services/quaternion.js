@@ -26,31 +26,30 @@ export default class Quaternion {
     return new Quaternion(newQuaternion)
   }
 
-  //正規化
-  // params quaternion: Quaternion
+  // 正規化
   standardization = () => {
     const absolute = Math.sqrt(Math.pow(this.value[0], 2) + Math.pow(this.value[1], 2) + Math.pow(this.value[2], 2) + Math.pow(this.value[3], 2))
-    this.value = this.value.map((element) => {
-      return element / absolute
-    })
+
+    this.value = this.value.map(element => element / absolute)
   }
 
-  //共役なクォータニオン
-  // params quaternion: Quaternion
+  // 共役なクォータニオン
+  // return Quaternion
   conjugateQuaternion = () => {
     let conjugateQuaternion = [this.value[0], -this.value[1], -this.value[2], -this.value[3]]
     return new Quaternion(conjugateQuaternion)
-  }  
+  }
 
-  //位置ベクトルをクォータニオンに変換
-  // params position: 位置ベクトル[x, y, z]
+  // 位置ベクトルをクォータニオンに変換
+  // params r: 位置ベクトル[x, y, z]
+  // return Quaternion
   static positionVectortoQuaternion = r => {
     const positionVector = [0, r[0], r[1], r[2]]
     return new Quaternion(positionVector)
   }
 
-  //クォータニオンから位置ベクトルに変換
-  // params quaternion: Quaternion
+  // クォータニオンから位置ベクトルの配列に変換
+  // return Array[number]
   quaterniontoPositionVector = () =>{
     const r = [this.value[1], this.value[2], this.value[3]]
     return r
@@ -62,7 +61,7 @@ export default class Quaternion {
 //  const absoluteW = Math.sqrt(w[0] * w[0] + w[1] * w[1] + w[2] * w[2])
 //  const quatVelocity = [Math.cos(absoluteW / 2),
 //                        w[0] * Math.sin(absoluteW / 2) / absoluteW,
-//                        w[1] * Math.sin(absoluteW / 2) / absoluteW, 
+//                        w[1] * Math.sin(absoluteW / 2) / absoluteW,
 //                        w[2] * Math.sin(absoluteW / 2) / absoluteW]
 //  return new Quaternion(quatVelocity)
 //}

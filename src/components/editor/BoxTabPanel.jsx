@@ -48,6 +48,7 @@ class BoxTabPanel extends React.Component {
     ])
     this.props.box.rotation[i] = (newValue * Math.PI) / 180.0
     this.props.box.quaternion = quaternion
+    this.props.box.updateVertexPositions()
   }
 
   handleBoxRotationSliderCommit = i => (event, newValue) => {
@@ -71,6 +72,7 @@ class BoxTabPanel extends React.Component {
     this.setState({ initialPosition: newPosition })
 
     this.props.box.position[i] = newValue
+    this.props.box.updateVertexPositions()
   }
 
   handleBoxPositionSliderCommit = i => (event, newValue) => {
@@ -312,6 +314,4 @@ BoxTabPanel.propTypes = {
   boxConfig: PropTypes.instanceOf(BoxConfigInfo),
   index: PropTypes.number,
   showTabIndex: PropTypes.number,
-  updateBox: PropTypes.func,
-  updateBoxConfig: PropTypes.func,
 }

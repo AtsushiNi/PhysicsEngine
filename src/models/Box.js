@@ -29,13 +29,13 @@ export default class Box {
     // https://trap.jp/post/198/ GJKアルゴリズム 3次元の場合を参照
     const p0 = new Vector(box.position) // p0はboxの重心を使うことにする
     const v1 = p0.negate()
-    const p1 = this.localSupportMapping(v1).sub(box.relativeSupportMapping(p0)) // v1方向の、ミンコフスキー差のサポート写像
+    const p1 = this.localSupportMapping(v1).sub(box.relativeSupportMapping(this.position, this.quaternion, p0)) // v1方向の、ミンコフスキー差のサポート写像
     if (v1.dot(p1) < 0) {
       return false
     }
     const v2 = Vector.verticalVector2(p0, p1)
     const p2 = this.localSupportMapping(v2).sub(
-      box.relativeSupportMapping(v2.negate())
+      box.relativeSupportMapping(this.position, this.quaternion, v2.negate())
     )
     if (v2.dot(p2) < 0) {
       return false
@@ -46,7 +46,7 @@ export default class Box {
     while (true) {
       const vertical = Vector.verticalVector3(...vectors)
       const newP = this.localSupportMapping(vertical).sub(
-        box.relativeSupportMapping(vertical.negate())
+        box.relativeSupportMapping(this.position, this.quaternion, vertical.negate())
       )
       if (vertical.dot(newP) < 0) {
         clash = false
@@ -72,12 +72,14 @@ export default class Box {
     return clash
   }
 
-  // グローバル座標においてvector方向のサポート写像を返す
+  // position, quaternionの位置・姿勢から見た相対座標においてvector方向のthisのサポート写像を返す
+  // params position: Array[x, y, z]
+  // params quaternion: Quaternion
   // params vector: Vector
   // return Vector
-  relativeSupportMapping = vector => {
+  relativeSupportMapping = (position, quaternion, vector) => {
     // 全頂点とvectorの内積が最大の頂点のベクトルを返す
-    const relativeVertex = this.getRelativeVertexPositions()
+    const relativeVertex = this.getRelativeVertexPositions(position, quaternion)
     const dotProducts = relativeVertex.map(vertex =>
       vector.dot(new Vector(vertex))
     )
@@ -85,7 +87,7 @@ export default class Box {
     return new Vector(relativeVertex[i])
   }
 
-  // ローカル座標においてvector方向のサポート写像を返す
+  // ローカル座標においてvector方向のthisのサポート写像を返す
   // params vector: Vector
   // return Vector
   localSupportMapping = vector => {
@@ -99,7 +101,6 @@ export default class Box {
   }
 
   // ローカル座標での頂点の座標を返す
-  // TODO ちゃんと実装する
   // return Array[Array]
   getLocalVertexPositions = () => {
     return [
@@ -115,33 +116,35 @@ export default class Box {
     ]
   }
 
-  // グローバル座標での頂点の座標を返す
-  // TODO ちゃんと実装する
-  //params box: models/Box
+  // position, quaternionの位置・姿勢から見たthisの頂点の相対座標を返す
+  // params box: models/Box
   // return Array[Array]
-  getRelativeVertexPositions = box => {
+  getRelativeVertexPositions = (position, quaternion) => {
     let nVertexPosition = []
     for(let i = 0; i < 8; i++){
-      let vertexTranslation = box.vertexPosition[i].map((element, index) => {
-        return element - this.position[index]
+      let vertexTranslation = this.vertexPosition[i].map((element, index) => {
+        return element - position[index]
       })
-      let mVertexPosition = Calculation.inverseRotationalTranslate(this.quaternion, vertexTranslation)
+      let mVertexPosition = Calculation.inverseRotationalTranslate(quaternion, vertexTranslation)
       nVertexPosition.push(mVertexPosition)
     }
     return nVertexPosition
   }
 
-  //各boxの頂点を求める(移動後)
+  // vertexPositionを更新する
   updateVertexPositions = () => {
     let localVertexPosition = this.getLocalVertexPositions()
+
     let nVertexPosition = []
     for(let i = 0; i < 8; i++){
-      let vertexTranslation = this.rotationalTranslate(this.quaternion, localVertexPosition[i]).map((element, index) => 
-        this.position[index] + element
-      )
+      let vertexTranslation =
+        Calculation.rotationalTranslate(this.quaternion, localVertexPosition[i])
+          .map((element, index) =>
+            this.position[index] + element
+          )
       nVertexPosition.push(vertexTranslation)
     }
+
     this.vertexPosition = nVertexPosition
   }
-
 }
