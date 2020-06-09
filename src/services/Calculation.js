@@ -1,3 +1,6 @@
+import Quaternion from "./quaternion"
+import Box from "../models/Box"
+
 class Calculation {
   // 今のところ使っていないのでコメントアウト
   //static innerProductMatrix(matrixA, matrixB) {
@@ -43,15 +46,22 @@ class Calculation {
   //  return rotMatrix
   //}
 
-  //位置ベクトルをクォータニオンに変換
-  static positionVectortoQuaternion(r) {
-    const positionVector = [0, r[0], r[1], r[2]]
-    return positionVector
+  //回転移動
+  rotationalTranslate = (q, r) => {
+    let quaternionR = Quaternion.positionVectortoQuaternion(r)
+    let conjugateQuaternion = q.conjugateQuaternion(q)
+    let newQuaternionR = q.dot(quaternionR).dot(conjugateQuaternion)
+    let newR = newQuaternionR.quaterniontoPositionVector()
+    return newR
   }
-  //各速度ベクトルをクォータニオンに変換
-  static angularVelocityVectortoQuaternion(w) {
-    const quatVelocity = [1, w[0], w[1], w[2]]
-    return quatVelocity
+
+  //逆回転移動
+  inverseRotationalTranslate = (q, r) => {
+    let quaternionR = Quaternion.positionVectortoQuaternion(r)
+    let conjugateQuaternion = q.conjugateQuaternion()
+    let newQuaternionR = conjugateQuaternion.dot(quaternionR).dot(q)
+    let newR = newQuaternionR.quaterniontoPositionVector()
+    return newR    
   }
 
   static updateValues = (boxes, boxConfigs, gravity) => {
@@ -78,24 +88,22 @@ class Calculation {
       box.position[1] += box.velocity[1]
       box.position[2] += box.velocity[2]
 
+      // クォータイオンの更新
       box.quaternion = box.quaternion.dot(box.quatVelocity)
+      box.quaternion.standardization()
+
+      //頂点の更新
+      box.updateVertexPositions()      
     })
   }
 
   static resetValues = (boxes, boxConfigs) => {
     boxes.forEach((box, index) => {
-      box.position[0] = boxConfigs[index].initialPosition[0]
-      box.position[1] = boxConfigs[index].initialPosition[1]
-      box.position[2] = boxConfigs[index].initialPosition[2]
-      box.rotation[0] = boxConfigs[index].initialRotation[0]
-      box.rotation[1] = boxConfigs[index].initialRotation[1]
-      box.rotation[2] = boxConfigs[index].initialRotation[2]
-      box.velocity[0] = boxConfigs[index].initialVelocity[0]
-      box.velocity[1] = boxConfigs[index].initialVelocity[1]
-      box.velocity[2] = boxConfigs[index].initialVelocity[2]
-      box.rotVelocity[0] = boxConfigs[index].initialRotVelocity[0]
-      box.rotVelocity[1] = boxConfigs[index].initialRotVelocity[1]
-      box.rotVelocity[2] = boxConfigs[index].initialRotVelocity[2]
+      box.position = boxConfigs[index].initialPosition
+      box.rotation = boxConfigs[index].initialRotation
+      box.velocity = boxConfigs[index].initialVelocity
+      box.rotVelocity = boxConfigs[index].initialRotVelocity
+      box.quaternion = this.eulerToQuaternion(boxConfigs[index].initialRotation)
     })
   }
 }

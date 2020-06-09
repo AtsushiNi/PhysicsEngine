@@ -64,7 +64,7 @@ class App extends React.Component {
     })
   }
 
-  startAnimation = event => {
+  startAnimation = (event) => {
     this.intervalId = setInterval(this.animate, 20)
   }
 
