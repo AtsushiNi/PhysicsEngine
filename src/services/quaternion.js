@@ -28,7 +28,12 @@ export default class Quaternion {
 
   // 正規化
   standardization = () => {
-    const absolute = Math.sqrt(Math.pow(this.value[0], 2) + Math.pow(this.value[1], 2) + Math.pow(this.value[2], 2) + Math.pow(this.value[3], 2))
+    const absolute = Math.sqrt(
+      Math.pow(this.value[0], 2) +
+        Math.pow(this.value[1], 2) +
+        Math.pow(this.value[2], 2) +
+        Math.pow(this.value[3], 2)
+    )
 
     this.value = this.value.map(element => element / absolute)
   }
@@ -36,7 +41,12 @@ export default class Quaternion {
   // 共役なクォータニオン
   // return Quaternion
   conjugateQuaternion = () => {
-    let conjugateQuaternion = [this.value[0], -this.value[1], -this.value[2], -this.value[3]]
+    let conjugateQuaternion = [
+      this.value[0],
+      -this.value[1],
+      -this.value[2],
+      -this.value[3],
+    ]
     return new Quaternion(conjugateQuaternion)
   }
 
@@ -50,21 +60,21 @@ export default class Quaternion {
 
   // クォータニオンから位置ベクトルの配列に変換
   // return Array[number]
-  quaterniontoPositionVector = () =>{
+  quaterniontoPositionVector = () => {
     const r = [this.value[1], this.value[2], this.value[3]]
     return r
   }
 
   // 今のところ使っていないのでコメントアウト
   // 角速度ベクトルをクォータニオンに変換
-//angularVelocityVectortoQuaternion = w =>{
-//  const absoluteW = Math.sqrt(w[0] * w[0] + w[1] * w[1] + w[2] * w[2])
-//  const quatVelocity = [Math.cos(absoluteW / 2),
-//                        w[0] * Math.sin(absoluteW / 2) / absoluteW,
-//                        w[1] * Math.sin(absoluteW / 2) / absoluteW,
-//                        w[2] * Math.sin(absoluteW / 2) / absoluteW]
-//  return new Quaternion(quatVelocity)
-//}
+  //angularVelocityVectortoQuaternion = w =>{
+  //  const absoluteW = Math.sqrt(w[0] * w[0] + w[1] * w[1] + w[2] * w[2])
+  //  const quatVelocity = [Math.cos(absoluteW / 2),
+  //                        w[0] * Math.sin(absoluteW / 2) / absoluteW,
+  //                        w[1] * Math.sin(absoluteW / 2) / absoluteW,
+  //                        w[2] * Math.sin(absoluteW / 2) / absoluteW]
+  //  return new Quaternion(quatVelocity)
+  //}
 
   // オイラー角を返す
   // https://www.kazetest.com/vcmemo/quaternion/quaternion.htm

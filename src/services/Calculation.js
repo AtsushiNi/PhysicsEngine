@@ -1,4 +1,4 @@
-import Quaternion from "./quaternion"
+import Quaternion from './quaternion'
 
 class Calculation {
   // 今のところ使っていないのでコメントアウト

@@ -29,7 +29,9 @@ export default class Box {
     // https://trap.jp/post/198/ GJKアルゴリズム 3次元の場合を参照
     const p0 = new Vector(box.position) // p0はboxの重心を使うことにする
     const v1 = p0.negate()
-    const p1 = this.localSupportMapping(v1).sub(box.relativeSupportMapping(this.position, this.quaternion, p0)) // v1方向の、ミンコフスキー差のサポート写像
+    const p1 = this.localSupportMapping(v1).sub(
+      box.relativeSupportMapping(this.position, this.quaternion, p0)
+    ) // v1方向の、ミンコフスキー差のサポート写像
     if (v1.dot(p1) < 0) {
       return false
     }
@@ -46,7 +48,11 @@ export default class Box {
     while (true) {
       const vertical = Vector.verticalVector3(...vectors)
       const newP = this.localSupportMapping(vertical).sub(
-        box.relativeSupportMapping(this.position, this.quaternion, vertical.negate())
+        box.relativeSupportMapping(
+          this.position,
+          this.quaternion,
+          vertical.negate()
+        )
       )
       if (vertical.dot(newP) < 0) {
         clash = false
@@ -104,7 +110,6 @@ export default class Box {
   // return Array[Array]
   getLocalVertexPositions = () => {
     return [
-
       [this.size[0] / 2, this.size[1] / 2, this.size[2] / 2],
       [this.size[0] / 2, this.size[1] / 2, -this.size[2] / 2],
       [this.size[0] / 2, -this.size[1] / 2, this.size[2] / 2],
@@ -121,11 +126,14 @@ export default class Box {
   // return Array[Array]
   getRelativeVertexPositions = (position, quaternion) => {
     let nVertexPosition = []
-    for(let i = 0; i < 8; i++){
+    for (let i = 0; i < 8; i++) {
       let vertexTranslation = this.vertexPosition[i].map((element, index) => {
         return element - position[index]
       })
-      let mVertexPosition = Calculation.inverseRotationalTranslate(quaternion, vertexTranslation)
+      let mVertexPosition = Calculation.inverseRotationalTranslate(
+        quaternion,
+        vertexTranslation
+      )
       nVertexPosition.push(mVertexPosition)
     }
     return nVertexPosition
@@ -136,12 +144,11 @@ export default class Box {
     let localVertexPosition = this.getLocalVertexPositions()
 
     let nVertexPosition = []
-    for(let i = 0; i < 8; i++){
-      let vertexTranslation =
-        Calculation.rotationalTranslate(this.quaternion, localVertexPosition[i])
-          .map((element, index) =>
-            this.position[index] + element
-          )
+    for (let i = 0; i < 8; i++) {
+      let vertexTranslation = Calculation.rotationalTranslate(
+        this.quaternion,
+        localVertexPosition[i]
+      ).map((element, index) => this.position[index] + element)
       nVertexPosition.push(vertexTranslation)
     }
 
