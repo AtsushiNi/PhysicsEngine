@@ -9,6 +9,7 @@ export default function Box(props) {
   useFrame(() => {
     const euler = props.box.quaternion.toEuler()
     const position = props.box.position
+    mesh.current.visible = props.visibles.boxes
     mesh.current.rotation.x = euler[0]
     mesh.current.rotation.y = euler[1]
     mesh.current.rotation.z = euler[2]
@@ -20,11 +21,12 @@ export default function Box(props) {
   return (
     <mesh {...props} ref={mesh} scale={[1, 1, 1]}>
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" color="gray" />
+      <meshStandardMaterial attach="material" color="white" />
     </mesh>
   )
 }
 
 Box.propTypes = {
   box: PropTypes.instanceOf(BoxInfo),
+  visibles: PropTypes.object,
 }

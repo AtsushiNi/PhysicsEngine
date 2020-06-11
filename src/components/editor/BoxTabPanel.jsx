@@ -48,6 +48,7 @@ class BoxTabPanel extends React.Component {
     ])
     this.props.box.rotation[i] = (newValue * Math.PI) / 180.0
     this.props.box.quaternion = quaternion
+    this.props.box.updateVertexPositions()
   }
 
   handleBoxRotationSliderCommit = i => (event, newValue) => {
@@ -71,6 +72,7 @@ class BoxTabPanel extends React.Component {
     this.setState({ initialPosition: newPosition })
 
     this.props.box.position[i] = newValue
+    this.props.box.updateVertexPositions()
   }
 
   handleBoxPositionSliderCommit = i => (event, newValue) => {
@@ -151,6 +153,8 @@ class BoxTabPanel extends React.Component {
   render() {
     const { showTabIndex, index } = this.props
 
+    const axisColor = ['#00ffff', '#0099ff', '#0033ff']
+
     if (showTabIndex !== index) {
       return <div hidden={true}></div>
     }
@@ -198,7 +202,7 @@ class BoxTabPanel extends React.Component {
           {['x', 'y', 'z'].map((label, i) => {
             return (
               <Grid container spacing={2} alignItems="center" key={i}>
-                <Grid item xs={1}>
+                <Grid item xs={1} color={axisColor[i]}>
                   {label}
                 </Grid>
                 <Grid item xs={8}>
@@ -310,6 +314,4 @@ BoxTabPanel.propTypes = {
   boxConfig: PropTypes.instanceOf(BoxConfigInfo),
   index: PropTypes.number,
   showTabIndex: PropTypes.number,
-  updateBox: PropTypes.func,
-  updateBoxConfig: PropTypes.func,
 }

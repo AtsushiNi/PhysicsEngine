@@ -22,8 +22,6 @@ export default function Editor(props) {
     boxConfigs,
     generalConfig,
     addBox,
-    updateBox,
-    updateBoxConfig,
     updateGeneralConfig,
   } = props
 
@@ -84,8 +82,6 @@ export default function Editor(props) {
           <BoxTabPanel
             box={boxes[i]}
             boxConfig={boxConfig}
-            updateBox={updateBox}
-            updateBoxConfig={updateBoxConfig}
             showTabIndex={tabIndex}
             index={i}
             key={i}
@@ -107,7 +103,5 @@ Editor.propTypes = {
   boxConfigs: PropTypes.arrayOf(PropTypes.instanceOf(BoxConfig)),
   generalConfig: PropTypes.instanceOf(GeneralConfig),
   addBox: PropTypes.func,
-  updateBox: PropTypes.func,
-  updateBoxConfig: PropTypes.func,
   updateGeneralConfig: PropTypes.func,
 }
