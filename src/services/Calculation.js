@@ -1,4 +1,4 @@
-import Quaternion from "./quaternion"
+import Quaternion from './quaternion'
 
 class Calculation {
   // 今のところ使っていないのでコメントアウト
@@ -45,24 +45,31 @@ class Calculation {
   //  return rotMatrix
   //}
 
-  //回転移動
-  rotationalTranslate = (q, r) => {
+  // rをクォータニオンqで回転させた配列を返す
+  // params q: Quaternion
+  // params r: Array[x, y, z]
+  // return Array[x, y, z]
+  static rotationalTranslate = (q, r) => {
     let quaternionR = Quaternion.positionVectortoQuaternion(r)
-    let conjugateQuaternion = q.conjugateQuaternion(q)
+    let conjugateQuaternion = q.conjugateQuaternion()
     let newQuaternionR = q.dot(quaternionR).dot(conjugateQuaternion)
     let newR = newQuaternionR.quaterniontoPositionVector()
     return newR
   }
 
-  //逆回転移動
-  inverseRotationalTranslate = (q, r) => {
+  // rをクォータニオンqの逆に回転させた配列を返す
+  // params q: Quaternion
+  // params r: Array[x, y, z]
+  // return Array[x, y, z]
+  static inverseRotationalTranslate = (q, r) => {
     let quaternionR = Quaternion.positionVectortoQuaternion(r)
     let conjugateQuaternion = q.conjugateQuaternion()
     let newQuaternionR = conjugateQuaternion.dot(quaternionR).dot(q)
     let newR = newQuaternionR.quaterniontoPositionVector()
-    return newR    
+    return newR
   }
 
+  // 描画毎の各値を更新するメソッド
   static updateValues = (boxes, boxConfigs, gravity) => {
     if (boxes.length > 1) {
       boxes.forEach((boxA, index) => {
@@ -92,17 +99,18 @@ class Calculation {
       box.quaternion.standardization()
 
       //頂点の更新
-      box.updateVertexPositions()      
+      box.updateVertexPositions()
     })
   }
 
+  // リセットボタンの実装
   static resetValues = (boxes, boxConfigs) => {
     boxes.forEach((box, index) => {
       box.position = boxConfigs[index].initialPosition
       box.rotation = boxConfigs[index].initialRotation
       box.velocity = boxConfigs[index].initialVelocity
       box.rotVelocity = boxConfigs[index].initialRotVelocity
-      box.quaternion = this.eulerToQuaternion(boxConfigs[index].initialRotation)
+      box.quaternion = Quaternion.fromEuler(boxConfigs[index].initialRotation)
     })
   }
 }
