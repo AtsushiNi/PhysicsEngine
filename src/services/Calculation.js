@@ -77,6 +77,9 @@ class Calculation {
           const boxB = boxes[i]
           // boxAとboxBの衝突を調べる
           boxA.isClash(boxB)
+          //とりあえず衝突面の３頂点を返す。
+
+
         }
       })
     }
@@ -113,6 +116,10 @@ class Calculation {
       box.quaternion = Quaternion.fromEuler(boxConfigs[index].initialRotation)
     })
   }
+
+  //衝突面を調べる
+
+
 }
 
 export default Calculation

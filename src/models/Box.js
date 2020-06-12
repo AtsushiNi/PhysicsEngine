@@ -27,35 +27,43 @@ export default class Box {
   // params box: models/Box
   isClash = box => {
     // https://trap.jp/post/198/ GJKアルゴリズム 3次元の場合を参照
-    const p0 = new Vector(box.position) // p0はboxの重心を使うことにする
-    const v1 = p0.negate()
-    const p1 = this.localSupportMapping(v1).sub(
-      box.relativeSupportMapping(this.position, this.quaternion, p0)
-    ) // v1方向の、ミンコフスキー差のサポート写像
-    if (v1.dot(p1) < 0) {
-      return false
+    const p0 = {value : new Vector(box.position),vertexIndexes : [0, 0]} // p0はboxの重心を使うことにする
+    const v1 = p0.value.negate()
+    const supportA1 = this.localSupportMapping(v1)
+    const supportB1 = box.relativeSupportMapping(this.position, this.quaternion, p0)
+    const p1 = {value : supportA1.value.sub(supportB1.value),
+       vertexIndexes : [supportA1.index, supportB1.index]
+      }
+
+    if (v1.dot(p1.value) < 0) {
+      return {value : false, vertexIndexes : null}
     }
     const v2 = Vector.verticalVector2(p0, p1)
-    const p2 = this.localSupportMapping(v2).sub(
-      box.relativeSupportMapping(this.position, this.quaternion, v2.negate())
-    )
-    if (v2.dot(p2) < 0) {
-      return false
-    }
+    const supportA2 = this.localSupportMapping(v2)
+    const supportB2 = box.relativeSupportMapping(this.position, this.quaternion, v2.negate())
+    const p2 = {value : supportA2.value.sub(supportB2.value),
+       vertexIndexes : [supportA2.index, supportB2.index]
+      }
 
+    if (v2.dot(p2.value) < 0) {
+      return {value : false, vertexIndexes : null}
+    }
     let vectors = [p0, p1, p2]
-    let clash = false
+    let clash = {}
     while (true) {
-      const vertical = Vector.verticalVector3(...vectors)
-      const newP = this.localSupportMapping(vertical).sub(
-        box.relativeSupportMapping(
-          this.position,
-          this.quaternion,
-          vertical.negate()
-        )
-      )
-      if (vertical.dot(newP) < 0) {
-        clash = false
+      const vertical = Vector.verticalVector3(
+        vectors[0].value,
+        vectors[1].value,
+        vectors[2].value)
+      const supportAN = this.localSupportMapping(vertical)
+      const supportBN = box.relativeSupportMapping(this.position,this.quaternion,vertical.negate())
+      const newP = {value : supportAN.value.sub(supportBN.value),
+         vertexIndexes : [supportAN.index, supportBN.index]
+        }
+
+      if (vertical.dot(newP.value) < 0) {
+        clash.value = false
+        clash.vertexIndexes = null
         break
       }
       vectors.push(newP)
@@ -64,13 +72,21 @@ export default class Box {
         // 全て手前なら原点は四面体の内部なので衝突
         // vが原点と平面に存在することはない(もしあれば5行上でreturn falseしている)
         const triangle = array.filter((item, index) => index !== i)
-        const vertical3 = Vector.verticalVector3(...triangle)
-
-        return vertical3.dot(v) > 0
+        const vertical3 = Vector.verticalVector3(
+          triangle[0].value, 
+          triangle[1].value, 
+          triangle[2].value
+          )
+        if(vertical3.dot(v.value) > 0) return v
       })
 
       if (vectors.length === 4) {
-        clash = true
+        clash.value = true
+        clash.vertexIndexes = [
+          vectors[0].vertexIndexes,
+          vectors[1].vertexIndexes,
+          vectors[2].vertexIndexes,
+          vectors[3].vertexIndexes]
         break
       }
     }
@@ -90,7 +106,7 @@ export default class Box {
       vector.dot(new Vector(vertex))
     )
     const i = dotProducts.indexOf(Math.max(...dotProducts))
-    return new Vector(relativeVertex[i])
+    return {value : new Vector(relativeVertex[i]), index : i}
   }
 
   // ローカル座標においてvector方向のthisのサポート写像を返す
@@ -103,7 +119,7 @@ export default class Box {
       vector.dot(new Vector(vertex))
     )
     const i = dotProducts.indexOf(Math.max(...dotProducts))
-    return new Vector(localVertexes[i])
+    return {value : new Vector(localVertexes[i]), index : i}
   }
 
   // ローカル座標での頂点の座標を返す
