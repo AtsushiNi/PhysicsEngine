@@ -27,26 +27,19 @@ export default class Box {
   // params box: models/Box
   isClash = box => {
     // https://trap.jp/post/198/ GJKアルゴリズム 3次元の場合を参照
-    const p0 = {value : new Vector(box.position),vertexIndexes : [0, 0]} // p0はboxの重心を使うことにする
+    //p0,p1,p2,newPはオブジェクトで、BoxA,BoxBの頂点インデックスを格納
+    const p0 = {value : new Vector(box.position),vertexIndexes : [null, null]} // p0はboxの重心を使うことにする
     const v1 = p0.value.negate()
-    const supportA1 = this.localSupportMapping(v1)
-    const supportB1 = box.relativeSupportMapping(this.position, this.quaternion, p0)
-    const p1 = {value : supportA1.value.sub(supportB1.value),
-       vertexIndexes : [supportA1.index, supportB1.index]
-      }
+    const p1 = this.supportMapping(v1, p1, box)
 
     if (v1.dot(p1.value) < 0) {
-      return {value : false, vertexIndexes : null}
+      return false
     }
     const v2 = Vector.verticalVector2(p0, p1)
-    const supportA2 = this.localSupportMapping(v2)
-    const supportB2 = box.relativeSupportMapping(this.position, this.quaternion, v2.negate())
-    const p2 = {value : supportA2.value.sub(supportB2.value),
-       vertexIndexes : [supportA2.index, supportB2.index]
-      }
+    const p2 = this.supportMapping(v2, v2.negate(), box)
 
     if (v2.dot(p2.value) < 0) {
-      return {value : false, vertexIndexes : null}
+      return false
     }
     let vectors = [p0, p1, p2]
     let clash = {}
@@ -55,15 +48,10 @@ export default class Box {
         vectors[0].value,
         vectors[1].value,
         vectors[2].value)
-      const supportAN = this.localSupportMapping(vertical)
-      const supportBN = box.relativeSupportMapping(this.position,this.quaternion,vertical.negate())
-      const newP = {value : supportAN.value.sub(supportBN.value),
-         vertexIndexes : [supportAN.index, supportBN.index]
-        }
+      const newP = this.supportMapping(vertical, vertical.negate(), box)
 
       if (vertical.dot(newP.value) < 0) {
-        clash.value = false
-        clash.vertexIndexes = null
+        clash = false
         break
       }
       vectors.push(newP)
@@ -81,8 +69,7 @@ export default class Box {
       })
 
       if (vectors.length === 4) {
-        clash.value = true
-        clash.vertexIndexes = [
+        clash = [
           vectors[0].vertexIndexes,
           vectors[1].vertexIndexes,
           vectors[2].vertexIndexes,
@@ -169,5 +156,14 @@ export default class Box {
     }
 
     this.vertexPosition = nVertexPosition
+  }
+
+  supportMapping = (localV, relativeV, box) =>{
+    const supportA = this.localSupportMapping(localV)
+    const supportB = box.relativeSupportMapping(this.position, this.quaternion, relativeV)
+    const newP = {value : supportA.value.sub(supportB.value),
+       vertexIndexes : [supportA.index, supportB.index]
+      }
+      return newP
   }
 }
