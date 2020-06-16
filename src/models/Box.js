@@ -28,15 +28,16 @@ export default class Box {
   isClash = box => {
     // https://trap.jp/post/198/ GJKアルゴリズム 3次元の場合を参照
     //p0,p1,p2,newPはオブジェクトで、BoxA,BoxBの頂点インデックスを格納
+    //v1,v2,verticalはべクトル
     const p0 = {value : new Vector(box.position),vertexIndexes : [null, null]} // p0はboxの重心を使うことにする
     const v1 = p0.value.negate()
-    const p1 = this.supportMapping(v1, p1, box)
+    const p1 = this.supportMapping(v1, box)
 
     if (v1.dot(p1.value) < 0) {
       return false
     }
     const v2 = Vector.verticalVector2(p0, p1)
-    const p2 = this.supportMapping(v2, v2.negate(), box)
+    const p2 = this.supportMapping(v2, box)
 
     if (v2.dot(p2.value) < 0) {
       return false
@@ -48,7 +49,7 @@ export default class Box {
         vectors[0].value,
         vectors[1].value,
         vectors[2].value)
-      const newP = this.supportMapping(vertical, vertical.negate(), box)
+      const newP = this.supportMapping(vertical, box)
 
       if (vertical.dot(newP.value) < 0) {
         clash = false
@@ -69,11 +70,7 @@ export default class Box {
       })
 
       if (vectors.length === 4) {
-        clash = [
-          vectors[0].vertexIndexes,
-          vectors[1].vertexIndexes,
-          vectors[2].vertexIndexes,
-          vectors[3].vertexIndexes]
+        clash = vectors
         break
       }
     }
@@ -158,9 +155,9 @@ export default class Box {
     this.vertexPosition = nVertexPosition
   }
 
-  supportMapping = (localV, relativeV, box) =>{
-    const supportA = this.localSupportMapping(localV)
-    const supportB = box.relativeSupportMapping(this.position, this.quaternion, relativeV)
+  supportMapping = (v, box) =>{
+    const supportA = this.localSupportMapping(v)
+    const supportB = box.relativeSupportMapping(this.position, this.quaternion, v.negate())
     const newP = {value : supportA.value.sub(supportB.value),
        vertexIndexes : [supportA.index, supportB.index]
       }
