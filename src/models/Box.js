@@ -27,7 +27,11 @@ export default class Box {
   // params box: models/Box
   isClash = box => {
     // https://trap.jp/post/198/ GJKアルゴリズム 3次元の場合を参照
-    const p0 = new Vector(box.position) // p0はboxの重心を使うことにする
+    let p0 = new Vector(box.position) // p0はboxの重心を使うことにする
+    if (p0.isZero()) {
+      p0 = new Vector(box.vertexPositions[0])
+    }
+
     const v1 = p0.negate()
     const p1 = this.supportMapping(v1).sub(
       box.supportMapping(p0)
@@ -46,10 +50,22 @@ export default class Box {
     let vectors = [p0, p1, p2]
     let clash = false
     while (true) {
+      // vectorsに0ベクトルが含まれているとバグる可能性があるので即trueを返す
+      if (vectors.some(vector => vector.isZero())) {
+        clash = true
+        break
+      }
+
       const vertical = Vector.verticalVector3(...vectors)
       const newP = this.supportMapping(vertical).sub(
         box.supportMapping(vertical.negate())
       )
+
+      if (newP.isZero()) {
+        clash = true
+        break
+      }
+
       if (vertical.dot(newP) < 0) {
         clash = false
         break
@@ -62,7 +78,7 @@ export default class Box {
         const triangle = array.filter((item, index) => index !== i)
         const vertical3 = Vector.verticalVector3(...triangle)
 
-        return vertical3.dot(v) > 0
+        return vertical3.dot(v) >= 0
       })
 
       if (vectors.length === 4) {
