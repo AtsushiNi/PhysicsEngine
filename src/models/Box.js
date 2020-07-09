@@ -33,16 +33,12 @@ export default class Box {
     }
 
     const v1 = p0.negate()
-    const p1 = this.supportMapping(v1).sub(
-      box.supportMapping(p0)
-    ) // v1方向の、ミンコフスキー差のサポート写像
+    const p1 = this.supportMapping(v1).sub(box.supportMapping(p0)) // v1方向の、ミンコフスキー差のサポート写像
     if (v1.dot(p1) < 0) {
       return false
     }
     const v2 = Vector.verticalVector2(p0, p1)
-    const p2 = this.supportMapping(v2).sub(
-      box.supportMapping(v2.negate())
-    )
+    const p2 = this.supportMapping(v2).sub(box.supportMapping(v2.negate()))
     if (v2.dot(p2) < 0) {
       return false
     }
