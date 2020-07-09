@@ -9,6 +9,23 @@ export default class Vector {
   // return Array[3]
   getValue = () => this.value
 
+  // 同じベクトルかどうかを返す
+  // params vector: Vector
+  // return boolean
+  equal = vector => {
+    return (
+      this.value[0] === vector.value[0] &&
+      this.value[1] === vector.value[1] &&
+      this.value[2] === vector.value[2]
+    )
+  }
+
+  // このベクトルがゼロベクトルかどうかを返す
+  // return boolean
+  isZero = () => {
+    return this.value[0] === 0 && this.value[1] === 0 && this.value[2] === 0
+  }
+
   // 逆向きのベクトルを返す
   // return Vector
   negate = () => new Vector([-this.value[0], -this.value[1], -this.value[2]])
@@ -73,10 +90,17 @@ export default class Vector {
   }
 
   // vectorA-vectorBに垂直で0ベクトルを通るベクトルを返す
+  // vectorA, vectorBとの内積が共に負の方向のベクトルを返す
+  // 大きさは1とは限らない
   // params vectorA: Vector
   // params vectorB: Vector
   // return Vector
   static verticalVector2 = (vectorA, vectorB) => {
+    // vectorA = vectorBのときは、vectorAの逆ベクトルを返す
+    if (vectorA.equal(vectorB)) {
+      return vectorA.negate()
+    }
+
     // vectorA, vectorBを1-s:sで内分した点から0ベクトルへむかうベクトルを計算する
     const s =
       vectorB.sub(vectorA).dot(vectorB) / vectorB.sub(vectorA).squaredLength()
@@ -87,12 +111,23 @@ export default class Vector {
     return vertical
   }
 
-  // vectorA, vectorB, vectorCに垂直で0ベクトルを通るベクトルを返す
+  // vectorA, vectorB, vectorCの作る面に垂直で0ベクトルを通るベクトルを返す
+  // vectorA, vectorB, vectorCとの内積が全て負の方向のベクトルを返す
+  // 大きさは1とは限らない
   // params vectorA: Vector
   // params vectorB: Vector
   // params vectorC: Vector
   // return Vector
   static verticalVector3 = (vectorA, vectorB, vectorC) => {
+    // vectorA, vectorB, vectorCのうち、等しいものがあった時の処理
+    if (vectorA.equal(vectorB)) {
+      return Vector.verticalVector2(vectorB, vectorC)
+    } else if (vectorB.equal(vectorC)) {
+      return Vector.verticalVector2(vectorC, vectorA)
+    } else if (vectorC.equal(vectorA)) {
+      return Vector.verticalVector2(vectorA, vectorB)
+    }
+
     let vertical = vectorB.sub(vectorA).cross(vectorC.sub(vectorA))
     if (vertical.dot(vectorA) > 0) {
       vertical = vertical.negate()

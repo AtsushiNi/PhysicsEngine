@@ -11,7 +11,7 @@ export default function DebugObject({ thisBox, targetBox, index, visibles }) {
 
   useFrame(() => {
     const euler = thisBox.quaternion.toEuler()
-    const position = targetBox.vertexPosition[index]
+    const position = targetBox.vertexPositions[index]
     mesh.current.visible = visibles.debugObjects
     mesh.current.rotation.x = euler[0]
     mesh.current.rotation.y = euler[1]
