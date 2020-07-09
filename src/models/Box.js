@@ -11,7 +11,7 @@ export default class Box {
     this.rotVelocity = [0, 0, 0]
     this.quaternion = new Quaternion([1, 0, 0, 0])
     this.quatVelocity = new Quaternion([1, 0, 0, 0])
-    this.vertexPosition = [
+    this.vertexPositions = [
       [0, 0, 0],
       [0, 0, 0],
       [0, 0, 0],
@@ -125,33 +125,33 @@ export default class Box {
   // params box: models/Box
   // return Array[Array]
   getRelativeVertexPositions = (position, quaternion) => {
-    let nVertexPosition = []
+    let nVertexPositions = []
     for (let i = 0; i < 8; i++) {
-      let vertexTranslation = this.vertexPosition[i].map((element, index) => {
+      let vertexTranslation = this.vertexPositions[i].map((element, index) => {
         return element - position[index]
       })
       let mVertexPosition = Calculation.inverseRotationalTranslate(
         quaternion,
         vertexTranslation
       )
-      nVertexPosition.push(mVertexPosition)
+      nVertexPositions.push(mVertexPosition)
     }
-    return nVertexPosition
+    return nVertexPositions
   }
 
-  // vertexPositionを更新する
+  // vertexPositionsを更新する
   updateVertexPositions = () => {
-    let localVertexPosition = this.getLocalVertexPositions()
+    let localVertexPositions = this.getLocalVertexPositions()
 
-    let nVertexPosition = []
+    let nVertexPositions = []
     for (let i = 0; i < 8; i++) {
       let vertexTranslation = Calculation.rotationalTranslate(
         this.quaternion,
-        localVertexPosition[i]
+        localVertexPositions[i]
       ).map((element, index) => this.position[index] + element)
-      nVertexPosition.push(vertexTranslation)
+      nVertexPositions.push(vertexTranslation)
     }
 
-    this.vertexPosition = nVertexPosition
+    this.vertexPositions = nVertexPositions
   }
 }
